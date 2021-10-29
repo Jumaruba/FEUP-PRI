@@ -45,17 +45,63 @@ def get_number_pages(soup):
 
 def get_publisher(soup):
     details = soup.find('div', attrs={'id': 'details'})
-    return details.find_all('div')[1].get_text().split("by") 
+    publication_details = details.find_all('div', attrs={'class': 'row'})[1].get_text()
+    # Removing original publication date
+    return publication_details.split('by')[1].split("(")[0].strip() 
 
+
+def get_last_date(soup):
+    details = soup.find('div', attrs={'id': 'details'})
+    publication_details = details.find_all('div', attrs={'class': 'row'})[1].get_text()
+    date_text = publication_details.split('by')[0].strip('\n')
+    return date_text.split('Published')[1].strip()
+
+
+def get_first_date(soup):
+    details = soup.find('div', attrs={'id': 'details'})
+    original_date = details.find_all('div', attrs={'class': 'row'})[1].find('nobr')
+    return '' if original_date is None else re.search('\(first published ([^)]+)', original_date.get_text()).group(1)
+
+
+def get_isbn(soup):
+    details = soup.find('div', attrs={'id': 'bookDataBox'})
+    isbn_div = details.find_all('div', attrs={'class': 'clearFloats'})[1]
+    isbn_text = isbn_div.find('div', attrs={'class': 'infoBoxRowItem'}).get_text()
+    isbn_parts = re.split('(\([^\)]*\))', isbn_text)
+    return isbn_parts[0].strip()
+
+
+def get_isbn13(soup):
+    details = soup.find('div', attrs={'id': 'bookDataBox'})
+    isbn_div = details.find_all('div', attrs={'class': 'clearFloats'})[1]
+    isbn_text = isbn_div.find('div', attrs={'class': 'infoBoxRowItem'}).get_text()
+    return re.search('\(ISBN13: ([^)]+)',isbn_text).group(1)
+
+
+def get_rating(soup):
+    meta = soup.find('div', attrs={'id':'bookMeta'})
+    rating_span = meta.find('span', attrs={'itemprop':'ratingValue'})
+    return rating_span.get_text().strip()
 
 # https://www.goodreads.com/book/show/13130963-seven-databases-in-seven-weeks
+# https://www.goodreads.com/book/show/45153160-a-black-women-s-history-of-the-united-states
 html = get_html(
     br, "https://www.goodreads.com/book/show/2767052-the-hunger-games")
 
 
-soup = bs(bs(html, "html.parser").prettify())
+soup = bs(html, "html.parser")
+# prettify was adding extra spaces between and after paragraphs
+# soup = bs(bs(html, "html.parser").prettify())
+
 print(get_book_title(soup))
 print(get_book_authors(soup))
 print(get_description(soup))
 print(get_number_pages(soup))
 print(get_publisher(soup))
+print(get_isbn(soup))
+print(get_isbn13(soup))
+print(get_rating(soup))
+print(get_last_date(soup))
+print(get_first_date(soup))
+
+# TODO: reviews?,category?
