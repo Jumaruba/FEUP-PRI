@@ -61,33 +61,21 @@ class BookInfo:
 
     def get_isbn(self):
         details = self.soup.find('div', attrs={'id': 'bookDataBox'})
-        detail_div = details.find_all('div', attrs={'class': 'clearFloats'})[1]
-        detail_title = detail_div.find('div', attrs={'class': 'infoBoxRowTitle'}).get_text()
-    
-        if detail_title.strip() != 'ISBN':
-            return ''
-
-        isbn_text = detail_div.find('div', attrs={'class': 'infoBoxRowItem'}).get_text()
+        isbn_div = details.find_all('div', attrs={'class': 'clearFloats'})[1]
+        isbn_text = isbn_div.find('div', attrs={'class': 'infoBoxRowItem'}).get_text()
         isbn_parts = re.split('(\([^\)]*\))', isbn_text)
         return isbn_parts[0].strip()
 
     def get_isbn13(self):
         details = self.soup.find('div', attrs={'id': 'bookDataBox'})
-        detail_div = details.find_all('div', attrs={'class': 'clearFloats'})[1]
-        detail_title = detail_div.find('div', attrs={'class': 'infoBoxRowTitle'}).get_text()
-        
-        if detail_title.strip() != 'ISBN':
-            return ''
-
-        isbn_div = detail_div.find('div', attrs={'class': 'infoBoxRowItem'})
-        return '' if isbn_div is None else re.search('\(ISBN13: ([^)]+)',isbn_div.get_text()).group(1)
+        isbn_div = details.find_all('div', attrs={'class': 'clearFloats'})[1]
+        isbn_text = isbn_div.find('div', attrs={'class': 'infoBoxRowItem'}).get_text()
+        return re.search('\(ISBN13: ([^)]+)',isbn_text).group(1)
 
     def get_rating(self):
         meta = self.soup.find('div', attrs={'id':'bookMeta'})
         rating_span = meta.find('span', attrs={'itemprop':'ratingValue'})
         return rating_span.get_text().strip()
 
-# TODO: 
-# - reviews?
-# - category?
-# - get isbn from other website when it does no exist in good reads
+
+# TODO: reviews?,category?

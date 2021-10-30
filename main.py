@@ -12,16 +12,10 @@ def get_books(soup):
 
 def one_book(url):
     book = BookInfo(url)
-    print(book.get_book_title())
-    print(book.get_book_authors())
-    print(book.get_description())
-    print(book.get_number_pages())
-    print(book.get_publisher())
-    print(book.get_isbn())
-    print(book.get_isbn13())
-    print(book.get_rating())
-    print(book.get_last_date())
-    print(book.get_first_date())
+    with open('document.csv','a') as fd:
+        fd.write('{},{},{},{},{},{},{},{},{},{},\n'.format(book.get_book_title(), book.get_book_authors(), \
+            book.get_description(), book.get_number_pages(), book.get_publisher(), book.get_isbn(), book.get_isbn13(), \
+                book.get_rating(), book.get_rating(), book.get_last_date(), book.get_first_date()))
 
 def all_books():
     for i in range(1, 101):
@@ -32,6 +26,9 @@ def all_books():
 
 if __name__ == "__main__":
     val_input = input("Type 0 for one book. Another key for all books.\n")
+    with open('document.csv', "w") as fd:
+        fd.write('title,authors,description,number_pages,publisher,isbn,isbn13,rating,last_date,first_date,\n')
+
     if val_input == "0":
         one_book("https://www.goodreads.com/book/show/2767052-the-hunger-games")
     else:
