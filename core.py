@@ -65,17 +65,27 @@ def get_first_date(soup):
 
 def get_isbn(soup):
     details = soup.find('div', attrs={'id': 'bookDataBox'})
-    isbn_div = details.find_all('div', attrs={'class': 'clearFloats'})[1]
-    isbn_text = isbn_div.find('div', attrs={'class': 'infoBoxRowItem'}).get_text()
+    detail_div = details.find_all('div', attrs={'class': 'clearFloats'})[1]
+    detail_title = detail_div.find('div', attrs={'class': 'infoBoxRowTitle'}).get_text()
+  
+    if detail_title.strip() != 'ISBN':
+        return ''
+
+    isbn_text = detail_div.find('div', attrs={'class': 'infoBoxRowItem'}).get_text()
     isbn_parts = re.split('(\([^\)]*\))', isbn_text)
     return isbn_parts[0].strip()
 
 
 def get_isbn13(soup):
     details = soup.find('div', attrs={'id': 'bookDataBox'})
-    isbn_div = details.find_all('div', attrs={'class': 'clearFloats'})[1]
-    isbn_text = isbn_div.find('div', attrs={'class': 'infoBoxRowItem'}).get_text()
-    return re.search('\(ISBN13: ([^)]+)',isbn_text).group(1)
+    detail_div = details.find_all('div', attrs={'class': 'clearFloats'})[1]
+    detail_title = detail_div.find('div', attrs={'class': 'infoBoxRowTitle'}).get_text()
+    
+    if detail_title.strip() != 'ISBN':
+        return ''
+
+    isbn_div = detail_div.find('div', attrs={'class': 'infoBoxRowItem'})
+    return '' if isbn_div is None else re.search('\(ISBN13: ([^)]+)',isbn_div.get_text()).group(1)
 
 
 def get_rating(soup):
@@ -83,8 +93,9 @@ def get_rating(soup):
     rating_span = meta.find('span', attrs={'itemprop':'ratingValue'})
     return rating_span.get_text().strip()
 
-# https://www.goodreads.com/book/show/13130963-seven-databases-in-seven-weeks
-# https://www.goodreads.com/book/show/45153160-a-black-women-s-history-of-the-united-states
+# https://www.goodreads.com/book/show/13130963-seven-databases-in-seven-weeks - no series
+# https://www.goodreads.com/book/show/45153160-a-black-women-s-history-of-the-united-states - no first date
+# https://www.goodreads.com/book/show/22628.The_Perks_of_Being_a_Wallflower - no isbn
 html = get_html(
     br, "https://www.goodreads.com/book/show/2767052-the-hunger-games")
 
@@ -104,4 +115,7 @@ print(get_rating(soup))
 print(get_last_date(soup))
 print(get_first_date(soup))
 
-# TODO: reviews?,category?
+# TODO: 
+# - reviews?
+# - category?
+# - get isbn from other website when it does no exist in good reads
