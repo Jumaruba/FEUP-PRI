@@ -5,7 +5,7 @@ import pandas as pd
 import configparser as cp
 from typing import List
 
-from info.book_info import BookInfo
+from scraper.book_scraper import BookScraper
 
 # Fields to the books.csv
 books_fields =  ['title','authors','description','number_pages','publisher','isbn','isbn13','rating','last_date','first_date','author_url']
@@ -30,7 +30,7 @@ def retrieve_all_books(config, writer) -> None:
 
 
 def retrieve_one_book(config, writer, url_page: str) -> None:
-    book = BookInfo(url_page)
+    book = BookScraper(url_page)
     writer.writerow(book.info)
 
 

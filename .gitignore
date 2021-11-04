@@ -1,3 +1,4 @@
 scrapper/**
 .vscode/
 __pycache__/**
+src/scraper/__pycache__/**
