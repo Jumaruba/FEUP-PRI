@@ -2,12 +2,11 @@ from bs4 import BeautifulSoup as bs
 import requests
 import pandas as pd
 import configparser as cp
-import itertools
 from typing import List
 
 from info.book_info import BookInfo
 
-
+# Fields to the books.csv
 books_fields =  ['title','authors','description','number_pages','publisher','isbn','isbn13','rating','last_date','first_date','author_url'] 
 
 def get_soup(url) -> bs:
@@ -15,7 +14,13 @@ def get_soup(url) -> bs:
     return bs(page.content, 'html.parser')
 
 
-def add_csv(fields: List[str], file: str) -> None:  
+def add_csv(fields: List[str], file: str) -> None:
+    """This function is responsible for adding the fields given to the csv file.
+
+    Args:
+        fields (List[str]): Fields to be added to the csv.
+        file (str): Path to the csv file.
+    """
     fields_str = ",".join(fields)
     with open(file, 'a') as fd:
         fd.write(fields_str+"\n")
@@ -47,9 +52,9 @@ if __name__ == "__main__":
     config.read("../config.ini")
     debug = eval(config.get('default', 'debug'))
     books_csv = config.get('paths', 'books_csv')
-    open(config.get('paths', 'books_csv'), "w")                                # Create the file  
-    add_csv(books_fields, books_csv)  
-                                             # Add header
+    open(config.get('paths', 'books_csv'), "w")                                 # Create the file  
+    add_csv(books_fields, books_csv)                                            # Adds the header to the csv.
+
     if debug:
         one_book_page = config.get('webpages', 'one_book') 
         retrieve_one_book(config, one_book_page)

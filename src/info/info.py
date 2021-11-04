@@ -18,6 +18,14 @@ class Info:
         return page.read()
 
     def retrieve_info(self)-> List[str]:
+        """This method retrieves the information of a file as List.
+
+        Raises:
+            NotImplementedError: Must be implemented by the child class.
+
+        Returns:
+            List[str]: Information of a file.
+        """
         raise NotImplementedError()
 
     def replace_multiple_spaces(self, str):
