@@ -1,15 +1,13 @@
-
-from info.info import Info 
+from scraper.scraper import Scraper
 
 from typing import List
-import mechanize as mc
 from bs4 import BeautifulSoup as bs
 import re
 
-class BookInfo(Info):
+class BookScraper(Scraper):
 
     def __init__(self, url):
-        Info.__init__(self, url)
+        Scraper.__init__(self, url)
 
     def retrieve_info(self) -> List[str]:
         self.info = [self.get_book_title(), ", ".join(self.get_book_authors()), self.get_description(), self.get_number_pages(),

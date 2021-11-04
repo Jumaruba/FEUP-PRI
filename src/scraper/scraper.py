@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup as bs
 import mechanize as mc
 import re 
 
-class Info:
+class Scraper:
     br = mc.Browser() 
 
     def __init__(self, url) -> None: 
