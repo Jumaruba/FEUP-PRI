@@ -87,5 +87,8 @@ class BookInfo:
         rating_span = meta.find('span', attrs={'itemprop':'ratingValue'})
         return rating_span.get_text().strip()
 
+    def get_author_url(self):
+        return self.soup.find('div', attrs={'class': 'bookAuthorProfile__name'}).a['href']
+
 
 # TODO: reviews?,category?

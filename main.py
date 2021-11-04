@@ -13,9 +13,9 @@ def get_books(soup):
 def one_book(url):
     book = BookInfo(url)
     with open('document.csv','a') as fd:
-        fd.write('{},{},{},{},{},{},{},{},{},{},\n'.format(book.get_book_title(), book.get_book_authors(), \
+        fd.write('{},{},{},{},{},{},{},{},{},{},{},{}\n'.format(book.get_book_title(), book.get_book_authors(), \
             book.get_description(), book.get_number_pages(), book.get_publisher(), book.get_isbn(), book.get_isbn13(), \
-                book.get_rating(), book.get_rating(), book.get_last_date(), book.get_first_date()))
+                book.get_rating(), book.get_rating(), book.get_last_date(), book.get_first_date(), book.get_author_url()))
 
 def all_books():
     for i in range(1, 101):
@@ -27,7 +27,7 @@ def all_books():
 if __name__ == "__main__":
     val_input = input("Type 0 for one book. Another key for all books.\n")
     with open('document.csv', "w") as fd:
-        fd.write('title,authors,description,number_pages,publisher,isbn,isbn13,rating,last_date,first_date,\n')
+        fd.write('title,authors,description,number_pages,publisher,isbn,isbn13,rating,last_date,first_date,author_url,\n')
 
     if val_input == "0":
         one_book("https://www.goodreads.com/book/show/2767052-the-hunger-games")
