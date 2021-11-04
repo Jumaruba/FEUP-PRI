@@ -64,16 +64,17 @@ class BookInfo(Info):
 
     def get_isbn(self):
         details = self.soup.find('div', attrs={'id': 'bookDataBox'})
-        detail_div = details.find_all('div', attrs={'class': 'clearFloats'})[1]
-        detail_title = detail_div.find(
-            'div', attrs={'class': 'infoBoxRowTitle'}).get_text()
+        details_titles = details.find_all('div', attrs={'class': 'infoBoxRowTitle'})
+        details_titles_texts = [x.get_text().strip() for x in details_titles]
 
-        if detail_title.strip() != 'ISBN':
+        try:
+            isbn_idx = details_titles_texts.index("ISBN")
+        except ValueError:
             return ''
 
-        isbn_text = detail_div.find(
-            'div', attrs={'class': 'infoBoxRowItem'}).get_text()
+        isbn_text = details.find_all('div', attrs={'class': 'infoBoxRowItem'})[isbn_idx].get_text()
         isbn_parts = re.split('(\([^\)]*\))', isbn_text)
+    
         return isbn_parts[0].strip()
 
     def get_isbn13(self):

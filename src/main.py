@@ -32,7 +32,6 @@ def retrieve_all_books(config, writer) -> None:
 def retrieve_one_book(config, writer, url_page: str) -> None:
     book = BookInfo(url_page)
     writer.writerow(book.info)
-    print('.')
 
 
 if __name__ == "__main__": 
