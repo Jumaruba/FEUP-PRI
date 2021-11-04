@@ -10,13 +10,15 @@ class BookScraper(Scraper):
         Scraper.__init__(self, url)
 
     def retrieve_info(self) -> List[str]:
+        [isbn10, isbn13] = self.get_isbn()
         self.info = [self.get_book_title(), ", ".join(self.get_book_authors()), self.get_description(), self.get_number_pages(),
-                     self.get_publisher(), self.get_isbn(), self.get_isbn13(), self.get_rating(), self.get_last_date(), 
+                     self.get_publisher(), isbn10, isbn13, self.get_rating(), self.get_last_date(), 
                      self.get_first_date(), self.get_author_url()]
 
 
     def get_book_title(self):
         series = self.soup.find('h2', attrs={'id': 'bookSeries'}).get_text()
+        print(self.soup.find('h1', attrs={'id': 'bookTitle'}).get_text().strip())
         return self.soup.find('h1', attrs={'id': 'bookTitle'}).get_text().strip() + " " + series.strip()
 
     def get_book_authors(self):
@@ -50,8 +52,7 @@ class BookScraper(Scraper):
 
     def get_last_date(self):
         details = self.soup.find('div', attrs={'id': 'details'})
-        publication_details = details.find_all(
-            'div', attrs={'class': 'row'})[1].get_text()
+        publication_details = details.find_all('div', attrs={'class': 'row'})[1].get_text()
         date_text = publication_details.split('by')[0].strip('\n')
         return date_text.split('Published')[1].strip()
 
@@ -68,24 +69,14 @@ class BookScraper(Scraper):
         try:
             isbn_idx = details_titles_texts.index("ISBN")
         except ValueError:
-            return ''
+            return '', ''
 
         isbn_text = details.find_all('div', attrs={'class': 'infoBoxRowItem'})[isbn_idx].get_text()
         isbn_parts = re.split('(\([^\)]*\))', isbn_text)
-    
-        return isbn_parts[0].strip()
 
-    def get_isbn13(self):
-        details = self.soup.find('div', attrs={'id': 'bookDataBox'})
-        detail_div = details.find_all('div', attrs={'class': 'clearFloats'})[1]
-        detail_title = detail_div.find(
-            'div', attrs={'class': 'infoBoxRowTitle'}).get_text()
-
-        if detail_title.strip() != 'ISBN':
-            return ''
-
-        isbn_div = detail_div.find('div', attrs={'class': 'infoBoxRowItem'})
-        return '' if isbn_div is None else re.search('\(ISBN13: ([^)]+)', isbn_div.get_text()).group(1)
+        isbn10 = isbn_parts[0].strip()
+        isbn13 = '' if len(isbn_parts) == 1 else re.search('\(ISBN13: ([^)]+)', isbn_parts[1]).group(1)
+        return isbn10, isbn13
 
     def get_rating(self):
         meta = self.soup.find('div', attrs={'id': 'bookMeta'})
@@ -96,4 +87,4 @@ class BookScraper(Scraper):
         return self.soup.find('div', attrs={'class': 'bookAuthorProfile__name'}).a['href']
 
 
-# TODO: reviews?,category?
+# TODO: reviews?
