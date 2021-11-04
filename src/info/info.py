@@ -17,12 +17,6 @@ class Info:
         page = self.br.open(url)
         return page.read()
 
-    def get_fields_number(self) -> int:
-        raise NotImplementedError()
-
-    def get_fields_name(self) -> List[str]: 
-        raise NotImplementedError()
-
     def retrieve_info(self)-> List[str]:
         raise NotImplementedError()
 

@@ -16,15 +16,6 @@ class BookInfo(Info):
                      self.get_publisher(), self.get_isbn(), self.get_isbn13(), self.get_rating(), self.get_last_date(), 
                      self.get_first_date(), self.get_author_url()]
 
-    def get_fields_number(self) -> int:
-        return len(self.info)
-
-    def get_fields_name(self) -> List[str]:
-        fields =  ['title','authors','description','number_pages','publisher','isbn','isbn13','rating','last_date','first_date','author_url'] 
-        # Checking the size. 
-        if self.get_fields_number() != len(fields):
-            raise ValueError("The information must have the same size of the fields name")
-        return fields
 
     def get_book_title(self):
         series = self.soup.find('h2', attrs={'id': 'bookSeries'}).get_text()
