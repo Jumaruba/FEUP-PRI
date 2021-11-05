@@ -4,6 +4,10 @@ import requests
 import pandas as pd
 import configparser as cp
 from typing import List
+from random import randint
+import time
+
+
 
 from scraper.book_scraper import BookScraper
 
@@ -27,11 +31,20 @@ def retrieve_all_books(config, writer) -> None:
         for book in get_books(soup):
             url_page = config.get('webpages', 'goodreads') + book
             retrieve_one_book(config, writer, url_page)
+            #time.sleep(randint(2,5))
 
 
 def retrieve_one_book(config, writer, url_page: str) -> None:
-    book = BookScraper(url_page)
-    writer.writerow(book.info)
+    for i in range(3):
+        book = BookScraper(url_page)
+        print(book.info)
+        if book.info == -1:
+            print(book.info)
+            print("ERROR")
+            time.sleep(5)
+        else:
+            writer.writerow(book.info)
+            return
 
 
 if __name__ == "__main__": 
@@ -40,7 +53,7 @@ if __name__ == "__main__":
     config.read("../config.ini")
     debug = eval(config.get('default', 'debug'))
 
-    books_fd = open(config.get('paths', 'books_csv'), "a")                     # Create the file 
+    books_fd = open(config.get('paths', 'books_csv'), "a", encoding="utf-8")                     # Create the file 
     books_fd.seek(0)
     books_fd.truncate()
     writer = csv.writer(books_fd) 
