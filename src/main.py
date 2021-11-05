@@ -51,7 +51,7 @@ if __name__ == "__main__":
     # Read configurations.
     config = cp.ConfigParser()
     config.read("../config.ini")
-    debug = eval(config.get('default', 'debug'))
+    debug = False
 
     books_fd = open(config.get('paths', 'books_csv'), "a", encoding="utf-8")                     # Create the file 
     books_fd.seek(0)
