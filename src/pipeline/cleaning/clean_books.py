@@ -1,7 +1,7 @@
 import json
 
-books_raw = open("data/raw/books.json" ,"r")
-books_clean = open("data/clean/books.json" ,"w")
+books_raw = open("../../data/raw/books.json" ,"r")
+books_clean = open("../../data/clean/books.json" ,"w")
 
 books_list = []
 for books_obj in books_raw: 
