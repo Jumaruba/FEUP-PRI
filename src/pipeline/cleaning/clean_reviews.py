@@ -17,7 +17,7 @@ def clean_reviews():
         review.pop('n_comments', None)
         review.pop('n_votes', None)
         review.pop('read_at', None)
-        writer.writerow(review.values())
+        writer.writerow(list(review.values()))
 
     reviews_raw.close()
     reviews_clean.close()

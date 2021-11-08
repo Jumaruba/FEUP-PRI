@@ -14,7 +14,7 @@ def clean_series():
         serie.pop('primary_work_count', None)
         serie.pop('note', None)
         serie.pop('numbered', None)
-        writer.writerow(serie.values())
+        writer.writerow(list(serie.values()))
 
     series_raw.close()
     series_clean.close()

@@ -1,16 +1,36 @@
 import json
 import csv
 
+MAX_BOOKS = 12000
+
+def get_authors(authors_arr):
+    authors_names = []
+
+    for author_obj in authors_arr:
+        authors_names.append(int(author_obj["author_id"]))
+
+    return authors_names
+
+def get_series(series_arr):
+    series = []
+    for series_obj in series_arr:
+        series.append(int(series_obj))
+    return series
+
 def clean_books():
     books_raw = open("../../data/raw/books.json" ,"r")
     books_clean = open("../../data/clean/books.csv" ,"w", newline="\n", encoding="utf-8")
     writer = csv.writer(books_clean)
 
     header = ["isbn", "series", "language_code", "is_ebook", "average_rating", "description", "format", "authors", 
-    "publisher", "num_pages", "publication_day", "isbn13", "publication_month", "edition_information", "publication_year", "image_url", "book_id", "title"]
+    "publisher", "num_pages", "publication_day", "isbn13", "publication_month", "edition_information", "publication_year", 
+    "image_url", "book_id", "title"]
     writer.writerow(header)
 
+    n_books = 0
     for books_obj in books_raw: 
+        if n_books > MAX_BOOKS:
+            break
         book = json.loads(books_obj)
         book.pop("text_reviews_count", None)
         book.pop("country_code", None)
@@ -22,7 +42,14 @@ def clean_books():
         book.pop("work_id", None)
         book.pop("ratings_count", None)
         book.pop("similar_books", None)
-        if book['description']: writer.writerow(book.values())
+        book.pop("title_without_series", None)
+
+        if book['description'] and book['book_id']: 
+            book['authors'] = get_authors(book["authors"])
+            book['series'] = get_series(book["series"])   
+
+            writer.writerow(list(book.values()))
+            n_books += 1
         
     books_raw.close()
     books_clean.close() 

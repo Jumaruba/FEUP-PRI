@@ -13,7 +13,7 @@ def clean_authors():
         author = json.loads(author_obj)
         author.pop("text_reviews_count", None)
         author.pop("ratings_count", None)
-        writer.writerow(author.values())
+        writer.writerow(list(author.values()))
 
     authors_raw.close()
     authors_clean.close() 
