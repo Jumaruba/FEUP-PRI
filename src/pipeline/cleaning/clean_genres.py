@@ -1,14 +1,21 @@
 import json
+import csv
 
-genres_raw = open("../../data/raw/genres.json" ,"r")
-genres_clean = open("../../data/clean/genres.json" ,"w")
+def clean_genres():
+    genres_raw = open("../../data/raw/genres.json" ,"r")
+    genres_clean = open("../../data/clean/genres.csv" ,"w", newline="\n", encoding="utf-8")
+    writer = csv.writer(genres_clean)
 
-genres_list = []
-for genres_obj in genres_raw: 
-    genres = json.loads(genres_obj) 
-    if bool(genres['genres']):  
-        genres_list.append(genres)
+    header = ["book_id", "genres"]
+    writer.writerow(header)
 
-json.dump(genres_list, genres_clean, indent=2)
-genres_raw.close()
-genres_clean.close()
+    for genres_obj in genres_raw: 
+        genres = json.loads(genres_obj) 
+        if bool(genres['genres']):  
+            writer.writerow([genres["book_id"], genres["genres"]])
+
+    genres_raw.close()
+    genres_clean.close() 
+
+if __name__ == '__main__':
+    clean_genres()

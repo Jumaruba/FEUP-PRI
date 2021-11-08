@@ -1,3 +1,4 @@
 .vscode/ 
 src/data/raw/**
 src/data/clean/**
+scrapper_env/**
