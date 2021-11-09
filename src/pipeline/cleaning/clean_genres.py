@@ -2,6 +2,8 @@ import json
 import csv
 from typing import List
 
+MAX_GENRES = 11000
+
 def get_genres(genres_groups: List[str]) -> List[str]:
     genres = []
     for genres_group in genres_groups: 
@@ -31,11 +33,15 @@ def clean_genres():
     header = ["book_id", "genres"]
     writer.writerow(header)
 
+    n_genres = 0
     for genres_obj in genres_raw: 
+        if n_genres == MAX_GENRES:
+            break
         genres = json.loads(genres_obj) 
         if bool(genres['genres']):  
             genres_arr = get_genres(list(genres["genres"].keys()))
             writer.writerow([genres["book_id"], genres_arr])
+            n_genres += 1
 
     genres_raw.close()
     genres_clean.close() 

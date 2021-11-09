@@ -1,7 +1,7 @@
 import json
 import csv
 
-MAX_BOOKS = 12000
+MAX_BOOKS = 11000
 
 def get_authors(authors_arr):
     authors_names = []
@@ -29,7 +29,7 @@ def clean_books():
 
     n_books = 0
     for books_obj in books_raw: 
-        if n_books > MAX_BOOKS:
+        if n_books == MAX_BOOKS:
             break
         book = json.loads(books_obj)
         book.pop("text_reviews_count", None)
