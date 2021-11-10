@@ -42,7 +42,7 @@ def clean_books():
         book.pop("work_id", None)
         book.pop("ratings_count", None)
         book.pop("similar_books", None)
-        book.pop("title_without_series", None)
+        book.pop("title_without_series", None) # TODO - keep this; Must change header
 
         if book['description'] and book['book_id']: 
             book['authors'] = get_authors(book["authors"])

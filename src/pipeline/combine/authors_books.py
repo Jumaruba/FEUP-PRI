@@ -12,7 +12,8 @@ AUTHORS_POS = 7
 
 def create_books_authors_association() -> None:
     """
-    Create Processed authors.
+    Create many to many relation between books and authors.
+    This new relation contais the columns author_id and book_id. 
     """
     # Reading files. 
     books_csv = open(get_processed_path("books"), "r", encoding="utf-8", newline="\n")  
@@ -21,7 +22,7 @@ def create_books_authors_association() -> None:
 
     # Get writers
     writer = csv.writer(authors_books_csv)                  # Authors books relation.
-    writer_temp = csv.writer(books_csv_temp)                # Remove books without authors and remove authors row.
+    writer_temp = csv.writer(books_csv_temp)                # Remove Authors row.
     writer.writerow(["author_id", "book_id"]) 
 
     csv_reader = csv.reader(books_csv)                      # Get books as csv. 
@@ -35,10 +36,9 @@ def create_books_authors_association() -> None:
         authors = row[AUTHORS_POS] 
         authors_list = ast.literal_eval(authors)  
 
-        # Removing books without authors.
-        if bool(authors): 
-            row.pop(AUTHORS_POS)
-            writer_temp.writerow(row)
+        # Removing authors column
+        row.pop(AUTHORS_POS)
+        writer_temp.writerow(row)
 
         # Build relation authors books. 
         for author in authors_list:
@@ -52,20 +52,21 @@ def create_books_authors_association() -> None:
     os.remove(get_processed_path("books"))
     os.rename(get_processed_path("books_temp"), get_processed_path("books"))   
                        
-
 def delete_authors_without_books():
     """ Drop the authors in the authors.csv that don't have any book associated in the authors_books.csv.
     """
-    books_csv = open(get_processed_path("books"), "r", encoding="utf-8", newline="\n")  
-    books_df = pd.read_csv(books_csv)
+    books_authors_csv = open(get_processed_path("authors_books"), "r", encoding="utf-8", newline="\n")  
+    books_authors_df = pd.read_csv(books_authors_csv)
+    books_authors_csv.close()
+    author_ids = set(books_authors_df['author_id'])                       
     
-    books_authors = open(get_processed_path("authors_books"), "r", encoding="utf-8", newline="\n") 
-    books_authors_df = pd.read_csv(books_authors)
-    book_ids = set(books_authors_df['book_id'])                            # Get's set of books_id
+    authors_csv = open(get_clean_path("authors"), "r", encoding="utf-8", newline="\n")
+    authors_df = pd.read_csv(authors_csv)
+    authors_csv.close()
     
-    books_processed_df = books_df[books_df['book_id'].isin(book_ids)]      # Filtering: removing authors that don't have any book associated. 
-    
-    books_processed_df.to_csv(get_processed_path, index=False)
+    # Filtering: removing authors that don't have any book associated. 
+    authors_processed_df = authors_df[authors_df['author_id'].isin(author_ids)] 
+    authors_processed_df.to_csv(get_processed_path("authors"), index=False)
 
     
 if __name__ == '__main__':
