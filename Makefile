@@ -2,7 +2,9 @@ VENV = pri_venv
 PYTHON = python
 PIP = pip
 
-run: $(VENV)/bin/activate cleaning combine
+.PHONY: all clean
+
+all: $(VENV)/bin/activate cleaning combine
 	@echo "Run Code"
 
 $(VENV)/bin/activate: requirements.txt
