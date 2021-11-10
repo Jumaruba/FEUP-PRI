@@ -15,8 +15,18 @@ clean_csv_files = $(addsuffix .csv, $(clean_files))
 clean_output_filepaths = $(addprefix $(clean_output_path), $(clean_csv_files))
 
 
+# CSV COMBINED FILES ============================================
+# Path to combined files.
+combine_output_path = src/data/processed/
+combine_exec_path = src/pipeline/combine/
+combine_files = authors_books genres_books reviews_books
+
+# Get complete path to combined output files. 
+combine_csv_files = $(addsuffix .csv, $(combine_files)) 
+combine_output_filepaths = $(addprefix $(combine_output_path), $(combine_csv_files))
+
 # TARGETS =======================================================
-.PHONY: all clean
+.PHONY: all
 
 
 all: $(VENV)/bin/activate cleaning combine
@@ -37,12 +47,12 @@ $(clean_output_filepaths):
 	@ $(PYTHON) $(patsubst $(clean_output_path)%.csv, $(clean_exec_path)%.py, $@)
 
 
-combine:
-	$(PYTHON) ./src/pipeline/cleaning/clean_authors.py
-	$(PYTHON) ./src/pipeline/cleaning/clean_books.py
-	$(PYTHON) ./src/pipeline/cleaning/clean_genres.py
-	$(PYTHON) ./src/pipeline/cleaning/clean_reviews.py
-	$(PYTHON) ./src/pipeline/cleaning/clean_series.py
+combine: $(combine_output_filepaths)
+
+
+$(combine_output_filepaths):
+	@echo [ CREATING ] $@...
+	@ $(PYTHON) $(patsubst $(combine_output_path)%.csv, $(combine_exec_path)%.py, $@)
 
 
 clean:
