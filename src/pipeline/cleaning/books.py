@@ -27,7 +27,7 @@ def clean_books():
     books_clean = open(CLEAN_PATH ,"w", newline="\n", encoding="utf-8")
     writer = csv.writer(books_clean)
 
-    header = ["isbn", "series", "language_code", "is_ebook", "average_rating", "description", "format", "authors", 
+    header = ["isbn", "language_code", "is_ebook", "average_rating", "description", "format", "authors", 
     "publisher", "num_pages", "publication_day", "isbn13", "publication_month", "edition_information", "publication_year", 
     "image_url", "book_id", "title"]
     writer.writerow(header)
@@ -48,10 +48,10 @@ def clean_books():
         book.pop("ratings_count", None)
         book.pop("similar_books", None)
         book.pop("title_without_series", None) # TODO - keep this; Must change header
+        book.pop("series", None)
 
         if book['description'] and book['book_id']: 
             book['authors'] = get_authors(book["authors"])
-            book['series'] = get_series(book["series"])   
 
             writer.writerow(list(book.values()))
             n_books += 1

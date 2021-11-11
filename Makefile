@@ -19,7 +19,8 @@ clean_output_filepaths = $(addprefix $(clean_output_path), $(clean_csv_files))
 # Path to combined files.
 combine_output_path = src/data/processed/
 combine_exec_path = src/pipeline/combine/
-combine_files = authors_books genres_books reviews
+# The order here matters. 
+combine_files = genres_books authors_books reviews 
 
 # Get complete path to combined output files. 
 combine_csv_files = $(addsuffix .csv, $(combine_files)) 
@@ -54,9 +55,18 @@ $(combine_output_filepaths):
 	@echo [ CREATING ] $@...
 	@ $(PYTHON) $(patsubst $(combine_output_path)%.csv, $(combine_exec_path)%.py, $@)
 
+clean_combine:
+	@echo Removing combined files...
+	@rm ./src/data/processed/*
+
+clean_clean:
+	@echo Removing cleaned files...
+	@rm ./src/data/clean/*
 
 clean:
-	rmdir /s /q $(VENV)
+	rmdir /q /s $(VENV)
+	@rm ./src/data/combine/*
+	@rm ./src/data/clean/*
 
 
 
