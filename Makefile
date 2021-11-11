@@ -7,7 +7,7 @@ PIP = pip
 # Path to the clean files.
 clean_output_path = src/data/clean/
 clean_exec_path = src/pipeline/cleaning/
-clean_files = authors books genres reviews series
+clean_files = authors books genres reviews
 
 
 # Get complete path to clean output files. 
@@ -19,7 +19,7 @@ clean_output_filepaths = $(addprefix $(clean_output_path), $(clean_csv_files))
 # Path to combined files.
 combine_output_path = src/data/processed/
 combine_exec_path = src/pipeline/combine/
-combine_files = authors_books genres_books reviews_books
+combine_files = authors_books genres_books reviews
 
 # Get complete path to combined output files. 
 combine_csv_files = $(addsuffix .csv, $(combine_files)) 
