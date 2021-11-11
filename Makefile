@@ -26,6 +26,16 @@ combine_files = genres_books authors_books reviews
 combine_csv_files = $(addsuffix .csv, $(combine_files)) 
 combine_output_filepaths = $(addprefix $(combine_output_path), $(combine_csv_files))
 
+
+# MD EXPLORE FILES ==============================================
+explore_output_path = src/data/explore/
+explore_exec_path = src/pipeline/explore/
+explore_files = reviews
+
+# Get complete path to explore output files.
+explore_md_files = $(addsuffix .md, $(explore_files))
+explore_output_filepaths = $(addprefix $(explore_output_path), $(explore_md_files))
+
 # TARGETS =======================================================
 .PHONY: all
 
@@ -38,7 +48,7 @@ $(VENV)/bin/activate: requirements.txt
 	python -m venv $(VENV)
 	$(PIP) install -r requirements.txt
 	
-	
+# CLEANING ==============================================
 cleaning: $(clean_output_filepaths)
 
 
@@ -47,7 +57,7 @@ $(clean_output_filepaths):
 	@echo [ CREATING ] $@...
 	@ $(PYTHON) $(patsubst $(clean_output_path)%.csv, $(clean_exec_path)%.py, $@)
 
-
+# COMBINE ================================================
 combine: $(combine_output_filepaths)
 
 
@@ -55,6 +65,17 @@ $(combine_output_filepaths):
 	@echo [ CREATING ] $@...
 	@ $(PYTHON) $(patsubst $(combine_output_path)%.csv, $(combine_exec_path)%.py, $@)
 
+
+# EXPLORE ===============================================
+explore: $(explore_output_filepaths)
+
+$(explore_output_filepaths):
+	@echo [CREATING] $@...
+	@ $(PYTHON) $(patsubst $(explore_output_path)%.md, $(explore_exec_path)%.py, $@)
+	mv $(patsubst $(explore_output_path)%, %, $@) $@
+
+
+# CLEAN =================================================
 clean_combine:
 	@echo Removing combined files...
 	@rm ./src/data/processed/*
