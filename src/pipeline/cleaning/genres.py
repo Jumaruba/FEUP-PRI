@@ -1,8 +1,12 @@
 import json
 import csv
 from typing import List
+import os 
 
 MAX_GENRES = 11000
+CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
+RAW_PATH = CURRENT_PATH + "/../../data/raw/genres.json"
+CLEAN_PATH = CURRENT_PATH + "/../../data/clean/genres.csv"
 
 def get_genres(genres_groups: List[str]) -> List[str]:
     genres = []
@@ -26,8 +30,8 @@ def get_names(group_names: str) -> List[str]:
 
 
 def clean_genres():
-    genres_raw = open("../../data/raw/genres.json" ,"r")
-    genres_clean = open("../../data/clean/genres.csv" ,"w", newline="\n", encoding="utf-8")
+    genres_raw = open(RAW_PATH ,"r")
+    genres_clean = open(CLEAN_PATH ,"w", newline="\n", encoding="utf-8")
     writer = csv.writer(genres_clean)
 
     header = ["book_id", "genres"]

@@ -1,13 +1,16 @@
 import json
 import csv
-import re
+import os 
 
 MAX_REVIEWS = 100000
+CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
+RAW_PATH = CURRENT_PATH + "/../../data/raw/reviews.json"
+CLEAN_PATH = CURRENT_PATH + "/../../data/clean/reviews.csv"
+
 
 def clean_reviews():
-    reviews_raw = open("../../data/raw/reviews.json", "r")
-    reviews_clean = open("../../data/clean/reviews.csv",
-                         "w", newline="\n", encoding="utf-8")
+    reviews_raw = open(RAW_PATH, "r")
+    reviews_clean = open(CLEAN_PATH, "w", newline="\n", encoding="utf-8")
     writer = csv.writer(reviews_clean)
 
     header = ["book_id", "review_id", "rating", "review_text", "date_added"]
