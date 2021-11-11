@@ -1,7 +1,7 @@
-def get_clean_path(name):
-    return "../../data/clean/"+ name + ".csv"
+def get_clean_path(current_path, name):
+    return current_path + "/../../data/clean/"+ name + ".csv"
 
-def get_processed_path(name):
-    return "../../data/processed/"+ name + ".csv"
+def get_processed_path(current_path, name):
+    return current_path + "/../../data/processed/"+ name + ".csv"
 
     

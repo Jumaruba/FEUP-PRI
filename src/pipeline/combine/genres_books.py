@@ -3,16 +3,17 @@ import ast
 from typing import List
 import utils
 import pandas as pd
+import os 
 
 last_id: int = 0              # Tracks the last id. 
 genres_books: dict = {}       # This dictionary will map book id's and genre id's. {book_id: genre_id}
+CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
-
-books_clean_path = utils.get_clean_path("books")
-books_processed_path = utils.get_processed_path("books")
-genres_clean_path = utils.get_clean_path("genres")
-genres_books_path = utils.get_processed_path("genres_books")
-genres_processed_path = utils.get_processed_path("genres")
+books_clean_path = utils.get_clean_path(CURRENT_PATH,"books")
+books_processed_path = utils.get_processed_path(CURRENT_PATH,"books")
+genres_clean_path = utils.get_clean_path(CURRENT_PATH,"genres")
+genres_books_path = utils.get_processed_path(CURRENT_PATH,"genres_books")
+genres_processed_path = utils.get_processed_path(CURRENT_PATH,"genres")
 
 
 def add_genre_to_dict(writer, book_id: str, genre_names: List[str]) -> None: 
@@ -70,7 +71,7 @@ def delete_books_without_genre():
     books_df = pd.read_csv(books_clean)
     books_clean.close()
 
-    books_genres = open(utils.get_processed_path("genres_books"), "r", encoding="utf-8", newline="\n") 
+    books_genres = open(utils.get_processed_path(CURRENT_PATH,"genres_books"), "r", encoding="utf-8", newline="\n") 
     books_genres_df = pd.read_csv(books_genres)
     book_ids = set(books_genres_df['book_id'])                             
     
