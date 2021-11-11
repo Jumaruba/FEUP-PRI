@@ -1,6 +1,7 @@
 import pandas as pd
+from mdutils import MdUtils
 
-def stats(df, md):
+def stats(df: pd.DataFrame, md: MdUtils) -> None:
     md.new_header(level=1, title='General Statistics')
 
     md.new_header(level=2, title='Descriptive Analysis')
