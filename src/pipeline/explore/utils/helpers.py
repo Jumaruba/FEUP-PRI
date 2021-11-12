@@ -22,3 +22,5 @@ def stats(df: pd.DataFrame, md: MdUtils) -> None:
     md.write(unique_values_df.to_markdown(index=False), wrap_width=0)
     md.write('\n')
 
+def get_plots_path():
+    return '../../data/explore/plots/'
