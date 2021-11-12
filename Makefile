@@ -39,7 +39,6 @@ explore_output_filepaths = $(addprefix $(explore_output_path), $(explore_md_file
 # TARGETS =======================================================
 .PHONY: all
 
-
 all: $(VENV)/bin/activate cleaning combine
 	@echo "Run Code"
 
