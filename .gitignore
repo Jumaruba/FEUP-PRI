@@ -11,3 +11,6 @@ src/pipeline/combine/utils/__pycache__/**
 src/pipeline/combine/__pycache__/**
 
 src/data/processed/**
+
+# Virtual Env
+pri_env
