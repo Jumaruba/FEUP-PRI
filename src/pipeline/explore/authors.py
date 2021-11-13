@@ -3,7 +3,7 @@ from mdutils.mdutils import MdUtils
 from utils import *
 
 def explore_authors():
-    authors_processed_path = "../../data/processed/authors.csv"
+    authors_processed_path = "../../data/combine/authors.csv"
     authors_df = pd.read_csv(authors_processed_path)
     md = MdUtils(file_name='../../data/explore/authors', title='Authors - Data Exploration and Characterization')
 

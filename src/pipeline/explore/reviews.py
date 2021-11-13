@@ -6,7 +6,6 @@ import wordcloud
 from utils.helpers import stats
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
-import datetime
 
 def write_image(text:str, image_name: str) -> str:
     return f"![{text}](reviews/{image_name})"
@@ -15,8 +14,9 @@ def write_image(text:str, image_name: str) -> str:
 
 # PREDEFINED VARS =======================
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
-PROCESSED_PATH = CURRENT_PATH + "/../../data/processed/"
+PROCESSED_PATH = CURRENT_PATH + "/../../data/combine/"
 OUTPUT_PATH = CURRENT_PATH + "/../../data/explore/reviews/"
+os.mkdir(OUTPUT_PATH)
 
 # MARKDOWN ==============================
 df_reviews = pd.read_csv(PROCESSED_PATH + "reviews.csv", encoding="utf-8")
