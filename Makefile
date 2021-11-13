@@ -53,13 +53,13 @@ $(VENV)/bin/activate: requirements.txt
 # GATHER ========================================
 gather_: 
 	@echo [ GATHER ] Books...
-	@curl -o $(gather_output_path)books.json https://drive.google.com/uc?id=1LXpK1UfqtP89H1tYy0pBGHjYk8IhigUK
+	@wget -o $(gather_output_path)books.json https://drive.google.com/uc?id=1LXpK1UfqtP89H1tYy0pBGHjYk8IhigUK
 	@echo [ GATHER ] Authors...
-	@curl -o $(gather_output_path)authors.json https://drive.google.com/uc?id=19cdwyXwfXx_HDIgxXaHzH0mrx8nMyLvC
+	@wget -o $(gather_output_path)authors.json https://drive.google.com/uc?id=19cdwyXwfXx_HDIgxXaHzH0mrx8nMyLvC
 	@echo [ GATHER ] Genres...
-	@curl -o $(gather_output_path)genres.json https://drive.google.com/uc?id=1ah0_KpUterVi-AHxJ03iKD6O0NfbK0md
+	@wget -o $(gather_output_path)genres.json https://drive.google.com/uc?id=1ah0_KpUterVi-AHxJ03iKD6O0NfbK0md
 	@echo [ REVIEWS ] Reviews...
-	@curl -o $(gather_output_path)reviews.json https://drive.google.com/uc?id=196W2kDoZXRPjzbTjM6uvTidn6aTpsFnS 
+	@wget -o $(gather_output_path)reviews.json https://drive.google.com/uc?id=196W2kDoZXRPjzbTjM6uvTidn6aTpsFnS 
 	
 
 # CLEAN ==============================================
