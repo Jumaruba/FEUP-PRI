@@ -14,3 +14,7 @@ src/pipeline/explore/utils/__pycache__/
 src/data/processed/**
 src/data/explore/**
 
+
+src/pipeline/clean/__pycache__/
+
+src/data/combine/
