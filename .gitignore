@@ -13,6 +13,11 @@ src/pipeline/explore/utils/__pycache__/
 
 src/data/processed/**
 src/data/explore/**
+# Virtual Env
+pri_env
+
+# Virtual Env
+pri_env
 
 
 src/pipeline/clean/__pycache__/
