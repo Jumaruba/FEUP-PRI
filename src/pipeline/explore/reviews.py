@@ -3,24 +3,21 @@ import pandas as pd
 import os
 from mdutils import MdUtils
 import wordcloud
-from utils.helpers import stats
+from utils.helpers import stats, get_plots_path
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 
 def write_image(text:str, image_name: str) -> str:
     return f"![{text}](reviews/{image_name})"
 
-
-
 # PREDEFINED VARS =======================
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 PROCESSED_PATH = CURRENT_PATH + "/../../data/combine/"
-OUTPUT_PATH = CURRENT_PATH + "/../../data/explore/reviews/"
-os.mkdir(OUTPUT_PATH)
+OUTPUT_PATH = CURRENT_PATH + "/../../data/explore/"
 
 # MARKDOWN ==============================
 df_reviews = pd.read_csv(PROCESSED_PATH + "reviews.csv", encoding="utf-8")
-mdFile = MdUtils(file_name='reviews', title='Reviews Data Characterization')
+mdFile = MdUtils(file_name=f'{OUTPUT_PATH}reviews', title='Reviews Data Characterization')
 #%%
 # Visualize the header
 mdFile.write("To get a feeling of the data, let's visualize the reviews head data.")
@@ -40,7 +37,7 @@ wordcloud = WordCloud(background_color="white", width=3000,
                       height=2000).generate_from_text(str(df_reviews['review_text']))
 plt.figure(figsize=[15, 10])
 plt.imshow(wordcloud, interpolation="bilinear")
-plt.savefig(OUTPUT_PATH + image_name)
+plt.savefig(f'{get_plots_path(CURRENT_PATH)}{image_name}')
 plt.close()
 
 # Rating 
@@ -57,7 +54,7 @@ plt.bar(count.index, count.values)
 plt.title("Rating frequence")
 plt.xlabel("Rating")
 plt.ylabel("Count")
-plt.savefig(OUTPUT_PATH + image_name)
+plt.savefig(f'{get_plots_path(CURRENT_PATH)}{image_name}')
 
 # Top 20 most talked books
 mdFile.new_header(level=2,  title="Most talked books")
