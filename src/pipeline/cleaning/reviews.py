@@ -31,6 +31,13 @@ def clean_reviews():
         review['review_text'] = review['review_text'].replace("(view spoiler)[", "")
         review['review_text'] = review['review_text'].replace("(hide spoiler)]", "") 
 
+        # Check if the text starts with "
+        if review['review_text'][0] != '\"':
+            review['review_text'] = "\"" + review['review_text']
+
+        if review['review_text'][-1] != '\"':
+            review['review_text'] += "\""
+
         writer.writerow(list(review.values()))
 
     reviews_raw.close()

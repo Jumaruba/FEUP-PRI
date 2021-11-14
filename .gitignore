@@ -9,5 +9,8 @@ src/pipeline/__pycache__/**
 src/pipeline/cleaning/__pycache__/**
 src/pipeline/combine/utils/__pycache__/**
 src/pipeline/combine/__pycache__/**
+src/pipeline/explore/utils/__pycache__/
 
 src/data/processed/**
+src/data/explore/**
+
