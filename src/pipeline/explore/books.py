@@ -3,6 +3,7 @@ from wordcloud import WordCloud
 import pandas as pd
 import seaborn as sns
 from mdutils.mdutils import MdUtils
+from utils import *
 
 def head(df, md):
     md.new_line("To get a feeling of the data, let's visualize the reviews head data.")
@@ -16,7 +17,7 @@ def wordcloud(df, md, category):
     # Display the generated image:
     plt.imshow(wordcloud, interpolation='nearest')
     plt.axis('off')
-    plt.savefig('../../data/explore/plots/wordcloud' + category + '.jpg', bbox_inches='tight')
+    plt.savefig(get_plots_filepath('wordcloud' + category + '.jpg'), bbox_inches='tight')
     plt.clf()
     
     md.new_paragraph(md.new_inline_image(text='', path='plots/wordcloud' + category + '.jpg'))
@@ -25,7 +26,7 @@ def explore_books(df, md):
     md.new_line("")
     md.new_header(level=2, title='Physical or Ebook? Which one the readers prefer?', add_table_of_contents='n')
     sns.countplot(x=df['is_ebook']).set_title('Distribution of the ebooks')
-    plt.savefig('../../data/explore/plots/is_ebook.jpg')
+    plt.savefig(get_plots_filepath('is_ebook.jpg'))
     plt.clf()
     md.new_paragraph(md.new_inline_image(text='', path='plots/is_ebook.jpg'))
     md.new_line("")
@@ -46,7 +47,7 @@ def number_pages(df):
 
     ranges = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
     ax = sns.lineplot(x=ranges, y=result).set_title('Number pages')
-    plt.savefig('../../data/explore/plots/number_pages.jpg')
+    plt.savefig(get_plots_filepath('number_pages.jpg'))
     plt.clf()
     md.new_paragraph(md.new_inline_image(text='', path='plots/number_pages.jpg'))
     md.new_line("")
@@ -57,7 +58,7 @@ def date_published(df):
     md.new_line("")
 
     ax = sns.countplot(x=df['publication_year']).set_title('Publication')
-    plt.savefig('../../data/explore/plots/date_published.jpg')
+    plt.savefig(get_plots_filepath('date_published.jpg'))
     plt.clf()
     md.new_paragraph(md.new_inline_image(text='', path='plots/date_published.jpg'))
     md.new_line("")
@@ -66,7 +67,7 @@ if __name__ == "__main__":
     books_path = "../../data/processed/books.csv"
     df = pd.read_csv(books_path)
     
-    md = MdUtils(file_name='../../data/explore/books', title='Books - Data Exploration and Characterization')
+    md = MdUtils(file_name=get_explore_filepath("books"), title='Books - Data Exploration and Characterization')
     md.new_header(level=2, title='Books Descriptive Analysis', add_table_of_contents='n')
     md.new_paragraph()
     head(df, md)

@@ -32,7 +32,7 @@ combine_output_filepaths = $(addprefix $(combine_output_path), $(combine_files))
 explore_output_path = src/data/explore/
 explore_exec_path = src/pipeline/explore/
 explore_plot_path = src/data/explore/plots/
-explore_files = reviews.md genres.md authors.md
+explore_files = reviews.md genres.md authors.md books.md
 
 # Get complete path to explore output files.
 explore_output_filepaths = $(addprefix $(explore_output_path), $(explore_files))
