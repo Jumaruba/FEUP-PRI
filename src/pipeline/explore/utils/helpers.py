@@ -1,5 +1,6 @@
 import pandas as pd
 from mdutils import MdUtils
+import os 
 
 def stats(df: pd.DataFrame, md: MdUtils) -> None:
     md.new_header(level=1, title='General Statistics')
@@ -22,5 +23,26 @@ def stats(df: pd.DataFrame, md: MdUtils) -> None:
     md.write(unique_values_df.to_markdown(index=False), wrap_width=0)
     md.write('\n')
 
-def get_plots_path(current_path: str) -> str:
-    return current_path + '/../../data/explore/plots/'
+
+
+def get_processed_filepath(filename: str) -> str:
+    return get_full_path('../../data/combine/') + filename
+
+
+def get_explore_filepath(filename: str) -> str:
+    return get_full_path("../../data/explore/") + filename
+
+
+def get_plots_filepath(filename: str) -> str: 
+    return get_plots_path() + filename
+
+
+def get_plots_path() -> str:
+    return get_full_path('../../data/explore/plots/' )
+
+
+def get_full_path(path: str) -> str:
+    current_path =  os.path.dirname(os.path.abspath(__file__)) + "/../" 
+    return current_path + path
+
+
