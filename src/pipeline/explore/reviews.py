@@ -4,6 +4,7 @@ from mdutils import MdUtils
 from utils.helpers import *
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
+import seaborn as sns
 
 
 def write_image(text: str, image_name: str) -> str:
@@ -61,6 +62,19 @@ def get_most_talked_books(md_file, df_reviews) -> None:
         {'id': books_ids, 'title': book_title, 'num_reviews': frequency}).to_markdown(index=False)
     md_file.write(most_talked_books, wrap_width=0)
 
+def get_correlation(md_file, df_reviews):
+    """This function plots the correaltion between the number of reviews and the rating.
+    """
+    df_books = pd.read_csv(get_processed_filepath("books.csv"))
+    count = df_reviews['book_id'].value_counts()
+    df_count = pd.DataFrame({"book_id" : count.index, "num_reviews": count.values})
+    df_merged = df_books.merge(df_count, on="book_id", how="inner")
+    corr = df_merged.corr()
+    f, ax = plt.subplots(figsize=(11, 9))
+    sns.heatmap(corr, square=True, annot=True)
+    plt.show()
+    
+
 
 if __name__ == '__main__':
     df_reviews = pd.read_csv(get_processed_filepath(
@@ -68,10 +82,10 @@ if __name__ == '__main__':
     md_file = MdUtils(file_name=get_explore_filepath(
         "reviews"), title='Reviews Data Characterization')
 
-    create_header(md_file, df_reviews)
-    stats(df_reviews, md_file)
-    create_world_cloud(md_file, df_reviews)
-    get_reviews_rating(md_file, df_reviews)
-    get_most_talked_books(md_file, df_reviews)
-
-    md_file.create_md_file()
+    #create_header(md_file, df_reviews)
+    #stats(df_reviews, md_file)
+    #create_world_cloud(md_file, df_reviews)
+    #get_reviews_rating(md_file, df_reviews)
+    #get_most_talked_books(md_file, df_reviews)
+    get_correlation(md_file, df_reviews)
+    #md_file.create_md_file()
