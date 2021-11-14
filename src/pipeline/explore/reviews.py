@@ -64,7 +64,9 @@ def get_most_talked_books(md_file, df_reviews) -> None:
 
 def get_correlation(md_file, df_reviews):
     """This function plots the correaltion between the number of reviews and the rating.
-    """
+    """ 
+    md_file.new_header(level=2,  title="Correlation map")
+    md_file.write("By printing the correlation map we would like to see if there's an association between the number of reviews and the rating")
     df_books = pd.read_csv(get_processed_filepath("books.csv"))
     count = df_reviews['book_id'].value_counts()
     df_count = pd.DataFrame({"book_id" : count.index, "num_reviews": count.values})
@@ -72,7 +74,8 @@ def get_correlation(md_file, df_reviews):
     corr = df_merged.corr()
     f, ax = plt.subplots(figsize=(11, 9))
     sns.heatmap(corr, square=True, annot=True)
-    plt.show()
+    plt.savefig(get_plots_filepath("heatmap_reviews.png"))
+
     
 
 
