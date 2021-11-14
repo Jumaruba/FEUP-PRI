@@ -7,7 +7,7 @@ from wordcloud import WordCloud
 
 
 def write_image(text: str, image_name: str) -> str:
-    return f"![{text}](reviews/{image_name})"
+    return f"![{text}](plots/{image_name})"
 
 
 def create_header(md_file, df_reviews) -> None:

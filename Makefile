@@ -42,7 +42,7 @@ explore_output_filepaths = $(addprefix $(explore_output_path), $(explore_files))
 .PHONY: all
 
 
-all: $(VENV)/bin/activate clean combine
+all: $(VENV)/bin/activate gather_ clean_ combine_ explore_
 	@echo "Run Code"
 
 
@@ -65,7 +65,6 @@ gather_:
 
 # CLEAN ==============================================
 clean_:  $(clean_output_filepaths)
-
 
 
 # Creates the specific .csv if it does not exists. 
