@@ -67,6 +67,8 @@ def get_correlation(md_file, df_reviews):
     """ 
     md_file.new_header(level=2,  title="Correlation map")
     md_file.write("By printing the correlation map we would like to see if there's an association between the number of reviews and the rating")
+    md_file.new_line()
+    md_file.write(write_image("Correlation map", "heatmap_reviews.png"))
     df_books = pd.read_csv(get_processed_filepath("books.csv"))
     count = df_reviews['book_id'].value_counts()
     df_count = pd.DataFrame({"book_id" : count.index, "num_reviews": count.values})
