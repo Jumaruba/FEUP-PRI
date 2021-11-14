@@ -72,5 +72,6 @@ if __name__ == '__main__':
     stats(df_reviews, md_file)
     create_world_cloud(md_file, df_reviews)
     get_reviews_rating(md_file, df_reviews)
+    get_most_talked_books(md_file, df_reviews)
 
     md_file.create_md_file()
