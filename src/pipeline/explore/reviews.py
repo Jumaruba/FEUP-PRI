@@ -85,10 +85,10 @@ if __name__ == '__main__':
     md_file = MdUtils(file_name=get_explore_filepath(
         "reviews"), title='Reviews Data Characterization')
 
-    #create_header(md_file, df_reviews)
-    #stats(df_reviews, md_file)
-    #create_world_cloud(md_file, df_reviews)
-    #get_reviews_rating(md_file, df_reviews)
-    #get_most_talked_books(md_file, df_reviews)
+    create_header(md_file, df_reviews)
+    stats(df_reviews, md_file)
+    create_world_cloud(md_file, df_reviews)
+    get_reviews_rating(md_file, df_reviews)
+    get_most_talked_books(md_file, df_reviews)
     get_correlation(md_file, df_reviews)
-    #md_file.create_md_file()
+    md_file.create_md_file()
