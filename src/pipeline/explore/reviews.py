@@ -75,11 +75,25 @@ def get_correlation(md_file, df_reviews):
     df_merged = df_books.merge(df_count, on="book_id", how="inner")
     corr = df_merged.corr()
     f, ax = plt.subplots(figsize=(11, 9))
+    corr = corr[['book_id', 'average_rating', 'num_pages', 'num_reviews']]
     sns.heatmap(corr, square=True, annot=True)
     plt.savefig(get_plots_filepath("heatmap_reviews.png"))
 
-    
-
+def get_corr_rating_word(md_file, df_reviews):
+    md_file.new_header(level=2,  title="Correlation map with words")
+    md_file.write("Let's see if the presence of some words have some relation with the rating")
+    md_file.new_line()
+    md_file.write(write_image("Correaltion map with words", "heatmap_words.png"))
+    df_books = pd.read_csv(get_processed_filepath("books.csv"))
+    df_reviews['love'] = df_reviews['review_text'].apply(lambda x: 'love' in x)
+    df_reviews['enjoyed'] = df_reviews['review_text'].apply(lambda x: 'enjoyed' in x)
+    df_reviews['Eff'] = df_reviews['review_text'].apply(lambda x: 'Eff' in x)
+    reviews = df_reviews[['book_id', 'love', 'enjoyed', 'Eff']]
+    df_merged = df_books.merge(reviews, on="book_id", how="inner")
+    corr = df_merged.corr()
+    f, ax = plt.subplots(figsize=(11, 9))
+    sns.heatmap(corr, square=True, annot=True)
+    plt.savefig(get_plots_filepath("heatmap_words.png"))
 
 if __name__ == '__main__':
     df_reviews = pd.read_csv(get_processed_filepath(
@@ -93,4 +107,5 @@ if __name__ == '__main__':
     get_reviews_rating(md_file, df_reviews)
     get_most_talked_books(md_file, df_reviews)
     get_correlation(md_file, df_reviews)
+    get_corr_rating_word(md_file, df_reviews)
     md_file.create_md_file()

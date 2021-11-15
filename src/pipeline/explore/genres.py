@@ -38,7 +38,7 @@ def explore_genres_books(md):
     md.new_paragraph(md.new_inline_image(text='', path='plots/rating_per_genre.jpg'))
 
 if __name__ == '__main__':
-    md = MdUtils(file_name=get_explore_filepath("explore"), title='Genres - Data Exploration and Characterization')
+    md = MdUtils(file_name=get_explore_filepath("genres"), title='Genres - Data Exploration and Characterization')
     explore_genres(md)
     explore_genres_books(md)
     md.create_md_file()
