@@ -31,12 +31,12 @@ def explore_books(df, md):
     md.new_paragraph(md.new_inline_image(text='', path=get_plots_filepath('is_ebook.jpg')))
     md.new_line("")
 
-def null_values(df):
+def null_values(df,md):
     md.new_header(level=2, title='Null Count', add_table_of_contents='n')
     md.new_paragraph("Like in every database, there are some null values.")
     md.insert_code(str(df.isna().sum()))
 
-def number_pages(df):
+def number_pages(df,md):
     md.new_header(level=2, title='Number of pages', add_table_of_contents='n')
     md.new_line(f"Book with the most number of pages: {df['num_pages'].max()}")
 
@@ -53,7 +53,7 @@ def number_pages(df):
     md.new_line("")
 
 
-def date_published(df):
+def date_published(df,md):
     md.new_header(level=2, title='Date published', add_table_of_contents='n')
     md.new_line("")
 
@@ -73,7 +73,7 @@ if __name__ == "__main__":
     head(df, md)
     wordcloud(df, md, 'title')
     explore_books(df, md)
-    null_values(df)
-    number_pages(df)
-    date_published(df)
+    null_values(df,md)
+    number_pages(df,md)
+    #date_published(df,md)
     md.create_md_file()
