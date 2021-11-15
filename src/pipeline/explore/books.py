@@ -33,9 +33,9 @@ def explore_books(df, md):
 
 def heatmap_books(df, md):
     md.new_line("")
+    plt.figure(figsize=[10, 10])
     md.new_header(level=2, title='Heatmap', add_table_of_contents='n')
     sns.heatmap(df.corr(), annot=True, cbar=False)
-    #plt.figure(figsize=[12, 12])
     plt.savefig(get_plots_filepath('heatmap.jpg'))
     plt.clf()
     md.new_paragraph(md.new_inline_image(text='', path=get_plots_filepath('heatmap.jpg')))
@@ -57,8 +57,8 @@ def number_pages(df,md):
 
     ranges = ['0', '100', '200', '300', '400', '500', '600', '700', '800', '900', '1000+']
     ax = sns.lineplot(x=ranges, y=result).set_title('Number Books with N Pages')
-    plt.xlabel("Number of Books")
-    plt.ylabel("Number of Pages")
+    plt.ylabel("Number of Books")
+    plt.xlabel("Number of Pages")
     plt.savefig(get_plots_filepath('number_pages.jpg'))
     plt.clf()
     md.new_paragraph(md.new_inline_image(text='', path=get_plots_filepath('number_pages.jpg')))
@@ -68,15 +68,16 @@ def number_pages(df,md):
 def date_published(df,md):
     md.new_header(level=2, title='Date published', add_table_of_contents='n')
     md.new_line("")
-
+    df['publication_year'] = df['date'].apply(lambda x: x.split("-")[0])
     ax = sns.countplot(x=df['publication_year']).set_title('Publication')
     plt.savefig(get_plots_filepath('date_published.jpg'))
     plt.clf()
     md.new_paragraph(md.new_inline_image(text='', path=get_plots_filepath('date_published.jpg')))
     md.new_line("")
 
+
 if __name__ == "__main__":
-    books_path = '../../data/processed/books.csv'
+    books_path = get_processed_filepath('books.csv')
     df = pd.read_csv(books_path)
     
     md = MdUtils(file_name=get_explore_filepath("books"), title='Books - Data Exploration and Characterization')
