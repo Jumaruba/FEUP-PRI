@@ -20,7 +20,7 @@ def wordcloud(df, md, category):
     plt.savefig(get_plots_filepath('wordcloud' + category + '.jpg'), bbox_inches='tight')
     plt.clf()
     
-    md.new_paragraph(md.new_inline_image(text='', path='plots/wordcloud' + category + '.jpg'))
+    md.new_paragraph(md.new_inline_image(text='', path=get_plots_filepath('wordcloud' + category + '.jpg')))
 
 def explore_books(df, md):
     md.new_line("")
@@ -28,7 +28,7 @@ def explore_books(df, md):
     sns.countplot(x=df['is_ebook']).set_title('Distribution of the ebooks')
     plt.savefig(get_plots_filepath('is_ebook.jpg'))
     plt.clf()
-    md.new_paragraph(md.new_inline_image(text='', path='plots/is_ebook.jpg'))
+    md.new_paragraph(md.new_inline_image(text='', path=get_plots_filepath('is_ebook.jpg')))
     md.new_line("")
 
 def null_values(df):
@@ -49,7 +49,7 @@ def number_pages(df):
     ax = sns.lineplot(x=ranges, y=result).set_title('Number pages')
     plt.savefig(get_plots_filepath('number_pages.jpg'))
     plt.clf()
-    md.new_paragraph(md.new_inline_image(text='', path='plots/number_pages.jpg'))
+    md.new_paragraph(md.new_inline_image(text='', path=get_plots_filepath('number_pages.jpg')))
     md.new_line("")
 
 
@@ -60,11 +60,11 @@ def date_published(df):
     ax = sns.countplot(x=df['publication_year']).set_title('Publication')
     plt.savefig(get_plots_filepath('date_published.jpg'))
     plt.clf()
-    md.new_paragraph(md.new_inline_image(text='', path='plots/date_published.jpg'))
+    md.new_paragraph(md.new_inline_image(text='', path=get_plots_filepath('date_published.jpg')))
     md.new_line("")
 
 if __name__ == "__main__":
-    books_path = "../../data/processed/books.csv"
+    books_path = get_processed_filepath("books.csv")
     df = pd.read_csv(books_path)
     
     md = MdUtils(file_name=get_explore_filepath("books"), title='Books - Data Exploration and Characterization')
