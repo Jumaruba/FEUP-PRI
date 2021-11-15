@@ -70,13 +70,12 @@ def get_correlation(md_file, df_reviews):
     md_file.new_line()
     md_file.write(write_image("Correlation map", "heatmap_reviews.png"))
     df_books = pd.read_csv(get_processed_filepath("books.csv"))
-    df_books = df_books[['book_id', 'num_pages', 'average_rating']]
+    df_books = df_books[['book_id', 'average_rating']] 
     count = df_reviews['book_id'].value_counts()
     df_count = pd.DataFrame({"book_id" : count.index, "num_reviews": count.values})
     df_merged = df_books.merge(df_count, on="book_id", how="inner")
     corr = df_merged.corr()
     f, ax = plt.subplots(figsize=(11, 9))
-    corr = corr[['average_rating', 'num_pages', 'num_reviews']]
     sns.heatmap(corr, square=True, annot=True)
     plt.savefig(get_plots_filepath("heatmap_reviews.png"))
 

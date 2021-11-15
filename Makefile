@@ -47,7 +47,7 @@ all: $(VENV)/bin/activate gather_ clean_ combine_ explore_
 
 
 $(VENV)/bin/activate: requirements.txt
-	python -m venv $(VENV)
+	$(PYTHON) -m venv $(VENV)
 	$(PIP) install -r requirements.txt 
 
 
@@ -64,8 +64,11 @@ gather_:
 	
 
 # CLEAN ==============================================
-clean_:  $(clean_output_filepaths)
+clean_:  $(clean_output_path) $(clean_output_filepaths)
 
+$(clean_output_path):
+	@echo [CREATING] Clean folder...
+	@mkdir -p $@ 
 
 # Creates the specific .csv if it does not exists. 
 $(clean_output_filepaths): 
@@ -73,7 +76,12 @@ $(clean_output_filepaths):
 	@ $(PYTHON) $(patsubst $(clean_output_path)%.csv, $(clean_exec_path)%.py, $@)
 
 # COMBINE ================================================
-combine_: $(combine_output_filepaths)
+combine_: $(combine_output_path) $(combine_output_filepaths)
+
+$(combine_output_path):
+	@echo [CREATING] Combine folder...
+	@mkdir -p $@ 
+
 
 $(combine_output_filepaths):
 	@echo [ CREATING ] $@...
