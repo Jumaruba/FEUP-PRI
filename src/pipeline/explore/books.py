@@ -31,13 +31,23 @@ def explore_books(df, md):
     md.new_paragraph(md.new_inline_image(text='', path=get_plots_filepath('is_ebook.jpg')))
     md.new_line("")
 
+def heatmap_books(df, md):
+    md.new_line("")
+    md.new_header(level=2, title='Heatmap', add_table_of_contents='n')
+    sns.heatmap(df.corr(), annot=True, cbar=False)
+    #plt.figure(figsize=[12, 12])
+    plt.savefig(get_plots_filepath('heatmap.jpg'))
+    plt.clf()
+    md.new_paragraph(md.new_inline_image(text='', path=get_plots_filepath('heatmap.jpg')))
+    md.new_line("")
+
 def null_values(df,md):
     md.new_header(level=2, title='Null Count', add_table_of_contents='n')
     md.new_paragraph("Like in every database, there are some null values.")
     md.insert_code(str(df.isna().sum()))
 
 def number_pages(df,md):
-    md.new_header(level=2, title='Number of pages', add_table_of_contents='n')
+    md.new_header(level=2, title='Number Books with N Pages', add_table_of_contents='n')
     md.new_line(f"Book with the most number of pages: {df['num_pages'].max()}")
 
     ranges = [0,100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 10000]
@@ -45,8 +55,10 @@ def number_pages(df,md):
     for i in df.groupby(pd.cut(df.num_pages, ranges)).count()['title']:
         result.append(i)
 
-    ranges = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
-    ax = sns.lineplot(x=ranges, y=result).set_title('Number pages')
+    ranges = ['0', '100', '200', '300', '400', '500', '600', '700', '800', '900', '1000+']
+    ax = sns.lineplot(x=ranges, y=result).set_title('Number Books with N Pages')
+    plt.xlabel("Number of Books")
+    plt.ylabel("Number of Pages")
     plt.savefig(get_plots_filepath('number_pages.jpg'))
     plt.clf()
     md.new_paragraph(md.new_inline_image(text='', path=get_plots_filepath('number_pages.jpg')))
@@ -64,7 +76,7 @@ def date_published(df,md):
     md.new_line("")
 
 if __name__ == "__main__":
-    books_path = get_processed_filepath("books.csv")
+    books_path = '../../data/processed/books.csv'
     df = pd.read_csv(books_path)
     
     md = MdUtils(file_name=get_explore_filepath("books"), title='Books - Data Exploration and Characterization')
@@ -73,6 +85,7 @@ if __name__ == "__main__":
     head(df, md)
     wordcloud(df, md, 'title')
     explore_books(df, md)
+    heatmap_books(df, md)
     null_values(df,md)
     number_pages(df,md)
     #date_published(df,md)
