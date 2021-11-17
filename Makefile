@@ -3,10 +3,6 @@ PYTHON = python
 PIP = pip
 
 
-# RAW DATA ======================================================
-# There are the files to be gathered.
-gather_output_path = src/data/raw/
-
 # CSV CLEAN FILES =============================================== 
 # Path to the clean files.
 clean_output_path = src/data/clean/
@@ -42,7 +38,7 @@ explore_output_filepaths = $(addprefix $(explore_output_path), $(explore_files))
 .PHONY: all
 
 
-all: $(VENV)/bin/activate gather_ clean_ combine_ explore_
+all: $(VENV)/bin/activate clean_ combine_ explore_
 	@echo "Run Code"
 
 
@@ -50,18 +46,6 @@ $(VENV)/bin/activate: requirements.txt
 	$(PYTHON) -m venv $(VENV)
 	$(PIP) install -r requirements.txt 
 
-
-# GATHER ========================================
-gather_: 
-	@echo [ GATHER ] Books...
-	@wget -o $(gather_output_path)books.json https://drive.google.com/uc?id=1LXpK1UfqtP89H1tYy0pBGHjYk8IhigUK
-	@echo [ GATHER ] Authors...
-	@wget -o $(gather_output_path)authors.json https://drive.google.com/uc?id=19cdwyXwfXx_HDIgxXaHzH0mrx8nMyLvC
-	@echo [ GATHER ] Genres...
-	@wget -o $(gather_output_path)genres.json https://drive.google.com/uc?id=1ah0_KpUterVi-AHxJ03iKD6O0NfbK0md
-	@echo [ REVIEWS ] Reviews...
-	@wget -o $(gather_output_path)reviews.json https://drive.google.com/uc?id=196W2kDoZXRPjzbTjM6uvTidn6aTpsFnS 
-	
 
 # CLEAN ==============================================
 clean_:  $(clean_output_path) $(clean_output_filepaths)
