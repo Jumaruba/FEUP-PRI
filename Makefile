@@ -33,22 +33,15 @@ explore_files = reviews.md genres.md authors.md books.md
 # Get complete path to explore output files.
 explore_output_filepaths = $(addprefix $(explore_output_path), $(explore_files))
 
-
-# ifeq ($(OS),Windows_NT)
-# 	activate = activate_windows
-# else 
-# 	activate = activate_linux
-# endif
-
 # TARGETS =======================================================
 .PHONY: all
 
 
-all: pri_venv/ activate clean_ combine_ explore_
+all: pri_venv/ install clean_ combine_ explore_
 
-activate: 
-	. ./$(VENV)/bin/activate
-	$(PIP) install -r requirements.txt  
+
+install: 
+	. ./$(VENV)/bin/activate && $(PIP) install -r requirements.txt
 
 pri_venv/: 
 	$(PYTHON) -m venv $(VENV)
@@ -58,25 +51,25 @@ pri_venv/:
 clean_:  $(clean_output_path) $(clean_output_filepaths)
 
 $(clean_output_path):
-	@echo [CREATING] Clean folder...
+	@echo [ CREATING ] Clean folder...
 	@mkdir -p $@ 
 
 # Creates the specific .csv if it does not exists. 
 $(clean_output_filepaths): 
 	@echo [ CREATING ] $@...
-	@ $(PYTHON) $(patsubst $(clean_output_path)%.csv, $(clean_exec_path)%.py, $@)
+	@. ./$(VENV)/bin/activate && $(PYTHON) $(patsubst $(clean_output_path)%.csv, $(clean_exec_path)%.py, $@)
 
 # COMBINE ================================================
 combine_: $(combine_output_path) $(combine_output_filepaths)
 
 $(combine_output_path):
-	@echo [CREATING] Combine folder...
+	@echo [ CREATING ] Combine folder...
 	@mkdir -p $@ 
 
 
 $(combine_output_filepaths):
 	@echo [ CREATING ] $@...
-	@ $(PYTHON) $(patsubst $(combine_output_path)%.csv, $(combine_exec_path)%.py, $@)
+	@. ./$(VENV)/bin/activate && $(PYTHON) $(patsubst $(combine_output_path)%.csv, $(combine_exec_path)%.py, $@)
 
 
 # EXPLORE ===============================================
@@ -84,12 +77,12 @@ explore_:  $(explore_plot_path) $(explore_output_filepaths)
 
 # Create the plot folder
 $(explore_plot_path): 
-	@echo [CREATING] Plot folder...
+	@echo [ CREATING ] Plot folder...
 	@mkdir -p $@ 
 
 $(explore_output_filepaths):
-	@echo [CREATING] $@...
-	@$(PYTHON) $(patsubst $(explore_output_path)%.md, $(explore_exec_path)%.py, $@)
+	@echo [ CREATING ] $@...
+	@. $(VENV)/bin/activate && $(PYTHON) $(patsubst $(explore_output_path)%.md, $(explore_exec_path)%.py, $@)
 
 
 # CLEAN =================================================  
