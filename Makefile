@@ -1,5 +1,5 @@
 VENV = pri_venv
-PYTHON = python
+PYTHON = python3
 PIP = pip
 
 
@@ -34,17 +34,24 @@ explore_files = reviews.md genres.md authors.md books.md
 explore_output_filepaths = $(addprefix $(explore_output_path), $(explore_files))
 
 
+# ifeq ($(OS),Windows_NT)
+# 	activate = activate_windows
+# else 
+# 	activate = activate_linux
+# endif
+
 # TARGETS =======================================================
 .PHONY: all
 
 
-all: $(VENV)/bin/activate clean_ combine_ explore_
-	@echo "Run Code"
+all: pri_venv/ activate clean_ combine_ explore_
 
+activate: 
+	. ./$(VENV)/bin/activate
+	$(PIP) install -r requirements.txt  
 
-$(VENV)/bin/activate: requirements.txt
+pri_venv/: 
 	$(PYTHON) -m venv $(VENV)
-	$(PIP) install -r requirements.txt 
 
 
 # CLEAN ==============================================
@@ -85,11 +92,7 @@ $(explore_output_filepaths):
 	@$(PYTHON) $(patsubst $(explore_output_path)%.md, $(explore_exec_path)%.py, $@)
 
 
-# CLEAN ================================================= 
-clean_gather:
-	@echo Removing gathered files...
-	@rm ./src/data/raw/*
-
+# CLEAN =================================================  
 clean_clean:
 	@echo Removing cleaned files...
 	@rm ./src/data/clean/*
