@@ -1,7 +1,4 @@
 .vscode/ 
-src/data/raw/**
-src/data/clean/**
-scrapper_env/**
 
 # PYCACHE
 __pycache__/**
@@ -10,14 +7,21 @@ src/pipeline/cleaning/__pycache__/**
 src/pipeline/combine/utils/__pycache__/**
 src/pipeline/combine/__pycache__/**
 src/pipeline/explore/utils/__pycache__/
-
-src/data/processed/**
-src/data/explore/**
-# Virtual Env
-pri_env/**
-
-
-
 src/pipeline/clean/__pycache__/
 
-src/data/combine/
+# DATA
+src/data/processed/**
+src/data/explore/**
+src/data/combine/**
+src/data/raw/**
+src/data/clean/**
+
+
+# Virtual Env
+pri_venv/**
+
+
+
+
+
+
