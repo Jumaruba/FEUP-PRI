@@ -1,5 +1,5 @@
 VENV = pri_venv
-PYTHON = python
+PYTHON = python3
 PIP = pip
 
 
@@ -33,43 +33,43 @@ explore_files = reviews.md genres.md authors.md books.md
 # Get complete path to explore output files.
 explore_output_filepaths = $(addprefix $(explore_output_path), $(explore_files))
 
-
 # TARGETS =======================================================
 .PHONY: all
 
 
-all: $(VENV)/bin/activate clean_ combine_ explore_
-	@echo "Run Code"
+all: pri_venv/ install clean_ combine_ explore_
 
 
-$(VENV)/bin/activate: requirements.txt
+install: 
+	. ./$(VENV)/bin/activate && $(PIP) install -r requirements.txt
+
+pri_venv/: 
 	$(PYTHON) -m venv $(VENV)
-	$(PIP) install -r requirements.txt 
 
 
 # CLEAN ==============================================
 clean_:  $(clean_output_path) $(clean_output_filepaths)
 
 $(clean_output_path):
-	@echo [CREATING] Clean folder...
+	@echo [ CREATING ] Clean folder...
 	@mkdir -p $@ 
 
 # Creates the specific .csv if it does not exists. 
 $(clean_output_filepaths): 
 	@echo [ CREATING ] $@...
-	@ $(PYTHON) $(patsubst $(clean_output_path)%.csv, $(clean_exec_path)%.py, $@)
+	@. ./$(VENV)/bin/activate && $(PYTHON) $(patsubst $(clean_output_path)%.csv, $(clean_exec_path)%.py, $@)
 
 # COMBINE ================================================
 combine_: $(combine_output_path) $(combine_output_filepaths)
 
 $(combine_output_path):
-	@echo [CREATING] Combine folder...
+	@echo [ CREATING ] Combine folder...
 	@mkdir -p $@ 
 
 
 $(combine_output_filepaths):
 	@echo [ CREATING ] $@...
-	@ $(PYTHON) $(patsubst $(combine_output_path)%.csv, $(combine_exec_path)%.py, $@)
+	@. ./$(VENV)/bin/activate && $(PYTHON) $(patsubst $(combine_output_path)%.csv, $(combine_exec_path)%.py, $@)
 
 
 # EXPLORE ===============================================
@@ -77,19 +77,15 @@ explore_:  $(explore_plot_path) $(explore_output_filepaths)
 
 # Create the plot folder
 $(explore_plot_path): 
-	@echo [CREATING] Plot folder...
+	@echo [ CREATING ] Plot folder...
 	@mkdir -p $@ 
 
 $(explore_output_filepaths):
-	@echo [CREATING] $@...
-	@$(PYTHON) $(patsubst $(explore_output_path)%.md, $(explore_exec_path)%.py, $@)
+	@echo [ CREATING ] $@...
+	@. $(VENV)/bin/activate && $(PYTHON) $(patsubst $(explore_output_path)%.md, $(explore_exec_path)%.py, $@)
 
 
-# CLEAN ================================================= 
-clean_gather:
-	@echo Removing gathered files...
-	@rm ./src/data/raw/*
-
+# CLEAN =================================================  
 clean_clean:
 	@echo Removing cleaned files...
 	@rm ./src/data/clean/*
