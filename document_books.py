@@ -1,7 +1,5 @@
 import csv
 import pandas as pd 
-import ast
-import os 
 
 def get_df(path_name):
     path = "./src/data/processed/" + path_name
