@@ -18,7 +18,7 @@ def get_authors_name(author_id):
 def get_authors_books(author_id):
     # Gets all the books for one author. 
     book_ids = authors_books[authors_books['author_id'] == author_id]['book_id'].tolist()
-    return list(map(get_books_name, book_ids))
+    return ";".join(list(map(get_books_name, book_ids)))
 
 authors_id = authors_books['author_id'].unique()    # Get the authors id.
 df_output  = pd.DataFrame()

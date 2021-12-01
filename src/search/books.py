@@ -22,7 +22,7 @@ def get_genre_name(genre_id):
 def get_genres_books(genres_books_df, book_id):
     # Gets all the genres for one book. 
     genre_ids = genres_books_df[genres_books_df['book_id'] == book_id]['genre_id'].tolist()
-    return list(map(get_genre_name, genre_ids))
+    return  ";".join(list(map(get_genre_name, genre_ids)))
 
 
 books_ids = books_df['book_id'].unique()

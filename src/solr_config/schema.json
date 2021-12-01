@@ -1,33 +1,36 @@
 {
-    "add-field-type": [
-        {
-            "name":"courseTitle",
-            "class":"solr.TextField",
-            "indexAnalyzer":{
-                "tokenizer":{
-                    "class":"solr.StandardTokenizerFactory"
-                },
-                "filters":[
-                    {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
-                    {"class":"solr.LowerCaseFilterFactory"}
-                ]
-            },
-            "queryAnalyzer":{
-                "tokenizer":{
-                    "class":"solr.StandardTokenizerFactory"
-                },
-                "filters":[
-                    {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
-                    {"class":"solr.LowerCaseFilterFactory"}
-                ]
+  "add-field-type": [
+      {
+        "name":"isbnType",
+        "class":"solr.TextField"
+      },
+      {
+        "name": "comma-separated-list",
+        "class": "solr.TextField",
+        "analyzer" : {
+            "tokenizer":{
+               "class":"solr.SimplePatternTokenizerFactory", "pattern": "[^;]+" }
             }
-        }
-    ],
-    "add-field": [
-        {
-            "name": "title",
-            "type": "courseTitle",
-            "indexed": true
-        }
-    ]
+        } 
+  ],
+  "add-field": [
+      {
+          "name": "isbn",
+          "type": "isbnType",
+          "indexed": true
+      },
+      {
+          "name": "isbn13",
+          "type": "isbnType",
+          "indexed": true
+      },
+      {
+          "name" : "genres",
+          "type": "comma-separated-list"
+      },
+      {
+        "name" : "books_name",
+        "type": "comma-separated-list"
+    }
+  ]
 }
