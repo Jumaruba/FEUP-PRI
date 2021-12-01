@@ -15,6 +15,7 @@ src/data/explore/**
 src/data/combine/**
 src/data/raw/**
 src/data/clean/**
+src/data/documents/**
 
 
 # Virtual Env

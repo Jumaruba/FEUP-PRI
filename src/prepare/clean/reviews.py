@@ -1,12 +1,12 @@
 import json
 import csv
 import os 
+from time import strptime
 
 MAX_REVIEWS = 100000
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 RAW_PATH = CURRENT_PATH + "/../../data/raw/reviews.json"
 CLEAN_PATH = CURRENT_PATH + "/../../data/clean/reviews.csv"
-
 
 def clean_reviews():
     reviews_raw = open(RAW_PATH, "r")
@@ -27,6 +27,9 @@ def clean_reviews():
         review.pop('n_comments', None)
         review.pop('n_votes', None)
         review.pop('read_at', None) 
+
+        _, month, day, time, _, year = review['date_added'].split(' ')
+        review['date_added'] = "%04d-%02d-%02d %s" % (int(year),int(strptime(month,'%b').tm_mon),int(day),time)
 
         review['review_text'] = review['review_text'].replace("(view spoiler)[", "")
         review['review_text'] = review['review_text'].replace("(hide spoiler)]", "") 
