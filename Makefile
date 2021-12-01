@@ -84,7 +84,6 @@ $(explore_output_filepaths):
 	@echo [ CREATING ] $@...
 	@. $(VENV)/bin/activate && $(PYTHON) $(patsubst $(explore_output_path)%.md, $(explore_exec_path)%.py, $@)
 
-
 # CLEAN =================================================  
 clean_clean:
 	@echo Removing cleaned files...

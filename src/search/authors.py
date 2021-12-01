@@ -1,14 +1,7 @@
 import csv
 import os
 import pandas as pd
-
-def get_combine_path(name): 
-    current_path =  os.path.dirname(os.path.abspath(__file__))
-    return current_path + "/../data/combine/"+ name + ".csv"
-
-def get_search_path(name):
-    current_path =  os.path.dirname(os.path.abspath(__file__)) 
-    return current_path + "/../data/search/"+ name + ".csv"
+from utils import *
 
 # Get files. 
 authors_books = pd.read_csv(get_combine_path("authors_books"))
@@ -35,7 +28,7 @@ for author_id in authors_id:
     author_name = get_authors_name(author_id)
     df_output = df_output.append({'author_name': author_name, 'books_name': books_name}, ignore_index=True)
 
-df_output.to_csv(get_search_path("authors"))
+df_output.to_csv(get_search_path("authors"), index=False)
 
 
 
