@@ -1,36 +1,72 @@
 {
   "add-field-type": [
       {
-        "name":"isbnType",
+        "name":"textType",
         "class":"solr.TextField"
       },
       {
         "name": "comma-separated-list",
         "class": "solr.TextField",
         "analyzer" : {
-            "tokenizer":{
-               "class":"solr.SimplePatternTokenizerFactory", "pattern": "[^;]+" }
+            "tokenizer": {
+              "class":"solr.SimplePatternTokenizerFactory", 
+              "pattern": "[^;]+" 
+              }
             }
-        } 
+        }, 
+        {
+          "name": "review-text",
+          "class": "solr.TextField",
+          "analyzer": {
+            "tokenizer": {"class": "solr.ClassicTokenizerFactory"},
+            "filters":[  
+              {"class": "solr.LowerCaseFilterFactory"},
+              {"class": "solr.ManagedSynonymGraphFilterFactory", "managed": "english"},
+              {"class": "solr.FlattenGraphFilterFactory"} 
+            ]
+          }
+        },
+        {
+          "name": "description",
+          "class": "solr.TextField",
+          "analyzer": {
+            "tokenizer": {
+              "class": "solr.ClassicTokenizerFactory"
+            }, 
+            "filters": [
+              {"class": "solr.LowerCaseFilterFactory"}
+            ]
+          }
+        }
   ],
   "add-field": [
       {
           "name": "isbn",
-          "type": "isbnType",
-          "indexed": true
+          "type": "textType"
       },
       {
           "name": "isbn13",
-          "type": "isbnType",
-          "indexed": true
+          "type": "textType"
       },
       {
           "name" : "genres",
-          "type": "comma-separated-list"
+          "type": "comma-separated-list",
+          "indexed": true
       },
       {
-        "name" : "books_name",
-        "type": "comma-separated-list"
-    }
+        "name" : "title",
+        "type": "textType",
+        "indexed": true
+      }, 
+      {
+        "name": "review_text",
+        "type": "textType",
+        "indexed": true
+      }, 
+      {
+        "name": "description", 
+        "type": "textType",
+        "indexed": true
+      }
   ]
 }

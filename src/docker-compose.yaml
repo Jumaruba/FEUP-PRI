@@ -7,4 +7,4 @@ services:
     volumes:
       - ./solr_config/:/solr_config/
       - ./data/search/:/data/
-      
+    container_name: solr
