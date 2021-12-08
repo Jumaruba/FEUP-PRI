@@ -3,6 +3,7 @@
 precreate-core books 
 precreate-core authors
 precreate-core reviews 
+mv /solr_config/synonyms-books.txt /var/solr/data/books/synonyms-books.txt
 
 bin/solr start
 # Give time to connect
@@ -10,7 +11,6 @@ sleep 4
 
 # Schema definition via API
 curl -X POST -H 'Content-type:application/json' --data-binary @/solr_config/schema.json http://localhost:8983/solr/books/schema
-
 
 # Populate collection
 bin/post -c authors /data/authors.csv

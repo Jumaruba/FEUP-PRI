@@ -6,11 +6,13 @@ import json
 import requests
 import pandas as pd
 
+
+# Should be tested with filters and without. 
 TEMATIC = "world%20war" # holocaust concentration camp 
 QREL_FILE = "../data/queries/tematic/world_war.txt"
 QUERY_URL = f"http://localhost:8983/solr/books/select?q=description:{TEMATIC}&wt=json"
-results = requests.get(QUERY_URL).json()['response']['docs']
-print(results)
+results = requests.get(QUERY_URL).json()['response']['docs'] 
+
 
 """
 # Read qrels to extract relevant documents

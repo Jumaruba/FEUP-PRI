@@ -26,12 +26,32 @@
             "indexAnalyzer": {
                 "tokenizer": {
                     "class":"solr.StandardTokenizerFactory"
-                }
+                },
+                "filters":[  
+                    {"class": "solr.LowerCaseFilterFactory"},
+                    {
+                        "class": "solr.SynonymGraphFilterFactory", 
+                        "synonyms": "synonyms.txt",
+                        "ignoreCase": "true",
+                        "expand": "true"
+                    },
+                    {"class": "solr.FlattenGraphFilterFactory"} 
+                ]
             }, 
             "queryAnalyzer": {
                 "tokenizer": {
                     "class":"solr.StandardTokenizerFactory"
-                }
+                }, 
+                "filters":[  
+                    {"class": "solr.LowerCaseFilterFactory"},
+                    {
+                        "class": "solr.SynonymGraphFilterFactory", 
+                        "synonyms": "synonyms.txt",
+                        "ignoreCase": "true",
+                        "expand": "true"
+                    },
+                    {"class": "solr.FlattenGraphFilterFactory"} 
+                ]
             }
         },
         {
@@ -40,7 +60,12 @@
           "indexAnalyzer": {
               "tokenizer": {
                   "class":"solr.StandardTokenizerFactory"
-              }
+              },
+                "filters":[  
+                    {"class": "solr.LowerCaseFilterFactory"},
+                    {"class": "solr.ManagedSynonymGraphFilterFactory", "managed": "en"},
+                    {"class": "solr.FlattenGraphFilterFactory"} 
+                ]
           }, 
           "queryAnalyzer": {
               "tokenizer": {

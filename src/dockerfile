@@ -1,5 +1,7 @@
 FROM solr:8.11
 
 COPY solr_config/ /solr_config/ 
+RUN mkdir -p /var/solr/data/books/
+COPY solr_config/synonyms-books.txt /var/solr/data/books/synonyms-books.txt
 
-ENTRYPOINT ["sh", "/solr_config/init.sh"]
+ENTRYPOINT [ "sh", "/solr_config/init.sh"]
