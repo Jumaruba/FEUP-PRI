@@ -55,7 +55,8 @@ def clean_books():
         date = "%04d-%02d-%02d" % (year,month,day)
         book.pop("publication_day", None)
         book.pop("publication_month", None)
-        book.pop("publication_year", None)
+        book.pop("publication_year", None) 
+        book['num_pages'] = int(book['num_pages'] if book['num_pages'] != '' else 0) 
 
         if book['description'] and book['book_id']: 
             book['authors'] = get_authors(book["authors"])

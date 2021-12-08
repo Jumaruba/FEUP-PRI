@@ -1,72 +1,118 @@
 {
-  "add-field-type": [
-      {
-        "name":"textType",
-        "class":"solr.TextField"
-      },
-      {
-        "name": "comma-separated-list",
-        "class": "solr.TextField",
-        "analyzer" : {
-            "tokenizer": {
-              "class":"solr.SimplePatternTokenizerFactory", 
-              "pattern": "[^;]+" 
-              }
-            }
-        }, 
+    "add-field-type": [
         {
-          "name": "review-text",
-          "class": "solr.TextField",
-          "analyzer": {
-            "tokenizer": {"class": "solr.ClassicTokenizerFactory"},
-            "filters":[  
-              {"class": "solr.LowerCaseFilterFactory"},
-              {"class": "solr.ManagedSynonymGraphFilterFactory", "managed": "english"},
-              {"class": "solr.FlattenGraphFilterFactory"} 
-            ]
-          }
+            "name":"text",
+            "class":"solr.TextField"
         },
         {
-          "name": "description",
-          "class": "solr.TextField",
-          "analyzer": {
-            "tokenizer": {
-              "class": "solr.ClassicTokenizerFactory"
+          "name":"bool",
+          "class":"solr.BoolField"
+        },
+        {
+          "name":"int",
+          "class":"TrieIntField"
+        },
+        {
+            "name": "float",
+            "class": "TrieFloatField"
+        },
+        {
+          "name": "date",
+          "class": "solr.DateRangeField"
+        },
+        {
+            "name": "description",
+            "class": "solr.TextField",
+            "indexAnalyzer": {
+                "tokenizer": {
+                    "class":"solr.StandardTokenizerFactory"
+                }
             }, 
-            "filters": [
-              {"class": "solr.LowerCaseFilterFactory"}
-            ]
+            "queryAnalyzer": {
+                "tokenizer": {
+                    "class":"solr.StandardTokenizerFactory"
+                }
+            }
+        },
+        {
+          "name": "title",
+          "class": "solr.TextField",
+          "indexAnalyzer": {
+              "tokenizer": {
+                  "class":"solr.StandardTokenizerFactory"
+              }
+          }, 
+          "queryAnalyzer": {
+              "tokenizer": {
+                  "class":"solr.StandardTokenizerFactory"
+              }
           }
         }
-  ],
-  "add-field": [
-      {
-          "name": "isbn",
-          "type": "textType"
-      },
-      {
-          "name": "isbn13",
-          "type": "textType"
-      },
-      {
-          "name" : "genres",
-          "type": "comma-separated-list",
+    ],
+
+
+    "add-field": [
+        {
+            "name": "isbn13",
+            "type": "text"
+        },
+        {
+            "name": "isbn",
+            "type": "text"
+        },
+        {
+            "name": "is_ebook",
+            "type": "bool"
+        },
+        {
+            "name":"num_pages", 
+            "type": "int"
+        }, 
+        {
+            "name": "image_url", 
+            "type": "text"
+        },
+        {
+            "name": "book_id", 
+            "type": "int"
+        }, 
+        {
+            "name": "date",
+            "type": "date"
+        },
+        {
+            "name": "genres",
+            "type": "text"
+        }, 
+        {
+            "name": "language_code",
+            "type": "text"
+        },
+        { 
+            "name": "description", 
+            "type": "description",
+            "indexed": true
+        }, 
+        {
+            "name": "average_rating",
+            "type": "float"
+        },
+        {
+          "name": "title", 
+          "type": "title",
           "indexed": true
-      },
-      {
-        "name" : "title",
-        "type": "textType",
-        "indexed": true
-      }, 
-      {
-        "name": "review_text",
-        "type": "textType",
-        "indexed": true
-      }, 
-      {
-        "name": "description", 
-        "type": "textType",
-        "indexed": true
-      }
-  ]
+        },
+        {
+            "name": "edition_information",
+            "type": "text"
+        },
+        {
+            "name": "format",
+            "type": "text"
+        },
+        {
+            "name": "publisher",
+            "type": "text"
+        }
+    ]
 }

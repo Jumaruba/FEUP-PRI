@@ -19,8 +19,8 @@ def clean_reviews():
     for i, reviews_obj in enumerate(reviews_raw):
         if i == MAX_REVIEWS:
             break 
-
-        review = json.loads(reviews_obj)
+            
+        review = json.loads(reviews_obj) 
         review.pop('user_id', None)
         review.pop('date_updated', None)
         review.pop('started_at', None)
@@ -30,7 +30,7 @@ def clean_reviews():
 
         _, month, day, time, _, year = review['date_added'].split(' ')
         review['date_added'] = "%04d-%02d-%02d %s" % (int(year),int(strptime(month,'%b').tm_mon),int(day),time)
-
+        
         review['review_text'] = review['review_text'].replace("(view spoiler)[", "")
         review['review_text'] = review['review_text'].replace("(hide spoiler)]", "") 
 
