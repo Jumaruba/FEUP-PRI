@@ -36,25 +36,12 @@
             "indexAnalyzer": {
                 "tokenizer": {
                     "class":"solr.StandardTokenizerFactory"
-                },
-                "filters":[  
-                    {"class": "solr.LowerCaseFilterFactory"},
-                    {"class": "solr.EnglishMinimalStemFilterFactory"}
-                ]
+                }
             }, 
             "queryAnalyzer": {
                 "tokenizer": {
                     "class":"solr.StandardTokenizerFactory"
-                }, 
-                "filters":[
-                    {"class":"solr.SynonymGraphFilterFactory",
-                        "expand":"true",
-                        "ignoreCase":"true",
-                        "synonyms":"synonyms.txt"
-                    }, 
-                    {"class": "solr.LowerCaseFilterFactory"},
-                    {"class": "solr.EnglishMinimalStemFilterFactory"}
-                ]
+                }
             }
         },
         {

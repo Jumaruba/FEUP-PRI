@@ -26,3 +26,7 @@ pri_venv/**
 
 
 
+
+src/queries/precision_recall.pdf
+
+src/queries/results.tex

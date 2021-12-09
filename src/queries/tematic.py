@@ -8,15 +8,14 @@ import pandas as pd
 
 
 # Should be tested with filters and without. 
-TEMATIC = "world%20war" # holocaust     
-QREL_FILE = "../data/queries/tematic/world_war.txt"
-QUERY_URL = f"http://localhost:8983/solr/books/select?q=description:{TEMATIC}&wt=json"
-results = requests.get(QUERY_URL).json()['response']['docs'] 
+QRELS_FILE = "../data/queries/tematic/romantic_tragedy.txt"
+QUERY_SIMPLE_URL = "http://localhost:8983/solr/books_subset/select?q={!q.op=OR df=description}romantic%26tragedy&q=title:tragedy%26romantic&rows=10&wt=json"
+QUERY_BOOST_URL = "http://localhost:8983/solr/books_subset/select?q=({!q.op=OR df=description}romantic%26tragedy)^=4&q=title:tragedy%26romantic&rows=10&wt=json"
 
-
-"""
+results = requests.get(QUERY_BOOST_URL).json()['response']['docs']  
+print(len(results))
 # Read qrels to extract relevant documents
-relevant = list(map(lambda el: el.strip(), open(QRELS_FILE).readlines()))
+relevant = list(map(lambda el: int(el.strip()), open(QRELS_FILE).readlines()))
 # Get query results from Solr instance
 
 # METRICS TABLE
@@ -24,21 +23,30 @@ relevant = list(map(lambda el: el.strip(), open(QRELS_FILE).readlines()))
 metrics = {}
 metric = lambda f: metrics.setdefault(f.__name__, f)
 
+# RECALL 
+def recall(results, relevant):
+    return len([
+        doc 
+        for doc in results
+        if (int(doc['book_id'])) in relevant
+    ]) / len(relevant) 
+    
+
 @metric
 def ap(results, relevant):
     precision_values = [
         len([
             doc 
             for doc in results[:idx]
-            if doc['id'] in relevant
+            if int(doc['book_id']) in relevant
         ]) / idx 
         for idx in range(1, len(results))
     ]
     return sum(precision_values)/len(precision_values)
 
 @metric
-def p10(results, relevant, n=10):
-    return len([doc for doc in results[:n] if doc['id'] in relevant])/n
+def p5(results, relevant, n=5):
+    return len([doc for doc in results[:n] if int(doc['book_id']) in relevant])/n
 
 def calculate_metric(key, results, relevant):
     return metrics[key](results, relevant)
@@ -46,7 +54,7 @@ def calculate_metric(key, results, relevant):
 # Define metrics to be calculated
 evaluation_metrics = {
     'ap': 'Average Precision',
-    'p10': 'Precision at 10 (P@10)'
+    'p5': 'Precision at 5 (P@5)',
 }
 
 # Calculate all metrics and export results as LaTeX table
@@ -57,6 +65,7 @@ df = pd.DataFrame([['Metric','Value']] +
     ]
 )
 
+print(df)
 with open('results.tex','w') as tf:
     tf.write(df.to_latex())
 
@@ -66,15 +75,23 @@ precision_values = [
     len([
         doc 
         for doc in results[:idx]
-        if doc['id'] in relevant
+        if int(doc['book_id']) in relevant
     ]) / idx 
     for idx, _ in enumerate(results, start=1)
-]
+] 
+print("==== is in relevant ===")
+for doc in results:
+    print(int(doc['book_id']) in relevant)
+print("===")
+for doc in relevant:
+    print(doc)
+print("==== recall ====")
+print(recall(results, relevant))
 
 recall_values = [
     len([
         doc for doc in results[:idx]
-        if doc['id'] in relevant
+        if int(doc['book_id']) in relevant
     ]) / len(relevant)
     for idx, _ in enumerate(results, start=1)
 ]
@@ -97,4 +114,3 @@ disp = PrecisionRecallDisplay([precision_recall_match.get(r) for r in recall_val
 disp.plot()
 plt.savefig('precision_recall.pdf')
 
-"""
