@@ -1,0 +1,74 @@
+{
+  "add-field-type": [
+      {
+        "name":"textType",
+        "class":"solr.TextField"
+      },
+      {
+        "name": "comma-separated-list",
+        "class": "solr.TextField",
+        "analyzer" : {
+            "tokenizer": {
+              "class":"solr.SimplePatternTokenizerFactory", 
+              "pattern": "[^;]+" 
+              }
+            }
+        }, 
+        {
+          "name": "review-text",
+          "class": "solr.TextField",
+          "analyzer": {
+            "tokenizer": {"class": "solr.ClassicTokenizerFactory"},
+            "filters":[  
+              {"class": "solr.LowerCaseFilterFactory"},
+              {"class": "solr.ManagedSynonymGraphFilterFactory", "managed": "english"},
+              {"class": "solr.FlattenGraphFilterFactory"} 
+            ]
+          }
+        },
+        {
+          "name": "description",
+          "class": "solr.TextField",
+          "analyzer": {
+            "tokenizer": {
+              "class": "solr.ClassicTokenizerFactory"
+            }, 
+            "filters": [
+              {"class": "solr.LowerCaseFilterFactory"}, 
+              {"class": "solr.ManagedSynonymGraphFilterFactory", "managed": "english"},
+              {"class": "solr.FlattenGraphFilterFactory"} 
+            ]
+          }
+        }
+  ],
+  "add-field": [
+      {
+          "name": "isbn",
+          "type": "textType"
+      },
+      {
+          "name": "isbn13",
+          "type": "textType"
+      },
+      {
+          "name" : "genres",
+          "type": "comma-separated-list",
+          "indexed": true
+      },
+      {
+        "name" : "title",
+        "type": "textType",
+        "indexed": true
+      }, 
+      {
+        "name": "review_text",
+        "type": "textType",
+        "indexed": true
+      }, 
+      {
+        "name": "description", 
+        "type": "textType",
+        "indexed": true
+      }
+  ]
+}
