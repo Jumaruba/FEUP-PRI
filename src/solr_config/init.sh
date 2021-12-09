@@ -3,7 +3,6 @@
 precreate-core books 
 precreate-core authors
 precreate-core reviews 
-mv /solr_config/synonyms-books.txt /var/solr/data/books/synonyms-books.txt
 
 bin/solr start
 # Give time to connect
