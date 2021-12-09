@@ -5,21 +5,31 @@
             "class":"solr.TextField"
         },
         {
-          "name":"bool",
-          "class":"solr.BoolField"
+            "name":"bool",
+            "class":"solr.BoolField"
         },
         {
-          "name":"int",
-          "class":"TrieIntField"
+            "name":"int",
+            "class":"TrieIntField"
         },
         {
             "name": "float",
             "class": "TrieFloatField"
         },
         {
-          "name": "date",
-          "class": "solr.DateRangeField"
+            "name": "date",
+            "class": "solr.TrieDateField"
         },
+        {
+            "name": "comma-separated-list",
+            "class": "solr.TextField",
+            "analyzer" : {
+                "tokenizer": {
+                    "class":"solr.SimplePatternTokenizerFactory", 
+                    "pattern": "[^;]+" 
+                }
+            }
+        }, 
         {
             "name": "description",
             "class": "solr.TextField",
@@ -66,39 +76,51 @@
     "add-field": [
         {
             "name": "isbn13",
-            "type": "text"
+            "type": "text",
+            "indexed": false
         },
         {
             "name": "isbn",
-            "type": "text"
+            "type": "text",
+            "indexed": false
         },
         {
             "name": "is_ebook",
-            "type": "bool"
+            "type": "bool",
+            "indexed": false
         },
         {
             "name":"num_pages", 
-            "type": "int"
+            "type": "int",
+            "indexed": false
         }, 
         {
             "name": "image_url", 
-            "type": "text"
+            "type": "text",
+            "indexed": false
         },
         {
             "name": "book_id", 
-            "type": "int"
+            "type": "int",
+            "indexed": false
         }, 
         {
             "name": "date",
-            "type": "date"
+            "type": "date",
+            "indexed": false
         },
         {
             "name": "genres",
-            "type": "text"
+            "type": "comma-separated-list"
+        }, 
+        {
+            "name": "authors",
+            "type": "comma-separated-list"
         }, 
         {
             "name": "language_code",
-            "type": "text"
+            "type": "text",
+            "indexed": false
         },
         { 
             "name": "description", 
@@ -107,7 +129,8 @@
         }, 
         {
             "name": "average_rating",
-            "type": "float"
+            "type": "float",
+            "indexed": false
         },
         {
           "name": "title", 
@@ -120,11 +143,13 @@
         },
         {
             "name": "format",
-            "type": "text"
+            "type": "text",
+            "indexed": false
         },
         {
             "name": "publisher",
-            "type": "text"
+            "type": "text",
+            "indexed": false
         }
     ]
 }
