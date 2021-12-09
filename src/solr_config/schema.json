@@ -45,31 +45,56 @@
                 "tokenizer": {
                     "class":"solr.StandardTokenizerFactory"
                 }, 
-                "filters":[{
-                    "class":"solr.SynonymGraphFilterFactory",
+                "filters":[
+                    {"class":"solr.SynonymGraphFilterFactory",
                     "expand":"true",
                     "ignoreCase":"true",
                     "synonyms":"synonyms.txt"
-                }]
+                    }, 
+                    {"class": "solr.LowerCaseFilterFactory"}
+                ]
             }
         },
         {
           "name": "title",
           "class": "solr.TextField",
           "indexAnalyzer": {
-              "tokenizer": {
-                  "class":"solr.StandardTokenizerFactory"
-              },
+                "tokenizer": {
+                    "class":"solr.StandardTokenizerFactory"
+                },
                 "filters":[  
                     {"class": "solr.LowerCaseFilterFactory"}
                 ]
           }, 
           "queryAnalyzer": {
-              "tokenizer": {
-                  "class":"solr.StandardTokenizerFactory"
-              }
+                "tokenizer": {
+                    "class":"solr.StandardTokenizerFactory"
+                },
+                "filters":[  
+                    {"class": "solr.LowerCaseFilterFactory"}
+                ]
           }
-        }
+        },
+        {
+            "name": "review",
+            "class": "solr.TextField",
+            "indexAnalyzer": {
+                "tokenizer": {
+                    "class":"solr.StandardTokenizerFactory"
+                },
+                "filters":[  
+                    {"class": "solr.LowerCaseFilterFactory"}
+                ]
+            }, 
+            "queryAnalyzer": {
+                "tokenizer": {
+                    "class":"solr.StandardTokenizerFactory"
+                },
+                "filters":[  
+                    {"class": "solr.LowerCaseFilterFactory"}
+                ]
+            }
+          }
     ],
 
 
@@ -111,7 +136,8 @@
         },
         {
             "name": "genres",
-            "type": "comma-separated-list"
+            "type": "comma-separated-list",
+            "indexed":true
         }, 
         {
             "name": "authors",
@@ -149,6 +175,27 @@
         {
             "name": "publisher",
             "type": "text",
+            "indexed": false
+        },
+
+        {
+            "name": "review_id",
+            "type": "int",
+            "indexed": false
+        },
+        {
+            "name": "rating",
+            "type": "float",
+            "indexed": false
+        },
+        {
+            "name": "review_text",
+            "type": "review",
+            "indexed": true
+        },
+        {
+            "name": "date_added",
+            "type": "date",
             "indexed": false
         }
     ]
