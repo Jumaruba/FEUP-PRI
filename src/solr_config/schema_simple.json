@@ -121,7 +121,7 @@
         {
             "name": "date",
             "type": "date",
-            "indexed": false
+            "indexed": true
         },
         {
             "name": "genres",
@@ -145,7 +145,7 @@
         {
             "name": "average_rating",
             "type": "float",
-            "indexed": false
+            "indexed": true
         },
         {
           "name": "title", 
@@ -175,7 +175,7 @@
         {
             "name": "rating",
             "type": "float",
-            "indexed": false
+            "indexed": true
         },
         {
             "name": "review_text",
@@ -185,7 +185,7 @@
         {
             "name": "date_added",
             "type": "date",
-            "indexed": false
+            "indexed": true
         }
     ]
 }
