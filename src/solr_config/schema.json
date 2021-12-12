@@ -156,7 +156,8 @@
         }, 
         {
             "name": "authors",
-            "type": "comma-separated-list"
+            "type": "comma-separated-list",
+            "indexed": true
         }, 
         {
             "name": "language_code",

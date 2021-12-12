@@ -3,7 +3,7 @@ import csv
 import os 
 from time import strptime
 
-MAX_REVIEWS = 100000
+MAX_REVIEWS = 600000
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 RAW_PATH = CURRENT_PATH + "/../../data/raw/reviews.json"
 CLEAN_PATH = CURRENT_PATH + "/../../data/clean/reviews.csv"
