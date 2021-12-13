@@ -1,2 +1,1 @@
-from .queries import Query
-from .tematic import *
+from metrics import *
