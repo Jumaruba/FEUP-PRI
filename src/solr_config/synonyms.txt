@@ -7,4 +7,3 @@ amazing, good, quality, nice, great, impressive, love, not bad, fascinating, rea
 bad, worst, horrible, hate, awful, boring, terrible, disappointed
 
 contemporary, contemporaneous
-present-day => contemporary
