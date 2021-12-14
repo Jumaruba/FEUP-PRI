@@ -43,3 +43,11 @@ QUERY_REVIEWS_4 = "http://localhost:8983/solr/reviews_subset/select?q={!q.op=OR 
 QUERY_AUTHORS = 'http://localhost:8983/solr/reviews/select?rows=0&q=genres:romance&wt=json&json.facet={top:{ type:terms, limit: 10, field:authors, facet:{mean_rating:"avg(rating)", min_rating: "min(rating)", max_rating: "max(rating)"}, sort:{mean_rating: desc, min_rating: desc, max_rating: desc}}}'
 
 
+# CONTEMPORARY BOOKS =================
+# Without dates
+QUERY_REVIEWS2_1 = "http://localhost:8983/solr/reviews/select?q={!q.op=AND df=review_text}present-day&rows=50&wt=json"
+# With book and review sorted by dates
+QUERY_REVIEWS2_2  = "http://localhost:8983/solr/reviews/select?q={!q.op=AND df=review_text}present-day&rows=50&wt=json&sort=book_date desc, date_added desc"
+# With book and review dates and boost by recent dates
+# TODO - fix
+# QUERY_REVIEWS2_3 = "http://localhost:8983/solr/reviews/select?q={!q.op=AND df=review_text}present-day&q={!dismax bf=recip(ms(NOW,book_date),3.16e-11,1,1)}^2&rows=50&wt=json"

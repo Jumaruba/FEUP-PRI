@@ -89,7 +89,6 @@
                     {"class": "solr.PorterStemFilterFactory"},
                     {"class": "solr.EnglishPossessiveFilterFactory"},
                     {"class": "solr.EnglishMinimalStemFilterFactory"}
-
                 ]
             }, 
             "queryAnalyzer": {
@@ -146,6 +145,11 @@
         }, 
         {
             "name": "date",
+            "type": "date",
+            "indexed": true
+        },
+        {
+            "name": "book_date",
             "type": "date",
             "indexed": true
         },
