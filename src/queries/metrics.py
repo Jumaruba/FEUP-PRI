@@ -5,6 +5,7 @@ import numpy as np
 import json
 import requests
 import pandas as pd
+import os
 
 metrics = {}
 metric = lambda f: metrics.setdefault(f.__name__, f) 
@@ -56,16 +57,20 @@ evaluation_metrics = {
 }
 
 
-def generate_metrics(results, relevant, id_fieldname):
+def generate_metrics(results, relevant, id_fieldname, path):
+    path = "evaluation_results/" + path
+    if not os.path.exists(path):
+        os.makedirs(path)
+
     # Calculate all metrics and export results as LaTeX table
     df = pd.DataFrame([['Metric','Value']] +
         [
             [evaluation_metrics[m], calculate_metric(m, results, relevant, id_fieldname)]
             for m in evaluation_metrics
         ]
-    )
+    )#query_exe(QUERY_BOOKS_3, BOOKS_QRELS_FILEPATH, "book_id","tematic/genres")
 
-    with open('results.tex','w') as tf:
+    with open(path + 'results.tex','w') as tf:
         tf.write(df.to_latex())
 
     # PRECISION-RECALL CURVE =================================================
@@ -113,5 +118,5 @@ def generate_metrics(results, relevant, id_fieldname):
 
     disp = PrecisionRecallDisplay([precision_recall_match.get(r) for r in recall_values], recall_values)
     disp.plot()
-    plt.savefig('precision_recall.pdf')
+    plt.savefig(path + 'precision_recall.pdf')
 
