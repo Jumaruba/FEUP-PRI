@@ -50,4 +50,7 @@ QUERY_REVIEWS2_1 = "http://localhost:8983/solr/reviews/select?q={!q.op=AND df=re
 QUERY_REVIEWS2_2  = "http://localhost:8983/solr/reviews/select?q={!q.op=AND df=review_text}present-day&rows=50&wt=json&sort=book_date desc, date_added desc"
 # With book and review dates and boost by recent dates
 # TODO - fix
-# QUERY_REVIEWS2_3 = "http://localhost:8983/solr/reviews/select?q={!q.op=AND df=review_text}present-day&q={!dismax bf=recip(ms(NOW,book_date),3.16e-11,1,1)}^2&rows=50&wt=json"
+# QUERY_REVIEWS2_3 = "http://localhost:8983/solr/reviews/select?q={!func}recip(ms(NOW,book_date),3.16e-11,1,1)&q={!func}recip(ms(NOW,book_date),3.16e-11,1,1)&q={df=review_text}present-day"
+# http://localhost:8983/solr/reviews/select?&defType=dismax&q=time&qf=review_text&bf=recip(rord(book_date),1,1000,1000)
+# 
+# {!q.op=AND df=review_text}present-day&q={!dismax bf=recip(ms(NOW,book_date),3.16e-11,1,1)}^2&rows=50&wt=json"
