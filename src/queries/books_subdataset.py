@@ -1,8 +1,8 @@
 import pandas as pd
 
 # This program must be executed in the filepath. 
-f_qrel = open("../data/queries/reviews/related.txt", "r")
-f_norelated = open("../data/queries/reviews/no_related.txt", "r")
+f_qrel = open("../data/queries/books/related.txt", "r")
+f_norelated = open("../data/queries/books/no_related.txt", "r")
 f_books = pd.read_csv("../data/search/books.csv")
 
 get_id = lambda line: int(line.split(",")[0])

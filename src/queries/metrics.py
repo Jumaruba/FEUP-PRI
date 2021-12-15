@@ -10,31 +10,41 @@ import os
 metrics = {}
 metric = lambda f: metrics.setdefault(f.__name__, f) 
 
-# RECALL
+# RECALL =====================================
 @metric
 def recall(results, relevant, id_fieldname):
+    """ 
+    Calculates the recall for the documents. 
+    Formula: Number of relevant documents retrieved / total relevant documents.
+    """
     return len([
         doc 
         for doc in results
         if (int(doc[id_fieldname])) in relevant
     ]) / len(relevant) 
     
-
+# AVERAGE PRECISION ==========================
 @metric
 def ap(results, relevant, id_fieldname):
+    """
+    Calculates teh average precision. 
+    Source: https://towardsdatascience.com/breaking-down-mean-average-precision-map-ae462f623a52 
+    """
     precision_values = [
         len([
             doc 
             for doc in results[:idx]
             if int(doc[id_fieldname]) in relevant
         ]) / idx 
-        for idx in range(1, len(results))
+        for idx in range(1, len(results)+1)
     ] 
-    return sum(precision_values)/len(precision_values)
 
+    return sum(precision_values)/len(precision_values) 
+    
+# P5 ============================================ 
 @metric
-def p5(results, relevant, id_fieldname, n=5):
-    return len([doc for doc in results[:n] if int(doc[id_fieldname]) in relevant])/n
+def p5(results, relevant, id_fieldname):
+    return len([doc for doc in results[:5] if int(doc[id_fieldname]) in relevant])/5
 
 def calculate_metric(key, results, relevant, id_fieldname):
     return metrics[key](results, relevant, id_fieldname)
@@ -63,7 +73,7 @@ def generate_metrics(results, relevant, id_fieldname, path):
     with open(path + 'results.tex','w') as tf:
         tf.write(df.to_latex())
 
-    # PRECISION-RECALL CURVE
+    # PRECISION-RECALL CURVE =================================================
     # Calculate precision and recall values as we move down the ranked list
     precision_values = [
         len([
@@ -98,10 +108,10 @@ def generate_metrics(results, relevant, id_fieldname, path):
 
     print("==== is in relevant ===")
     for doc in results:
-        print(int(doc[id_fieldname]) in relevant)
-    print("=== retrieved docs ===")
-    for doc in relevant:
-        print(doc)
+        print(int(doc[id_fieldname]) in relevant) 
+    print("==== titles ===")
+    for doc in results:
+        print(doc['title'])
     print("==== recall ====")
     print(recall(results, relevant, id_fieldname))
 
