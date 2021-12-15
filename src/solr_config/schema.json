@@ -88,12 +88,7 @@
                     {"class": "solr.LowerCaseFilterFactory"},
                     {"class": "solr.PorterStemFilterFactory"},
                     {"class": "solr.EnglishPossessiveFilterFactory"},
-                    {"class": "solr.EnglishMinimalStemFilterFactory"},
-                    {"class":"solr.SynonymGraphFilterFactory",
-                        "expand":"true",
-                        "ignoreCase":"true",
-                        "synonyms":"synonyms_review_index.txt"
-                    }
+                    {"class": "solr.EnglishMinimalStemFilterFactory"}
                 ]
             }, 
             "queryAnalyzer": {
