@@ -92,7 +92,7 @@ def query_science():
     QUERY_SCIENCE_PATH = "../data/queries/science/related.txt" 
     # Without boost 
     #defType=edismax&bf=recip(ms(NOW,book_date),3.16e-11,1,1)
-    QUERY_SCIENCE_1 = "http://localhost:8983/solr/books_subset_3/select?q=description:science%20title:science&q.op=AND"
+    QUERY_SCIENCE_1 = "http://localhost:8983/solr/books_subset_3/select?q=description:science%20title:science"
 
     # With boost 
     #  tiramos livros do gênero ficção dar boost do genero non-fiction
@@ -110,7 +110,7 @@ def query_science_nofilter():
     QUERY_SCIENCE_PATH = "../data/queries/science/related.txt" 
     # Without boost 
     #defType=edismax&bf=recip(ms(NOW,book_date),3.16e-11,1,1)
-    QUERY_SCIENCE_3 = "http://localhost:8983/solr/books_subset_3/select?q=description:science%20title:science&q.op=AND"
+    QUERY_SCIENCE_3 = "http://localhost:8983/solr/books_subset_3/select?q=description:science%20title:science"
 
     # With boost 
     #  tiramos livros do gênero ficção dar boost do genero non-fiction

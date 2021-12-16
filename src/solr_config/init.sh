@@ -24,7 +24,7 @@ cat /solr_config/synonyms.txt >> /var/solr/data/books/conf/synonyms.txt
 cat /solr_config/synonyms.txt >> /var/solr/data/reviews/conf/synonyms.txt
 cat /solr_config/synonyms.txt >> /var/solr/data/books_subset_1/conf/synonyms.txt  
 cat /solr_config/synonyms.txt >> /var/solr/data/books_subset_2/conf/synonyms.txt   
-# cat /solr_config/synonyms.txt >> /var/solr/data/books_subset_3/conf/synonyms.txt  
+cat /solr_config/synonyms.txt >> /var/solr/data/books_subset_3/conf/synonyms.txt   
 cat /solr_config/synonyms.txt >> /var/solr/data/reviews_subset/conf/synonyms.txt 
 
 # SIMPLE SCHEMA ==================
@@ -33,7 +33,7 @@ cat /solr_config/synonyms.txt >> /var/solr/data/reviews_subset/conf/synonyms.txt
 #curl -X POST -H 'Content-type:application/json' --data-binary @/solr_config/schema_simple.json http://localhost:8983/solr/books_subset_1/schema   
 #curl -X POST -H 'Content-type:application/json' --data-binary @/solr_config/schema_simple.json http://localhost:8983/solr/books_subset_2/schema   
 curl -X POST -H 'Content-type:application/json' --data-binary @/solr_config/schema_simple.json http://localhost:8983/solr/books_subset_3/schema 
-# curl -X POST -H 'Content-type:application/json' --data-binary @/solr_config/schema_simple.json http://localhost:8983/solr/books_subset_4/schema  
+curl -X POST -H 'Content-type:application/json' --data-binary @/solr_config/schema_simple.json http://localhost:8983/solr/books_subset_4/schema  
 #curl -X POST -H 'Content-type:application/json' --data-binary @/solr_config/schema_simple.json http://localhost:8983/solr/reviews_subset/schema 
 
 # Populate collection
