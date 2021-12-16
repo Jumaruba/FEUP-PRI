@@ -39,8 +39,25 @@ def query_world_war():
     # With boost. 
     QUERY_BOOKS_4 = "http://localhost:8983/solr/books_subset_2/select?defType=edismax&q=+world +war&qf=description^1&rows=10&ps=2"
 
-    query_exe(QUERY_BOOKS_3, BOOKS_QRELS_FILEPATH_2, "book_id", "world_war/no_boost") 
-    query_exe(QUERY_BOOKS_4, BOOKS_QRELS_FILEPATH_2, "book_id", "world_war/boost")
+    query_exe(QUERY_BOOKS_3, BOOKS_QRELS_FILEPATH_2, "book_id", "world_war/no_boost/") 
+    query_exe(QUERY_BOOKS_4, BOOKS_QRELS_FILEPATH_2, "book_id", "world_war/boost/")
+
+def query_world_war_nofilter():
+    """
+    Query taht searches about the world wars.
+    - In the first query we are forcing that the words "world" and "war" appear in the phrase but not necessarily in sequence. Of course, a priority is given if they 
+    are togheter. 
+    - In the second query we're forcing an exact match in world war phrase. 
+    """  
+    BOOKS_QRELS_FILEPATH_3 = "../data/queries/world_war_nofilter/related.txt"
+
+    # Without boost.
+    QUERY_BOOKS_5 = "http://localhost:8983/solr/books_subset_4/query?q=description:\"world war\"&rows=10"
+    # With boost. 
+    QUERY_BOOKS_6 = "http://localhost:8983/solr/books_subset_4/select?defType=edismax&q=+world +war&qf=description^1&rows=10&ps=2"
+
+    query_exe(QUERY_BOOKS_5, BOOKS_QRELS_FILEPATH_3, "book_id", "world_war_nofilter/no_boost/") 
+    query_exe(QUERY_BOOKS_6, BOOKS_QRELS_FILEPATH_3, "book_id", "world_war_nofilter/boost/")
 
 
 def query_reviews():
@@ -67,8 +84,28 @@ def query_reviews():
 def group_authors():
     QUERY_AUTHORS = 'http://localhost:8983/solr/reviews/select?rows=0&q=genres:romance&wt=json&json.facet={top:{ type:terms, limit: 10, field:authors, facet:{mean_rating:"avg(rating)", min_rating: "min(rating)", max_rating: "max(rating)"}, sort:{mean_rating: desc, min_rating: desc, max_rating: desc}}}'
 
+def query_science():
+    """
+    Query that searchs for most recent science books. 
+
+    """ 
+    QUERY_SCIENCE_PATH = "../data/queries/science/related.txt" 
+    # Without boost 
+    #defType=edismax&bf=recip(ms(NOW,book_date),3.16e-11,1,1)
+    QUERY_SCIENCE_1 = "http://localhost:8983/solr/books_subset_3/select?q=description:science%20title:science&q.op=AND"
+
+    # With boost 
+    #  tiramos livros do gênero ficção dar boost do genero non-fiction
+    # genres:-"historical fiction"
+    QUERY_SCIENCE_2 = "http://localhost:8983/solr/books_subset_3/select?q.op=AND&defType=edismax&q=science -genres:fiction -genres:\"historical-fiction\"&bq=genres:\"non-fiction\"^4&qf=description title" 
+
+    query_exe(QUERY_SCIENCE_1, QUERY_SCIENCE_PATH, "book_id", "science/no_boost/")
+    query_exe(QUERY_SCIENCE_2, QUERY_SCIENCE_PATH, "book_id", "science/boost/")  
+
 
 if __name__ == "__main__": 
     #query_romantic_tragedy()
-    query_world_war()
+    #query_world_war()
     #query_reviews()
+    #query_science()
+    query_world_war_nofilter()
