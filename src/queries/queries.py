@@ -102,10 +102,29 @@ def query_science():
     query_exe(QUERY_SCIENCE_1, QUERY_SCIENCE_PATH, "book_id", "science/no_boost/")
     query_exe(QUERY_SCIENCE_2, QUERY_SCIENCE_PATH, "book_id", "science/boost/")  
 
+def query_science_nofilter():
+    """
+    Query that searchs for most recent science books. 
+
+    """ 
+    QUERY_SCIENCE_PATH = "../data/queries/science/related.txt" 
+    # Without boost 
+    #defType=edismax&bf=recip(ms(NOW,book_date),3.16e-11,1,1)
+    QUERY_SCIENCE_3 = "http://localhost:8983/solr/books_subset_3/select?q=description:science%20title:science&q.op=AND"
+
+    # With boost 
+    #  tiramos livros do gênero ficção dar boost do genero non-fiction
+    # genres:-"historical fiction"
+    QUERY_SCIENCE_4 = "http://localhost:8983/solr/books_subset_3/select?q.op=AND&defType=edismax&q=science -genres:fiction -genres:\"historical-fiction\"&bq=genres:\"non-fiction\"^4&qf=description title" 
+
+    query_exe(QUERY_SCIENCE_3, QUERY_SCIENCE_PATH, "book_id", "science_nofilter/no_boost/")
+    query_exe(QUERY_SCIENCE_4, QUERY_SCIENCE_PATH, "book_id", "science_nofilter/boost/")  
+
 
 if __name__ == "__main__": 
     #query_romantic_tragedy()
     #query_world_war()
     #query_reviews()
     #query_science()
-    query_world_war_nofilter()
+    #query_world_war_nofilter()
+    query_science_nofilter()
