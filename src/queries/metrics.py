@@ -112,9 +112,6 @@ def generate_metrics(results, relevant, id_fieldname, path):
     print("==== titles ===")
     for doc in results:
         print(doc['title'])
-    print("==== recall ====")
-    print(recall(results, relevant, id_fieldname))
-
 
     disp = PrecisionRecallDisplay([precision_recall_match.get(r) for r in recall_values], recall_values)
     disp.plot()
