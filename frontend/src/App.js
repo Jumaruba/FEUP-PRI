@@ -2,6 +2,10 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
+  fetch('http://localhost/solr/books_subset_1/select?q=description:romantic%26tragedy&rows=8&wt=json', {mode: 'cors'})
+  .then(response => response.json())
+  .then(data => console.log(data));
+  
   return (
     <div className="App">
       <header className="App-header">
