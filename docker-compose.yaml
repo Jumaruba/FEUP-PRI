@@ -8,10 +8,10 @@ services:
     depends_on:
       - solr
   solr:
-    build: .
+    build: ./src
     container_name: solr
     ports: 
       - 8983:8983
     volumes:
-      - ./solr_config/:/solr_config/
-      - ./data/search/:/data/
+      - ./src/solr_config/:/solr_config/
+      - ./src/data/search/:/data/
