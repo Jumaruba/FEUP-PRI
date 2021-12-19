@@ -1,3 +1,2 @@
-sudo docker rm -f solr
-sudo docker image rm -f src_solr solr 
-sudo docker-compose up
+sudo docker rm -f $(sudo docker ps -a -q)
+sudo docker-compose up -d --build

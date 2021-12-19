@@ -1,12 +1,20 @@
 version: "3"
 
 services:
+  frontend:
+    build: ./frontend
+    ports:
+      - 3000:3000
+    depends_on:
+      - solr
+
   nginx:
     build: ./nginx
     ports:
       - 80:80 
     depends_on:
       - solr
+
   solr:
     build: ./src
     container_name: solr
