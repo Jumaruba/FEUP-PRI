@@ -1,6 +1,6 @@
 import React from 'react';
 
-const WithListLoading = (Component) => {
+const BookLoading = (Component) => {
   return function WihLoadingComponent({ isLoading, ...props }) {
     if (!isLoading) return <Component {...props} />;
     return (
@@ -10,4 +10,4 @@ const WithListLoading = (Component) => {
     );
   };
 }
-export default WithListLoading;
+export default BookLoading;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const List = (props) => {
+const BookList = (props) => {
   const { books } = props;
   if (!books || books.length === 0) return <p>No books, sorry</p>;
   return (
@@ -19,4 +19,4 @@ const List = (props) => {
   );
 };
 
-export default List;
+export default BookList;
