@@ -1,4 +1,5 @@
 import React from 'react';
+
 const List = (props) => {
   const { repos } = props;
   if (!repos || repos.length === 0) return <p>No repos, sorry</p>;
@@ -8,7 +9,7 @@ const List = (props) => {
       {
       repos.map((repo) => {
         return (
-          <li key={repo.book_id} className='list'>
+          <li key={repo.id} className='list'>
             <img src={repo.image_url} alt="{repo.title}" />
             <span className='repo-text'>{repo.title} </span>
             
@@ -18,4 +19,5 @@ const List = (props) => {
     </ul>
   );
 };
+
 export default List;

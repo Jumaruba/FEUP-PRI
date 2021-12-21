@@ -1,30 +1,46 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
+
 import List from './components/List';
-import withListLoading from './components/withListLoading';
+import WithListLoading from './components/WithListLoading';
+import BuildQuery from './components/BuildQuery';
+
 function App() {
-  const ListLoading = withListLoading(List);
-  const [appState, setAppState] = useState({
-    loading: false,
-    repos: null,
-  });
+  const ListLoading = WithListLoading(List);
 
-  useEffect(() => {
-    setAppState({ loading: true });
+  // Hooks
+  const [input, setInput] = useState("")
+  const [appState, setAppState] = useState({loading: false, repos: null});
 
-    const apiUrl = `http://localhost:80/solr/books_subset_1/select?q=description:romantic%26tragedy&rows=8&wt=json`;
+  const FetchBooks = (input) => {
+
+    const apiUrl = BuildQuery(input);
     fetch(apiUrl, {mode:'cors'})
       .then((res) => res.json())
       .then((repos) => {
-        console.log(repos['response']['docs']);
         setAppState({ loading: false, repos: repos['response']['docs'] });
       });
-  }, [setAppState]);
+  }
+
+  const UpdateInput = (json_response) => {
+    setInput(json_response.target.value);
+    console.log(json_response.target.value);
+    console.log(input);
+    console.log("-");
+    FetchBooks(json_response.target.value);
+  }
+
+  useEffect( () => {FetchBooks('romantic')}, []);
+
   return (
     <div className='App'>
       <div className='container'>
         <h1>Best Books Ever!</h1>
       </div>
+      <div className='container'>
+        <input placeholder="Enter Post Title" input={input} onChange={UpdateInput} />
+      </div>
+
       <div className='repo-container'>
         <ListLoading isLoading={appState.loading} repos={appState.repos} />
       </div>
