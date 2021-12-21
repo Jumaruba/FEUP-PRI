@@ -1,10 +1,10 @@
 const BuildThematicSearchQuery = (search) => {
     const options = {
         "description:" : search,
-        "q.op:": "OR",
-        "defType:": "edismax",
-        "qf:": "description%5E2",
-        "ps:": "4",
+        "q.op=": "OR",
+        "defType=": "edismax",
+        "qf=": "description%5E2",
+        "ps=": "4",
     }
 
     let full_query = 'http://localhost:80/solr/books/select?q=';

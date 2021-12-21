@@ -1,6 +1,7 @@
 import React from 'react';
 
 // Main Components
+import AppBar from './components/AppBar';
 import SearchPage from './components/SearchPage';
 
 // Styles
@@ -8,16 +9,14 @@ import './App.css';
 
 const App = () => {
   return (
-    <div className='App'>
-      <div className='container'>
-        <h1>Best Books Ever!</h1>
-      </div>
-      
+    <div>
+      <AppBar />
+
       <SearchPage />
 
       <footer>
         <div className='footer'>
-          Goodreads Advanced Book Search
+          Goodreads Advanced Book Search. Made with ❤️ from G53.
         </div>
       </footer>
     </div>

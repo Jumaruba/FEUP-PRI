@@ -1,4 +1,5 @@
 import React from 'react';
+import TextField from '@mui/material/TextField';
 
 import BuildThematicSearchQuery from '../BuildQuery';
 
@@ -10,7 +11,7 @@ const ThematicSearch = (props) => {
 
     return (
       <div className='thematic-search'>
-          <input placeholder="Enter Post Title" onChange={updateInput} />
+          <TextField id="thematic-search-field" label="Thematic Search" variant="outlined" onChange={updateInput} />
       </div>
     );
 }
