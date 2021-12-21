@@ -1,6 +1,6 @@
 import React from 'react';
 
-function WithListLoading(Component) {
+const WithListLoading = (Component) => {
   return function WihLoadingComponent({ isLoading, ...props }) {
     if (!isLoading) return <Component {...props} />;
     return (

@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from 'react';
 
-import List from './search_page/List';
-import WithListLoading from './search_page/WithListLoading';
-import BuildQuery from './search_page/BuildQuery';
+import BookList from './search_page/BookList';
+import BookLoading from './search_page/BookLoading';
 
-const SearchPage = (props) => {
+import BuildQuery from './BuildQuery';
+
+const SearchPage = () => {
   // Hooks
-  const ListLoading = WithListLoading(List);
+  const BookListLoading = BookLoading(BookList);
   const [appState, setAppState] = useState({loading: false, books: null});
 
   const fetchBooks = (input) => {
-    const apiUrl = BuildQuery(input);
-    fetch(apiUrl, {mode:'cors'})
-      .then((res) => res.json())
-      .then((books) => {
-        setAppState({ loading: false, books: books['response']['docs'] });
-      });
+    if(input !== '' && input !== ' ') {
+      const apiUrl = BuildQuery(input);
+      fetch(apiUrl, {mode:'cors'})
+        .then((res) => res.json())
+        .then((books) => {
+          setAppState({ loading: false, books: books['response']['docs']});
+        });
+      }
   }
 
   const updateInput = (json_response) => {
@@ -31,7 +34,7 @@ const SearchPage = (props) => {
       </div>
 
       <div className='book-container'>
-        <ListLoading isLoading={appState.loading} books={appState.books} />
+        <BookListLoading isLoading={appState.loading} books={appState.books} />
       </div>
     </>
   );
