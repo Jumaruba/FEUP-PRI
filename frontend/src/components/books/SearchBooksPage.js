@@ -1,4 +1,5 @@
 import React from 'react';
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
@@ -7,7 +8,6 @@ import BookList from './bookList/BookList';
 import BookLoading from './bookList/BookLoading';
 
 import ThematicSearch from './search/ThematicSearch';
-
 
 var cardSearchStyle = {
   textAlign: 'center',
@@ -24,7 +24,6 @@ var cardBookStyle = {
   minHeight: '45vw',
 }
 
-
 const SearchPage = () => {
   const BookListLoading = BookLoading(BookList);
   const [appState, setAppState] = React.useState({loading: false, books: null});
@@ -38,8 +37,9 @@ const SearchPage = () => {
   }
 
   return (
-      <Grid container sx={{ mt: 2 }}>
-        <Grid container xs={3}>
+    <Box sx={{ mt: 2 }}>
+      <Grid container >
+        <Grid item xs={3}>
           <Card style={cardSearchStyle} variant="outlined">
             <h2>Advanced Book Search</h2>
 
@@ -49,13 +49,14 @@ const SearchPage = () => {
           </Card>
         </Grid>
 
-        <Grid container xs={9}>
+        <Grid item xs={9}>
           <Card style={cardBookStyle} variant="outlined">
             <BookListLoading isLoading={appState.loading} books={appState.books} />
           </Card>
         </Grid>
       </Grid>
+    </Box>
   );
 }
 
-  export default SearchPage;
+export default SearchPage;

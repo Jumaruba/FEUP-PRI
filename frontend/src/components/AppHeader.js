@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 
-const AppHeader = () => {
+const AppHeader = (props) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -21,8 +21,8 @@ const AppHeader = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Your Book
           </Typography>
-          <Button color="inherit">Books</Button>
-          <Button color="inherit">Reviews</Button>
+          <Button color="inherit" onClick={props.handleBooksView}>Books</Button>
+          <Button color="inherit" onClick={props.handleReviewsView}>Reviews</Button>
         </Toolbar>
       </AppBar>
     </Box>

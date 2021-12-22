@@ -1,4 +1,5 @@
 import React from 'react';
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
@@ -35,23 +36,24 @@ const SearchPage = () => {
   }
 
   return (
-      <Grid container sx={{ mt: 2 }}>
-        <Grid container xs={3}>
+    <Box sx={{ mt: 2 }}>
+      <Grid container >
+        <Grid item xs={3}>
           <Card style={cardSearchStyle} variant="outlined">
             <h2>Advanced Review Search</h2>
-
             <Stack spacing={2}>
               <SentimentSearch fetch={fetchReviews} />
             </Stack>
           </Card>
         </Grid>
 
-        <Grid container xs={9}>
+        <Grid item xs={9}>
           <Card style={cardReviewStyle} variant="outlined">
             <ReviewListLoading isLoading={reviewState.loading} reviews={reviewState.reviews} />
           </Card>
         </Grid>
       </Grid>
+    </Box>
   );
 }
 

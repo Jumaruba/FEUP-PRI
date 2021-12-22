@@ -1,7 +1,8 @@
 import React from 'react';
 
 // Main Components
-import AppHeader from './components/AppBar';
+import AppHeader from './components/AppHeader';
+import Footer from './components/Footer';
 
 import SearchBooksPage from './components/books/SearchBooksPage';
 import SearchReviewsPage from './components/reviews/SearchReviewsPage';
@@ -10,18 +11,37 @@ import SearchReviewsPage from './components/reviews/SearchReviewsPage';
 import './App.css';
 
 const App = () => {
+  const [booksView, setBooksView] = React.useState({active : true});
+  const [reviewsView, setReviewsView] = React.useState({active : false});
+
+  const handleBooksView = () => {
+      setReviewsView({
+        active: false,
+      });
+      setBooksView({
+          active: true,
+      });
+  }
+
+  const handleReviewsView = () => {
+    setReviewsView({
+      active: true,
+    });
+
+    setBooksView({
+        active: false,
+    });
+}
+
+
   return (
     <div>
-      <AppHeader />
+      <AppHeader handleBooksView={handleBooksView} handleReviewsView={handleReviewsView} />
 
-      <SearchBooksPage />
-      <SearchReviewsPage />
+      {booksView.active && <SearchBooksPage />}
+      {reviewsView.active && <SearchReviewsPage />}
 
-      <footer>
-        <div className='footer'>
-          Goodreads Advanced Book Search. Made with ❤️ from G53.
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
