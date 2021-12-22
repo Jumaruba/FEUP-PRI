@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid';
 import BookList from './bookList/BookList';
 import BookLoading from './bookList/BookLoading';
 
-import ThematicSearch from './searchBar/ThematicSearch';
+import ThematicSearch from './search/ThematicSearch';
 
 
 var cardSearchStyle = {
@@ -41,11 +41,9 @@ const SearchPage = () => {
       <Grid container sx={{ mt: 2 }}>
         <Grid container xs={3}>
           <Card style={cardSearchStyle} variant="outlined">
-            <h2>Advanced Search</h2>
+            <h2>Advanced Book Search</h2>
 
             <Stack spacing={2}>
-              <ThematicSearch fetch={fetchBooks} />
-              <ThematicSearch fetch={fetchBooks} />
               <ThematicSearch fetch={fetchBooks} />
             </Stack>
           </Card>

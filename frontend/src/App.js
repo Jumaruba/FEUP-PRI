@@ -1,8 +1,10 @@
 import React from 'react';
 
 // Main Components
-import AppBar from './components/AppBar';
-import SearchPage from './components/SearchPage';
+import AppHeader from './components/AppBar';
+
+import SearchBooksPage from './components/books/SearchBooksPage';
+import SearchReviewsPage from './components/reviews/SearchReviewsPage';
 
 // Styles
 import './App.css';
@@ -10,9 +12,10 @@ import './App.css';
 const App = () => {
   return (
     <div>
-      <AppBar />
+      <AppHeader />
 
-      <SearchPage />
+      <SearchBooksPage />
+      <SearchReviewsPage />
 
       <footer>
         <div className='footer'>

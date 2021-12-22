@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 
-export default function ButtonAppBar() {
+const AppHeader = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -28,3 +28,5 @@ export default function ButtonAppBar() {
     </Box>
   );
 }
+
+export default AppHeader;
