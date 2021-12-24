@@ -1,16 +1,14 @@
 import React from 'react';
+import { makeStyles } from '@mui/styles';
 
 // Main Components
-import AppHeader from './components/AppHeader';
-import Footer from './components/Footer';
+import AppHeader from '../components/AppHeader';
+import Footer from '../components/Footer';
+import SearchBooksPage from './SearchBooks';
+import SearchReviewsPage from './SearchReviews';
 
-import SearchBooksPage from './components/books/SearchBooksPage';
-import SearchReviewsPage from './components/reviews/SearchReviewsPage';
+const Home = () => {
 
-// Styles
-import './App.css';
-
-const App = () => {
   const [booksView, setBooksView] = React.useState({active : true});
   const [reviewsView, setReviewsView] = React.useState({active : false});
 
@@ -33,16 +31,15 @@ const App = () => {
     });
 }
 
-
   return (
-    <div>
+    <React.Fragment>
       <AppHeader handleBooksView={handleBooksView} handleReviewsView={handleReviewsView} />
 
       {booksView.active && <SearchBooksPage />}
       {reviewsView.active && <SearchReviewsPage />}
 
       <Footer />
-    </div>
+    </React.Fragment>
   );
 }
-export default App;
+export default Home;

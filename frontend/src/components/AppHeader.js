@@ -5,9 +5,15 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 
+
 const AppHeader = (props) => {
+  const menuOptions =  {
+    'Books': props.handleBooksView, 
+    'Reviews': props.handleReviewsView
+  };
+
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box>
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -18,11 +24,24 @@ const AppHeader = (props) => {
           >
             <img src='/favicon.ico' alt="Your Book" />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Your Book
+
+          <Typography 
+            variant="h5" 
+            component="div" 
+            sx={{ flexGrow: 1 }}
+          >
+            GoodBook 
           </Typography>
-          <Button color="inherit" onClick={props.handleBooksView}>Books</Button>
-          <Button color="inherit" onClick={props.handleReviewsView}>Reviews</Button>
+
+          {/* Displays the menu options */}
+          {Object.keys(menuOptions).map(title => (
+            <Button
+              key = {title}
+              color="inherit" 
+              onClick={menuOptions[title]}>
+                {title}
+              </Button>
+          ))}
         </Toolbar>
       </AppBar>
     </Box>
