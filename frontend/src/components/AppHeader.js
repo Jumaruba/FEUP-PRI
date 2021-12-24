@@ -1,17 +1,8 @@
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
+import React from 'react'; 
+import {Box, Toolbar, Typography, Button, IconButton, AppBar, MenuItem} from '@mui/material';
+import {Link} from 'react-router-dom'; 
 
-
-const AppHeader = (props) => {
-  const menuOptions =  {
-    'Books': props.handleBooksView, 
-    'Reviews': props.handleReviewsView
-  };
-
+const AppHeader = () => {
   return (
     <Box>
       <AppBar position="static">
@@ -33,15 +24,23 @@ const AppHeader = (props) => {
             GoodBook 
           </Typography>
 
-          {/* Displays the menu options */}
-          {Object.keys(menuOptions).map(title => (
-            <Button
-              key = {title}
-              color="inherit" 
-              onClick={menuOptions[title]}>
-                {title}
+          <MenuItem
+            component={Link}
+            to={'/'}>
+              <Button color="inherit">
+                Books
               </Button>
-          ))}
+            </MenuItem>
+
+          <MenuItem
+            component={Link}
+            to={'/reviews'}>
+              <Button color="inherit">
+                Reviews 
+              </Button>
+            </MenuItem>
+        
+
         </Toolbar>
       </AppBar>
     </Box>

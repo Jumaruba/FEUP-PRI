@@ -1,15 +1,18 @@
 import React from 'react';
-import BookElement from './books/BookElement';
+import BookElement from './Books/BookElement';
+import {Typography} from '@mui/material'; 
 
-const Listing = ({SearchElement, list, title}) => {
 
-  if (!list|| list.length === 0) return <p>No books, sorry</p>;
+const Listing = ({SearchElement, list}) => {
+
+  if (!list|| list.length === 0) return (
+      <p>No books, sorry</p> 
+    );
 
   return (
-    <ul>
-      <h2 className='list-head'>{title}</h2>
+    <React.Fragment>
       {list.map((listElement) => <SearchElement element={listElement}/>)}
-    </ul>
+    </React.Fragment>
   );
 };
 

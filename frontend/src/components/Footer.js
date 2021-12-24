@@ -3,6 +3,7 @@ import { makeStyles } from "@mui/styles";
 const useStyle = makeStyles({
   footer: {
     variant: 'h1',
+    padding: '3em',
   }
 });
 

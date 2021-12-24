@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 
 import SentimentSearch from '../searches/SentimentSearch';
-import ReviewElement from '../components/reviews/ReviewElement';
+import ReviewElement from '../components/Reviews/ReviewElement';
 import Listing from '../components/Listing';
 
 var cardSearchStyle = {

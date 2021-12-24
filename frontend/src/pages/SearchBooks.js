@@ -1,22 +1,19 @@
 import React from 'react';
-import {Grid, Card, Box } from '@mui/material';
+import {Grid, Box } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import Listing from '../components/Listing';
-import BookElement from '../components/books/BookElement';
-import SearchMenu from '../components/books/BookSearchMenu';
+import BookElement from '../components/Books/BookElement';
+import SearchMenu from '../components/Books/BookSearchMenu';
 
-const useStyles = makeStyles({
-  
-  cardBook: {
-    display: 'block',
-    width: '90%',
-    minHeight: '45vw',
+const useStyles = makeStyles({ 
+  boxFlex : {
+    marginTop: "2em",
+    display: "flex"
   }
 });
 
-
 const SearchPage = () => {
-  const classes = useStyles();
+  const classes = useStyles(); 
   const [appState, setAppState] = React.useState({loading: false, books: null});
 
 const fetchBooks = (apiURL) => {
@@ -28,13 +25,11 @@ const fetchBooks = (apiURL) => {
   }
 
   return (
-      <Box sx={{ mt: 2 }}>
-        <Grid container >
+      <Box className={classes.boxFlex}>
         <SearchMenu fetchBooks={fetchBooks}/>
         <Grid item xs={9}>
           <Listing title="Books" list={appState.books} SearchElement={BookElement} />
         </Grid>
-      </Grid>
     </Box>
   );
 }

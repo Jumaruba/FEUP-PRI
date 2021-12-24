@@ -7,32 +7,28 @@ import { makeStyles } from '@mui/styles';
 const useStyles = makeStyles({
  cardSearch: {
     textAlign: 'center',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    display: 'block',
-    width: '80%',
-    height: '30vw'
+    height: '600px',
+    width: '400px', 
+    marginInline: "2em",
   }, 
   cardTitle : {
     padding: "2em",
-  }
+  }, 
+  
 }); 
 
 const BookSearchMenu = ({fetchBooks}) => {  
 
   const classes = useStyles();
     return (
-        <Grid item xs={3}>
-        <Card className={classes.cardSearch} variant="outlined">
+        <Card className={classes.cardSearch}>
           <CardHeader className={classes.cardTitle} title="Advanced Book Search"/>
-            
           <CardContent> 
             <Stack spacing={2}>
             <ThematicSearch fetch={fetchBooks} />
             </Stack> 
           </CardContent>
         </Card>
-        </Grid>
     )
 };
 
