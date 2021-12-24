@@ -1,12 +1,12 @@
 FROM node:latest
 
-WORKDIR .
-COPY package.json ./
-RUN npm install
+# Where the folder will be copied to. 
+WORKDIR /frontend/ 
 
 # Copy project content to docker  
 COPY package*.json ./
 COPY src/ src/ 
-COPY public/ public/
+COPY public/ public/ 
 
+RUN npm install
 CMD ["npm", "start"]
