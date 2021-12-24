@@ -7,6 +7,8 @@ services:
       - 3000:3000
     depends_on:
       - solr
+    volumes:
+      - ./frontend/src/:/frontend/src/
 
   nginx:
     build: ./nginx
