@@ -32,9 +32,7 @@ const fetchBooks = (apiURL) => {
         <Grid container >
         <SearchMenu fetchBooks={fetchBooks}/>
         <Grid item xs={9}>
-          <Card className={classes.cardBook} variant="outlined">
-            <Listing title="Books" list={appState.books} SearchElement={BookElement} />
-          </Card>
+          <Listing title="Books" list={appState.books} SearchElement={BookElement} />
         </Grid>
       </Grid>
     </Box>
