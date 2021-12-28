@@ -1,6 +1,10 @@
 #!/bin/bash
-RES=`curl -sI http://localhost:8983/api/cores/books | grep "200 OK"`
-if [ -z $RES ]
+
+
+RES_BOOK_CORE=`precreate-core books | grep "already exists"`
+
+# MILESTONE 2
+if [ -z $RES_BOOK_CORE ] && [ $MILESTONE -eq 2 ]
 then 
     precreate-core books 
     precreate-core reviews 
@@ -46,7 +50,29 @@ then
     bin/post -c books_subset_3 /data/books_subdataset_3.csv
     bin/post -c books_subset_4 /data/books_subdataset_4.csv
     bin/post -c reviews_subset /data/reviews_subdataset.csv
-fi  
+fi   
+
+# MILESTONE 3 
+if [ -z $RES_BOOK_CORE ] && [ $MILESTONE -eq 3 ]
+then 
+    precreate-core reviews    
+    bin/solr start  
+    
+    # Give time to connect
+    sleep 4
+
+    # Add schema 
+    curl -X POST -H 'Content-type:application/json' --data-binary @/solr_config/schema.json http://localhost:8983/solr/books/schema
+    curl -X POST -H 'Content-type:application/json' --data-binary @/solr_config/schema.json http://localhost:8983/solr/reviews/schema 
+
+    # Add synonyms 
+    cat /solr_config/synonyms.txt >> /var/solr/data/books/conf/synonyms.txt
+    cat /solr_config/synonyms.txt >> /var/solr/data/reviews/conf/synonyms.txt 
+
+    # Populate collections
+    bin/post -c books /data/books.csv
+    bin/post -c reviews /data/reviews.csv 
+fi 
 
 solr restart -f
 curl 'http://localhost:8983/solr/admin/cores?action=RELOAD&core=books'

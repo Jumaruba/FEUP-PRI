@@ -20,6 +20,8 @@ services:
   solr:
     build: ./src
     container_name: solr
+    env_file:
+      - src/.env
     ports: 
       - 8983:8983
     volumes:
