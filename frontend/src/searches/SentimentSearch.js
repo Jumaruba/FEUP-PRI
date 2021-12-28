@@ -7,7 +7,7 @@ const SentimentSearch = (props) => {
           "q=": "{!q.op=OR df=review_text}" + search,
       }
     
-      let full_query = 'http://localhost:80/solr/reviews/select?';
+      let full_query = 'http://localhost:9000/solr/reviews/select?';
       for (let option in options)
           full_query += option + options[option] + '&';
       

@@ -11,7 +11,7 @@ const ThematicSearch = (props) => {
           "ps=": "4",
       }
 
-      let full_query = 'http://localhost:80/solr/books/select?q=';
+        let full_query = 'http://localhost:9000/solr/books/select?q=';
       for (let option in options)
           full_query += option + options[option] + '&';
 
