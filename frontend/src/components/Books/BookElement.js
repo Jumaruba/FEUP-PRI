@@ -45,7 +45,7 @@ const BookElement = ({element}) => {
                     </Typography>  
 
                     {Object.keys(properties).map(propertyName => (
-                        <Typography component="div" variant="span">
+                        <Typography component="div" variant="span" key={propertyName}>
                             <span className={classes.propertyName} >{propertyName}: </span> 
                             <span>{properties[propertyName]}</span>
                         </Typography> 

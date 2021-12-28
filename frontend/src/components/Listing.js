@@ -11,7 +11,7 @@ const Listing = ({SearchElement, list}) => {
 
   return (
     <React.Fragment>
-      {list.map((listElement) => <SearchElement element={listElement}/>)}
+      {list.map((listElement) => <SearchElement element={listElement} key={listElement.title}/>)}
     </React.Fragment>
   );
 };
