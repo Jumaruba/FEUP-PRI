@@ -1,13 +1,10 @@
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
+import React from 'react'; 
+import {Box, Toolbar, Typography, Button, IconButton, AppBar, MenuItem} from '@mui/material';
+import {Link} from 'react-router-dom'; 
 
-const AppHeader = (props) => {
+const AppHeader = () => {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box>
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -18,11 +15,32 @@ const AppHeader = (props) => {
           >
             <img src='/favicon.ico' alt="Your Book" />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Your Book
+
+          <Typography 
+            variant="h5" 
+            component="div" 
+            sx={{ flexGrow: 1 }}
+          >
+            GoodBook 
           </Typography>
-          <Button color="inherit" onClick={props.handleBooksView}>Books</Button>
-          <Button color="inherit" onClick={props.handleReviewsView}>Reviews</Button>
+
+          <MenuItem
+            component={Link}
+            to={'/'}>
+              <Button color="inherit">
+                Books
+              </Button>
+            </MenuItem>
+
+          <MenuItem
+            component={Link}
+            to={'/reviews'}>
+              <Button color="inherit">
+                Reviews 
+              </Button>
+            </MenuItem>
+        
+
         </Toolbar>
       </AppBar>
     </Box>

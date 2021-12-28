@@ -4,10 +4,9 @@ import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 
-import BookList from './bookList/BookList';
-import BookLoading from './bookList/BookLoading';
-
-import ThematicSearch from './search/ThematicSearch';
+import SentimentSearch from '../searches/SentimentSearch';
+import ReviewElement from '../components/Reviews/ReviewElement';
+import Listing from '../components/Listing';
 
 var cardSearchStyle = {
   textAlign: 'center',
@@ -18,21 +17,20 @@ var cardSearchStyle = {
   height: '30vw'
 }
 
-var cardBookStyle = {
+var cardReviewStyle = {
   display: 'block',
   width: '90%',
   minHeight: '45vw',
 }
 
 const SearchPage = () => {
-  const BookListLoading = BookLoading(BookList);
-  const [appState, setAppState] = React.useState({loading: false, books: null});
+  const [reviewState, setReviewState] = React.useState({loading: false, reviews: null});
 
-  const fetchBooks = (apiURL) => {
+  const fetchReviews = (apiURL) => {
     fetch(apiURL, {mode:'cors'})
       .then((res) => res.json())
-      .then((books) => {
-        setAppState({ loading: false, books: books['response']['docs']});
+      .then((reviews) => {
+        setReviewState({ loading: false, reviews: reviews['response']['docs']});
       });
   }
 
@@ -41,17 +39,16 @@ const SearchPage = () => {
       <Grid container >
         <Grid item xs={3}>
           <Card style={cardSearchStyle} variant="outlined">
-            <h2>Advanced Book Search</h2>
-
+            <h2>Advanced Review Search</h2>
             <Stack spacing={2}>
-              <ThematicSearch fetch={fetchBooks} />
+              <SentimentSearch fetch={fetchReviews} />
             </Stack>
           </Card>
         </Grid>
 
         <Grid item xs={9}>
-          <Card style={cardBookStyle} variant="outlined">
-            <BookListLoading isLoading={appState.loading} books={appState.books} />
+          <Card style={cardReviewStyle} variant="outlined"> 
+            <Listing title="Reviews" list={reviewState.reviews} SearchElement={ReviewElement} />
           </Card>
         </Grid>
       </Grid>
@@ -59,4 +56,4 @@ const SearchPage = () => {
   );
 }
 
-export default SearchPage;
+  export default SearchPage;
