@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri&display=swap');
+:root {
+  --basica-dark-color: #aa4466;
+  --basic-color: #dd6688;
+  --basic-light-color: #ffeeee;
+  --white-color: #ffeeee;
+  --dark-color: #442222;
+
+  background-color: var(--basic-light-color);
+}
+
+@media screen and (max-width: 600px) {
+  .book-container {
+    width: 100%;
+    margin: 0;
+    box-shadow: none;
+  }
+}
+
+.book-text {
+  font-weight: 600;
+}
+
+.book-description {
+  font-weight: 600;
+  font-style: bold;
+  color: var(--basic-color);
+}
+
+.list-head {
+  text-align: center;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.footer {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+
