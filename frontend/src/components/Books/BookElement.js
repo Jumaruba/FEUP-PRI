@@ -3,6 +3,10 @@ import {Card, CardContent, CardMedia, Typography, Box} from '@mui/material';
 import {makeStyles} from '@mui/styles'; 
 
 const useStyles = makeStyles({
+    title: {
+        fontWeight: "bold", 
+        marginBottom: "0.5em",
+    },
     card : {
         display: "flex",
         marginTop: "1em !important",
@@ -27,7 +31,7 @@ const BookElement = ({element}) => {
         "Publisher": element.publisher, 
         "Pages": element.num_pages,
         "Authors": element.authors,
-        "Genres": element.genres,
+        "Genres": element.genres.replaceAll(";", "; "),
     }
     const classes = useStyles();
     return (
@@ -40,7 +44,7 @@ const BookElement = ({element}) => {
             />
             <Box className={classes.verticalFlex}> 
                 <CardContent>  
-                    <Typography component="h3" variant="h5"> 
+                    <Typography component="h3" variant="h5" className={classes.title}> 
                         {element.title}
                     </Typography>  
 
