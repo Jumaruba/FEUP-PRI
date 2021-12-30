@@ -64,10 +64,13 @@ then
     # Add synonyms 
     cat /solr_config/synonyms.txt >> /var/solr/data/books/conf/synonyms.txt
     cat /solr_config/synonyms.txt >> /var/solr/data/reviews/conf/synonyms.txt 
+    #cat /solr_config/synonyms.txt >> /var/solr/data/reviews/conf/synonyms_ms2.txt 
 
     # Add schema 
     curl -X POST -H 'Content-type:application/json' --data-binary @/solr_config/schema.json http://localhost:8983/solr/books/schema
     curl -X POST -H 'Content-type:application/json' --data-binary @/solr_config/schema.json http://localhost:8983/solr/reviews/schema 
+    #curl -X POST -H 'Content-type:application/json' --data-binary @/solr_config/schema_simple.json http://localhost:8983/solr/reviews/schema 
+    #curl -X POST -H 'Content-type:application/json' --data-binary @/solr_config/schema_ms2.json http://localhost:8983/solr/reviews/schema 
 
     # Populate collections
     bin/post -c books /data/books.csv

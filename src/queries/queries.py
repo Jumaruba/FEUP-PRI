@@ -137,18 +137,22 @@ def query_reviews_m3():
     REVIEWS_RELEVANT_NEGATIVE_FEEDBACK_FILEPATH = "../data/queries/reviews/i_am_the_messenger/relevant.txt" 
     REVIEWS_IRRELEVANT_NEGATIVE_FEEDBACK_FILEPATH = "../data/queries/reviews/i_am_the_messenger/irrelevant.txt" 
     
-    bad_search_review = "hate"
-    # Test without synonyms, with query time synonyms and with index time synonyms
-    QUERY_REVIEWS_M3_1 = "http://localhost:8983/solr/reviews_subset/select"
     # Rating limit
-    QUERY_REVIEWS_M3_2 = "http://localhost:8983/solr/reviews_subset/select"
-    # Rating limit and boost function
-    QUERY_REVIEWS_M3_3 = "http://localhost:8983/solr/reviews_subset/select"
+    QUERY_REVIEWS_M3_1 = """http://localhost:8983/solr/reviews/select?q=title:"I Am the Messenger" 
+                        rating:[0 TO 4]&q.op=AND&indent=true&
+                        sort=field(rating, min) asc
+                        &rows=14&wt=json"""
+    # TODO: Test without synonyms, with query time synonyms and with index time synonyms
     # Rating limit and sort
-    QUERY_REVIEWS_M3_4 = "http://localhost:8983/solr/reviews_subset/select"
-    
-    # div(if(termfreq(review_text,'love'),div(termfreq(review_text,'disappointed'),termfreq(review_text,'love')),termfreq(review_text,'disappointed')),sum(rating,1))^20
-
+    QUERY_REVIEWS_M3_2 = """http://localhost:8983/solr/reviews/select?q=title:"I Am the Messenger" 
+                        review_text:disappointed rating:[0 TO 4]&q.op=AND&indent=true&
+                        sort=field(rating, min) asc
+                        &rows=14&wt=json"""
+    # Rating limit and boost function
+    QUERY_REVIEWS_M3_3 = """http://localhost:8983/solr/reviews/select?q=title:"I Am the Messenger" 
+                        review_text:disappointed rating:[0 TO 4]&q.op=AND&defType=edismax&indent=true&
+                        bf=div(if(termfreq(review_text,love),div(termfreq(review_text,disappointed),termfreq(review_text,love)),termfreq(review_text,disappointed)),sum(rating,1))^20
+                        &rows=14&wt=json"""
 
 #TODO
 def query_series():
