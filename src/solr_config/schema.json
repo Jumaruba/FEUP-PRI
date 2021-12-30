@@ -38,6 +38,12 @@
                     "class":"solr.StandardTokenizerFactory"
                 },
                 "filters":[  
+                    {"class":"solr.SynonymGraphFilterFactory",
+                        "expand":"true",
+                        "ignoreCase":"true",
+                        "synonyms":"synonyms.txt"
+                    }, 
+                    {"class":"solr.FlattenGraphFilterFactory"},
                     {"class": "solr.LowerCaseFilterFactory"},
                     {"class": "solr.EnglishMinimalStemFilterFactory"}
                 ]
@@ -47,11 +53,6 @@
                     "class":"solr.StandardTokenizerFactory"
                 }, 
                 "filters":[
-                    {"class":"solr.SynonymGraphFilterFactory",
-                        "expand":"true",
-                        "ignoreCase":"true",
-                        "synonyms":"synonyms.txt"
-                    }, 
                     {"class": "solr.LowerCaseFilterFactory"},
                     {"class": "solr.EnglishMinimalStemFilterFactory"}
                 ]
@@ -84,12 +85,18 @@
                 "tokenizer": {
                     "class":"solr.StandardTokenizerFactory"
                 },
-                "filters":[  
+                "filters":[ 
+                    {"class":"solr.SynonymGraphFilterFactory",
+                        "expand":"true",
+                        "ignoreCase":"true",
+                        "tokenizerFactory":"solr.StandardTokenizerFactory",
+                        "synonyms":"synonyms.txt"
+                    },  
+                    {"class":"solr.FlattenGraphFilterFactory"},                    
                     {"class": "solr.LowerCaseFilterFactory"},
                     {"class": "solr.PorterStemFilterFactory"},
                     {"class": "solr.EnglishPossessiveFilterFactory"},
-                    {"class": "solr.EnglishMinimalStemFilterFactory"}
-
+                    {"class": "solr.EnglishMinimalStemFilterFactory"},
                 ]
             }, 
             "queryAnalyzer": {
@@ -97,11 +104,6 @@
                     "class":"solr.StandardTokenizerFactory"
                 },
                 "filters":[  
-                    {"class":"solr.SynonymGraphFilterFactory",
-                        "expand":"true",
-                        "ignoreCase":"true",
-                        "synonyms":"synonyms.txt"
-                    }, 
                     {"class": "solr.LowerCaseFilterFactory"},
                     {"class": "solr.PorterStemFilterFactory"},
                     {"class": "solr.EnglishPossessiveFilterFactory"},
@@ -142,7 +144,7 @@
         {
             "name": "book_id", 
             "type": "int",
-            "indexed": false
+            "indexed": true
         }, 
         {
             "name": "date",
@@ -191,7 +193,7 @@
         {
             "name": "publisher",
             "type": "text",
-            "indexed": false
+            "indexed": true
         },
 
         {

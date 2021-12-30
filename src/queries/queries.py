@@ -62,18 +62,28 @@ def query_world_war_nofilter():
     query_exe(QUERY_BOOKS_5, BOOKS_QRELS_FILEPATH_3, "book_id", "world_war_nofilter/no_boost/") 
     query_exe(QUERY_BOOKS_6, BOOKS_QRELS_FILEPATH_3, "book_id", "world_war_nofilter/boost/")
 
-
 def query_reviews():
-    pass
+    REVIEWS_BAD_FILEPATH = "../data/queries/reviews/i_am_the_messenger/bad.txt" 
+    REVIEWS_GOOD_FILEPATH = "../data/queries/reviews/i_am_the_messenger/good.txt" 
     """
-    http://localhost:8983/solr/#/reviews/query?q=title:%22I%20Am%20the%20Messenger%22%20review_text:disappointed&q.op=AND&defType=edismax&indent=true&rows=30&wt=json
+    bad_search_review = "hated this books"
+    # Bad.
+    QUERY_REVIEWS_1 = "http://localhost:8983/solr/reviews_subset/select?q={!q.op=OR df=review_text}hated this books&rows=10&wt=json"
+    # With rating and sorted by ascending. 
+    QUERY_REVIEWS_2 = "http://localhost:8983/solr/reviews_subset/select?q={!q.op=OR df=review_text}hated this books AND rating:[0 TO 3.5]&sort=field(rating, min) asc&rows=20&wt=json"
+
+    query_exe(QUERY_REVIEWS_1, REVIEWS_BAD_FILEPATH, "review_id", "pos_neg_reviews/synonyms/bad/")
+    query_exe(QUERY_REVIEWS_2, REVIEWS_BAD_FILEPATH, "review_id", "pos_neg_reviews/rating/bad/") 
+    """    
     
-    http://localhost:8983/solr/#/reviews/query?q=title:%22I%20Am%20the%20Messenger%22%20review_text:disappointed&q.op=AND&defType=edismax&indent=true&rows=30&wt=json&bf=recip(termfreq(review_text,love),1,10,10)%5E20
+    good_search_review = "in love with this book"
+    # Good without boost.
+    QUERY_REVIEWS_3 = "http://localhost:8983/solr/reviews_subset/select?q={!q.op=OR df=review_text}in love with this book&rows=10&wt=json"
+    # With rating and sorted by descending. 
+    QUERY_REVIEWS_4 = "http://localhost:8983/solr/reviews_subset/select?q={!q.op=OR df=review_text}in love with this book AND rating:[3 TO *]&sort=field(rating, min) desc&rows=20&wt=json&rows=10&wt=json" 
+    query_exe(QUERY_REVIEWS_3, REVIEWS_GOOD_FILEPATH, "review_id", "pos_neg_reviews/synonyms/good/")
+    query_exe(QUERY_REVIEWS_4, REVIEWS_GOOD_FILEPATH, "review_id", "pos_neg_reviews/rating/good/") 
 
-    http://localhost:8983/solr/#/reviews/query?q=title:%22I%20Am%20the%20Messenger%22%20review_text:disappointed%0Arating:%5B0%20TO%204%5D&q.op=AND&defType=edismax&indent=true&rows=32&wt=json
-
-    http://localhost:8983/solr/#/reviews/query?q=title:%22I%20Am%20the%20Messenger%22%20review_text:disappointed%0Arating:%5B0%20TO%204%5D&q.op=AND&defType=edismax&indent=true&rows=32&wt=json&bf=recip(termfreq(review_text,love),1,10,10)%5E20%20recip(ord(rating),1,10,10)%5E25
-    """
 
 def group_authors():
     QUERY_AUTHORS = 'http://localhost:8983/solr/reviews/select?rows=0&q=genres:romance&wt=json&json.facet={top:{ type:terms, limit: 10, field:authors, facet:{mean_rating:"avg(rating)", min_rating: "min(rating)", max_rating: "max(rating)"}, sort:{mean_rating: desc, min_rating: desc, max_rating: desc}}}'
@@ -123,27 +133,22 @@ def query_science_nofilter():
 def query_cookbook():
     pass
 
-def query_reviews():
-    REVIEWS_BAD_FILEPATH = "../data/queries/reviews/i_am_the_messenger/bad.txt" 
-    REVIEWS_GOOD_FILEPATH = "../data/queries/reviews/i_am_the_messenger/good.txt" 
-    """
-    bad_search_review = "hated this books"
-    # Bad.
-    QUERY_REVIEWS_1 = "http://localhost:8983/solr/reviews_subset/select?q={!q.op=OR df=review_text}hated this books&rows=10&wt=json"
-    # With rating and sorted by ascending. 
-    QUERY_REVIEWS_2 = "http://localhost:8983/solr/reviews_subset/select?q={!q.op=OR df=review_text}hated this books AND rating:[0 TO 3.5]&sort=field(rating, min) asc&rows=20&wt=json"
-
-    query_exe(QUERY_REVIEWS_1, REVIEWS_BAD_FILEPATH, "review_id", "pos_neg_reviews/synonyms/bad/")
-    query_exe(QUERY_REVIEWS_2, REVIEWS_BAD_FILEPATH, "review_id", "pos_neg_reviews/rating/bad/") 
-    """    
+def query_reviews_m3():
+    REVIEWS_RELEVANT_NEGATIVE_FEEDBACK_FILEPATH = "../data/queries/reviews/i_am_the_messenger/relevant.txt" 
+    REVIEWS_IRRELEVANT_NEGATIVE_FEEDBACK_FILEPATH = "../data/queries/reviews/i_am_the_messenger/irrelevant.txt" 
     
-    good_search_review = "in love with this book"
-    # Good without boost.
-    QUERY_REVIEWS_3 = "http://localhost:8983/solr/reviews_subset/select?q={!q.op=OR df=review_text}in love with this book&rows=10&wt=json"
-    # With rating and sorted by descending. 
-    QUERY_REVIEWS_4 = "http://localhost:8983/solr/reviews_subset/select?q={!q.op=OR df=review_text}in love with this book AND rating:[3 TO *]&sort=field(rating, min) desc&rows=20&wt=json&rows=10&wt=json" 
-    query_exe(QUERY_REVIEWS_3, REVIEWS_GOOD_FILEPATH, "review_id", "pos_neg_reviews/synonyms/good/")
-    query_exe(QUERY_REVIEWS_4, REVIEWS_GOOD_FILEPATH, "review_id", "pos_neg_reviews/rating/good/") 
+    bad_search_review = "hate"
+    # Test without synonyms, with query time synonyms and with index time synonyms
+    QUERY_REVIEWS_M3_1 = "http://localhost:8983/solr/reviews_subset/select"
+    # Rating limit
+    QUERY_REVIEWS_M3_2 = "http://localhost:8983/solr/reviews_subset/select"
+    # Rating limit and boost function
+    QUERY_REVIEWS_M3_3 = "http://localhost:8983/solr/reviews_subset/select"
+    # Rating limit and sort
+    QUERY_REVIEWS_M3_4 = "http://localhost:8983/solr/reviews_subset/select"
+    
+    # div(if(termfreq(review_text,'love'),div(termfreq(review_text,'disappointed'),termfreq(review_text,'love')),termfreq(review_text,'disappointed')),sum(rating,1))^20
+
 
 #TODO
 def query_series():

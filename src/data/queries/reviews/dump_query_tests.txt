@@ -1,0 +1,73 @@
+"""OLD
+http://localhost:8983/solr/#/reviews/query?q=title:%22I%20Am%20the%20Messenger%22%20review_text:disappointed&q.op=AND&defType=edismax&indent=true&rows=30&wt=json
+
+http://localhost:8983/solr/#/reviews/query?q=title:%22I%20Am%20the%20Messenger%22%20review_text:disappointed&q.op=AND&defType=edismax&indent=true&rows=30&wt=json&bf=recip(termfreq(review_text,love),1,10,10)%5E20
+
+http://localhost:8983/solr/#/reviews/query?q=title:%22I%20Am%20the%20Messenger%22%20review_text:disappointed%0Arating:%5B0%20TO%204%5D&q.op=AND&defType=edismax&indent=true&rows=32&wt=json
+
+http://localhost:8983/solr/#/reviews/query?q=title:%22I%20Am%20the%20Messenger%22%20review_text:disappointed%0Arating:%5B0%20TO%204%5D&q.op=AND&defType=edismax&indent=true&rows=32&wt=json&bf=recip(termfreq(review_text,love),1,10,10)%5E20%20recip(ord(rating),1,10,10)%5E25
+"""
+
+if(termfreq(review_text,'love'),div(termfreq(review_text,'disappointed'),termfreq(review_text,'love')),termfreq(review_text,'disappointed'))
+
+field
+rating,review_text,termfreq(review_text,'love'),termfreq(review_text,'disappointed'),recip(ord(rating),1,5,5),if(termfreq(review_text,'love'),div(div(termfreq(review_text,'disappointed'),termfreq(review_text,'love')),sum(rating,1)),div(termfreq(review_text,'disappointed'),sum(rating,1)))
+
+
+sum(if(termfreq(review_text,'love'),div(termfreq(review_text,'disappointed'),termfreq(review_text,'love')),termfreq(review_text,'disappointed')),div(1,sum(rating,1)))
+
+
+
+sum(if(termfreq(review_text,'love'),div(termfreq(review_text,'disappointed'),termfreq(review_text,'love')),termfreq(review_text,'disappointed')),recip(ord(rating),1,5,5)),sum(if(termfreq(review_text,'love'),div(termfreq(review_text,'disappointed'),termfreq(review_text,'love')),termfreq(review_text,'disappointed')),mul(recip(ord(rating),1,5,5),2))
+
+boost function
+rating,review_text,if(termfreq(review_text,'love'),div(termfreq(review_text,'disappointed'),termfreq(review_text,'love')),termfreq(review_text,'disappointed')),recip(ord(rating)1,5,5),
+sum(if(termfreq(review_text,'love'),div(termfreq(review_text,'disappointed'),termfreq(review_text,'love')),termfreq(review_text,'disappointed')),recip(ord(rating),1,5,5))
+
+
+sum(if(termfreq(review_text,'love'),div(termfreq(review_text,'disappointed'),termfreq(review_text,'love')),termfreq(review_text,'disappointed')),mul(recip(ord(rating),1,5,5),2))
+
+
+OPÇOES:
+sum(if(termfreq(review_text,'love'),div(termfreq(review_text,'disappointed'),termfreq(review_text,'love')),termfreq(review_text,'disappointed')),div(1,sum(rating,1)))^20
+
+if P > 0:
+    R = N/P
+else:
+    R = N
+R = R + 1/(rating+1)
+
+
+3P 3N rating 4
+3P 3N rating 1
+
+3P 1N rating 4
+3P 1N rating 1
+
+1P 3N rating 4
+1P 3N rating 1
+
+0P 3N rating 4
+0P 3N rating 1
+
+3P 3N rating 4
+6P 3N rating 1
+
+3P 1N rating 4
+3P 1N rating 1
+
+1P 3N rating 4
+1P 3N rating 1
+
+0P 3N rating 4
+0P 3N rating 1
+
+div(if(termfreq(review_text,'love'),div(termfreq(review_text,'disappointed'),termfreq(review_text,'love')),termfreq(review_text,'disappointed')),sum(rating,1))^20
+
+if P > 0:
+    R = N/P
+else:
+    R = N
+R = R /(rating+1)
+
+sum(if(termfreq(review_text,'love'),div(termfreq(review_text,'disappointed'),termfreq(review_text,'love')),termfreq(review_text,'disappointed')),recip(ord(rating),1,5,5))^20

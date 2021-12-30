@@ -1,11 +1,11 @@
-love, romance, romantic, heartbreak, heart, heartache, passion, passionate
-tragedy, drama, tragic, disastrous, disaster
-galaxy, star, alien, planet, nebula, solar system, universe, comet, celestial
-movie, serie, saga, film
+love,romance,romantic,heartbreak,heart,heartache,passion,passionate
+tragedy,drama,tragic,disastrous,disaster
+galaxy,star,alien,planet,nebula,solar system,universe,comet,celestial
+movie,serie,saga,film
 
-amazing, good, quality, nice, great, impressive, love, fascinating, wonderful
-worst, horrible, hate, awful, boring, terrible, disappointed, horrid, obnoxious, letdown
+amazing,good,quality,nice,great,impressive,love,fascinating,wonderful,not bad,enjoyed,liked
+worst,horrible,hate,awful,boring,terrible,disappointed,horrid,obnoxious,letdown,bad,didn't like,disliked, let down, tedious
 
-science, mathematics, scientific, study, numeric
+science,mathematics,scientific,study,numeric
 
-cookbook, cook, meal, recipe
+cookbook,cook,meal,recipe
