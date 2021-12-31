@@ -7,6 +7,7 @@ import requests
 import pandas as pd
 import os
 
+PRECISION = 14
 metrics = {}
 metric = lambda f: metrics.setdefault(f.__name__, f) 
 
@@ -27,24 +28,23 @@ def recall(results, relevant, id_fieldname):
 @metric
 def ap(results, relevant, id_fieldname):
     """
-    Calculates teh average precision. 
+    Calculates the average precision. 
     Source: https://towardsdatascience.com/breaking-down-mean-average-precision-map-ae462f623a52 
     """
-    precision_values = [
-        len([
-            doc 
-            for doc in results[:idx]
-            if int(doc[id_fieldname]) in relevant
-        ]) / idx 
-        for idx in range(1, len(results)+1)
-    ] 
+    precision_values = []
+    counter = 0
+    for i in range(1, len(results)+1):
+        if int(results[i-1][id_fieldname]) in relevant:
+            counter += 1
+            precision_values.append(counter/i)
 
     return sum(precision_values)/len(precision_values) 
-    
-# P5 ============================================ 
+
+
+# P AT N ============================================ 
 @metric
-def p5(results, relevant, id_fieldname):
-    return len([doc for doc in results[:5] if int(doc[id_fieldname]) in relevant])/5
+def p_at(results, relevant, id_fieldname):
+    return len([doc for doc in results[:PRECISION] if int(doc[id_fieldname]) in relevant])/PRECISION
 
 def calculate_metric(key, results, relevant, id_fieldname):
     return metrics[key](results, relevant, id_fieldname)
@@ -52,7 +52,7 @@ def calculate_metric(key, results, relevant, id_fieldname):
 # Define metrics to be calculated
 evaluation_metrics = {
     'ap': 'Average Precision',
-    'p5': 'Precision at 5 (P@5)',
+    'p_at': f'Precision at {PRECISION} (P@{PRECISION})',
     'recall': 'Recall metric'
 }
 
@@ -68,7 +68,7 @@ def generate_metrics(results, relevant, id_fieldname, path):
             [evaluation_metrics[m], calculate_metric(m, results, relevant, id_fieldname)]
             for m in evaluation_metrics
         ]
-    )#query_exe(QUERY_BOOKS_3, BOOKS_QRELS_FILEPATH, "book_id","tematic/genres")
+    )
 
     with open(path + 'results.tex','w') as tf:
         tf.write(df.to_latex())
@@ -111,7 +111,7 @@ def generate_metrics(results, relevant, id_fieldname, path):
         print(int(doc[id_fieldname]) in relevant) 
     print("==== titles ===")
     for doc in results:
-        print(doc['title'])
+        print(doc['review_id'])
 
     disp = PrecisionRecallDisplay([precision_recall_match.get(r) for r in recall_values], recall_values)
     disp.plot()

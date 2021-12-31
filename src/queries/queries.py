@@ -133,13 +133,12 @@ def query_science_nofilter():
 def query_cookbook():
     pass
 
-def query_reviews_m3():
+def query_negative_reviews_m3():
     REVIEWS_RELEVANT_NEGATIVE_FEEDBACK_FILEPATH = "../data/queries/reviews/i_am_the_messenger/relevant.txt" 
-    REVIEWS_IRRELEVANT_NEGATIVE_FEEDBACK_FILEPATH = "../data/queries/reviews/i_am_the_messenger/irrelevant.txt" 
     
     # Rating limit
     QUERY_REVIEWS_M3_1 = """http://localhost:8983/solr/reviews/select?q=title:"I Am the Messenger" 
-                        rating:[0 TO 4]&q.op=AND&indent=true&
+                        rating:[0 TO 3]&q.op=AND&indent=true&
                         sort=field(rating, min) asc
                         &rows=14&wt=json"""
     # TODO: Test without synonyms, with query time synonyms and with index time synonyms
@@ -154,6 +153,13 @@ def query_reviews_m3():
                         bf=div(if(termfreq(review_text,love),div(termfreq(review_text,disappointed),termfreq(review_text,love)),termfreq(review_text,disappointed)),sum(rating,1))^20
                         &rows=14&wt=json"""
 
+    # print("[NEGATIVE REVIEWS] rating limit")
+    #query_exe(QUERY_REVIEWS_M3_1, REVIEWS_RELEVANT_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/no_schema/limit/")
+    print("[NEGATIVE REVIEWS] search negative word, rating limit and sort")
+    query_exe(QUERY_REVIEWS_M3_2, REVIEWS_RELEVANT_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/query_synonyms/sort/")  
+    print("[NEGATIVE REVIEWS] search negative word, rating limit and boost function")
+    query_exe(QUERY_REVIEWS_M3_3, REVIEWS_RELEVANT_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/query_synonyms/boost/")  
+
 #TODO
 def query_series():
     pass
@@ -166,7 +172,8 @@ def query_publisher():
 if __name__ == "__main__": 
     #query_romantic_tragedy()
     #query_world_war()
-    query_reviews()
+    #query_reviews()
     #query_science()
     #query_world_war_nofilter()
     #query_science_nofilter()
+    query_negative_reviews_m3()
