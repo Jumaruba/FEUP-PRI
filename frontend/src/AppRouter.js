@@ -4,7 +4,9 @@ import {
     Routes, 
     Route
 } from "react-router-dom"; 
+
 import PageLayout from './components/Layout/PageLayout'; 
+import InfoBook from './pages/InfoBook'; 
 import SearchBooks from './pages/SearchBooks'; 
 import SearchReviews from './pages/SearchReviews';
 
@@ -28,6 +30,15 @@ const AppRouter = () => (
                 element={
                     <PageLayout key="/reviews">
                         <SearchReviews/>
+                    </PageLayout>
+                }/>
+            <Route 
+                exact 
+                path="/book"
+                key="/book"
+                element={
+                    <PageLayout key="/book">
+                        <InfoBook />
                     </PageLayout>
                 }/>
         </Routes> 
