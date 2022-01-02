@@ -34,7 +34,7 @@ const BookElement = ({element}) => {
     }
 
     const handleClick = () => {
-        navigate('/book?id=' + element.book_id);
+        navigate('/book?id=' + element.id);
     }
 
     const classes = useStyles();

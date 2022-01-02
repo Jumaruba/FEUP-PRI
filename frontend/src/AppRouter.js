@@ -6,7 +6,7 @@ import {
 } from "react-router-dom"; 
 
 import PageLayout from './components/Layout/PageLayout'; 
-import InfoBook from './pages/InfoBook'; 
+import BookPage from './pages/BookPage'; 
 import SearchBooks from './pages/SearchBooks'; 
 import SearchReviews from './pages/SearchReviews';
 
@@ -38,7 +38,7 @@ const AppRouter = () => (
                 key="/book"
                 element={
                     <PageLayout key="/book">
-                        <InfoBook />
+                        <BookPage />
                     </PageLayout>
                 }/>
         </Routes> 
