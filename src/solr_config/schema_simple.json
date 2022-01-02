@@ -23,10 +23,10 @@
         {
             "name": "comma-separated-list",
             "class": "solr.TextField",
-            "analyzer" : {
+            "indexAnalyzer" : {
                 "tokenizer": {
                     "class":"solr.SimplePatternTokenizerFactory", 
-                    "pattern": "[^;]+" 
+                    "pattern": "[^ ;]+" 
                 }
             }
         }, 

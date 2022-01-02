@@ -26,7 +26,7 @@
             "analyzer" : {
                 "tokenizer": {
                     "class":"solr.SimplePatternTokenizerFactory", 
-                    "pattern": "[^;]+" 
+                    "pattern": "[^ ;]+" 
                 }
             }
         }, 

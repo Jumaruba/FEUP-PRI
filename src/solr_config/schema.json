@@ -23,11 +23,15 @@
         {
             "name": "comma-separated-list",
             "class": "solr.TextField",
-            "analyzer" : {
+            "indexAnalyzer" : {
                 "tokenizer": {
                     "class":"solr.SimplePatternTokenizerFactory", 
-                    "pattern": "[^;]+" 
-                }
+                    "pattern": "[^ ;]+" 
+                },
+                "filters": [
+                    {"class":"solr.PatternReplaceFilterFactory", 
+                    "pattern":"([^a-zA-Z0-9\u00C0-\u00FF])", "replacement":"", "replace":"all"}
+                ]
             }
         }, 
         {
