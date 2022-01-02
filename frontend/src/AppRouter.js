@@ -33,7 +33,7 @@ const AppRouter = () => (
                     </PageLayout>
                 }/>
             <Route 
-                exact 
+                replace
                 path="/book"
                 key="/book"
                 element={

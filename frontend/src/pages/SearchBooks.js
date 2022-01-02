@@ -24,6 +24,7 @@ const fetchBooks = (apiURL) => {
       });
   }
 
+  // TODO: update url with searched query
   return (
       <Box className={classes.boxFlex}>
         <SearchMenu fetchBooks={fetchBooks}/>

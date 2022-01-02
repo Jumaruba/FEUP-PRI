@@ -23,7 +23,6 @@ const useStyles = makeStyles({
     }
 }); 
 const BookElement = ({element}) => { 
-    console.log(React.version);
     const navigate = useNavigate();
 
     const properties = {
@@ -35,7 +34,7 @@ const BookElement = ({element}) => {
     }
 
     const handleClick = () => {
-        navigate('/book');
+        navigate('/book?id=' + element.book_id);
     }
 
     const classes = useStyles();

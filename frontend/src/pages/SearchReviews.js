@@ -34,6 +34,7 @@ const SearchPage = () => {
       });
   }
 
+  // TODO: update url with searched query
   return (
     <Box sx={{ mt: 2 }}>
       <Grid container >
