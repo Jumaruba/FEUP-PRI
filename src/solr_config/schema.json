@@ -160,7 +160,12 @@
             "name": "authors",
             "type": "comma-separated-list",
             "indexed": true
-        }, 
+        },
+        {
+            "name": "series",
+            "type": "comma-separated-list",
+            "indexed":true
+        },  
         {
             "name": "language_code",
             "type": "text",
