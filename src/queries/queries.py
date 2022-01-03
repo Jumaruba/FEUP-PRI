@@ -134,7 +134,7 @@ def query_cookbook():
     pass
 
 def query_negative_reviews_m3():
-    REVIEWS_RELEVANT_NEGATIVE_FEEDBACK_FILEPATH = "../data/queries/reviews/i_am_the_messenger/relevant.txt" 
+    REVIEWS_RELEVANT_NEGATIVE_FEEDBACK_FILEPATH = "../data/queries/reviews/i_am_the_messenger/negative_relevant.txt" 
     
     # Rating limit
     QUERY_REVIEWS_M3_1 = """http://localhost:8983/solr/reviews/select?q=title:"I Am the Messenger" 
@@ -163,9 +163,18 @@ def query_negative_reviews_m3():
 #TODO
 def query_series():
     pass
+    # http://localhost:8983/solr/#/books/query?q=series:%22Harry%20Potter%22%20title:%22Harry%20Potter%22&q.op=OR&indent=true&sort=exists(series)%20desc,%20date%20desc
+
+    # q => series:"Harry Potter" title:"Harry Potter" title:/.*[0-9].*/
+    # sort => exists(series) desc, date desc
+
+    # if(exists($qq1),recip(ms(NOW,date),3.16e-11,1,1),0)
+    # qq1=query($qq2)&qq2=title:/.*[0-9]+.*/
 
 #TODO
-def query_publisher():
+def query_author():
+    # query slop e para autores
+    # http://localhost:8983/solr/#/books/query?q=authors:%22J%20Rowling%22&q.op=AND&defType=edismax&indent=true&rows=300&qs=2
     pass
     
 
