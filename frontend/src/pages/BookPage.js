@@ -20,19 +20,19 @@ const BookPage = () => {
   const url = 'http://localhost:9000/solr/books/get?id=' + searchParams.get('id');
 
   React.useEffect(() => {
+    setBookInfo({ loading: true });
     fetch(url, {mode:'cors'})
         .then((res) => res.json())
         .then((bookInfo) => {
-            setBookInfo({ loading: false, book: bookInfo });
+            setBookInfo({ loading: false, book: bookInfo['doc'] });
       });
   }, [setBookInfo]);
 
   // TODO: add loading
   return (
     <>
-        <h1> Book Title </h1>
+        <BookInfo info={bookInfo}></BookInfo>
 
-        <BookInfo book={bookInfo.book}></BookInfo>
         <Button title="Go Back" onClick={() => navigate(-1)}>
             Go back
         </Button>
