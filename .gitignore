@@ -28,3 +28,7 @@ src/queries/*
 
 # New scrapping
 scrapping/data/**
+
+src/data/search/books.csv
+
+src/data/search/reviews.csv

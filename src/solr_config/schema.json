@@ -115,18 +115,8 @@
 
     "add-field": [
         {
-            "name": "isbn13",
-            "type": "text",
-            "indexed": false
-        },
-        {
             "name": "isbn",
             "type": "text",
-            "indexed": false
-        },
-        {
-            "name": "is_ebook",
-            "type": "bool",
             "indexed": false
         },
         {
@@ -180,10 +170,6 @@
           "indexed": true
         },
         {
-            "name": "edition_information",
-            "type": "text"
-        },
-        {
             "name": "format",
             "type": "text",
             "indexed": false
@@ -193,10 +179,9 @@
             "type": "text",
             "indexed": false
         },
-
         {
             "name": "review_id",
-            "type": "int",
+            "type": "string",
             "indexed": false
         },
         {
