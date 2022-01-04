@@ -205,14 +205,25 @@ def query_author():
     
     # TODO - test with old and new schema
     # Simple search
-    QUERY_AUTHORS_1 = """http://localhost:8983/solr/reviews/select?q=authors:"J Rowling"
+    QUERY_AUTHORS_1 = """http://localhost:8983/solr/books/select?q=authors:"J K Rowling"
+                &q.op=AND&indent=true
+                &rows=14&wt=json"""
+
+    # TODO - test with old and new schema
+    # Simple search
+    QUERY_AUTHORS_2 = """http://localhost:8983/solr/books/select?q=authors:"J Rowling"
                     &q.op=AND&indent=true
                     &rows=14&wt=json"""
     
     # Uses query slop
-    QUERY_AUTHORS_2 = """http://localhost:8983/solr/reviews/select?q=authors:"J Rowling"
+    QUERY_AUTHORS_3 = """http://localhost:8983/solr/books/select?q=authors:"J Rowling"
                 &q.op=AND&indent=true&defType=edismax&indent=true&qs=3
                 &rows=14&wt=json"""
+
+    # Identify reviews to J. K. Rowling reviews that refer the author (maybe grouped by book)
+    # TODO - change schema in order to deal with cases where J.K. Rowling appears and we want it to match
+    # with J Rowling or J K Rowling
+    QUERY_AUTHORS_4 = """"""
 
 
     # query slop e para autores
