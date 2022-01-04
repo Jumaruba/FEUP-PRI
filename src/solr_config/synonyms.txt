@@ -3,8 +3,8 @@ tragedy,drama,tragic,disastrous,disaster
 galaxy,star,alien,planet,nebula,solar system,universe,comet,celestial
 movie,serie,saga,film
 
-amazing,good,quality,nice,great,impressive,love,fascinating,wonderful,not bad,enjoyed,liked
-worst,horrible,hate,awful,boring,terrible,disappointed,horrid,obnoxious,letdown,bad,didn't like,disliked, let down, tedious
+amazing,good,quality,nice,great,impressive,fascinating,wonderful,not bad,enjoyed,liked,loved
+worst,horrible,hate,awful,boring,terrible,disappointed,horrid,obnoxious,letdown,bad,didn't like,disliked,let down, tedious
 
 science,mathematics,scientific,study,numeric
 
