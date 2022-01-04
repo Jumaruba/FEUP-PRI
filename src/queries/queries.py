@@ -202,6 +202,18 @@ def query_series():
 
 def query_author():
     AUTHORS_FILEPATH = "../data/queries/authors/i_am_the_messenger/positive_relevant.txt" 
+    
+    # TODO - test with old and new schema
+    # Simple search
+    QUERY_AUTHORS_1 = """http://localhost:8983/solr/reviews/select?q=authors:"J Rowling"
+                    &q.op=AND&indent=true
+                    &rows=14&wt=json"""
+    
+    # Uses query slop
+    QUERY_AUTHORS_2 = """http://localhost:8983/solr/reviews/select?q=authors:"J Rowling"
+                &q.op=AND&indent=true&defType=edismax&indent=true&qs=3
+                &rows=14&wt=json"""
+
 
     # query slop e para autores
     # http://localhost:8983/solr/#/books/query?q=authors:%22J%20Rowling%22&q.op=AND&defType=edismax&indent=true&rows=300&qs=2
