@@ -1,7 +1,7 @@
 import sqlite3
 import csv
 import json
-
+from time import strptime
 class ReviewsClean:
     def __init__(self, connection, cursor):
         self.connection = connection
@@ -20,6 +20,15 @@ class ReviewsClean:
         reviews_raw = open(path, 'r')
         for review_obj in reviews_raw: 
             review = json.loads(review_obj)
+            _, month, day, time, _, year = review['date_added'].split(' ')
+            review['date_added'] = "%04d-%02d-%02d %s" % (int(year),int(strptime(month,'%b').tm_mon),int(day),time)
+            review['review_text'] = review['review_text'].replace("(view spoiler)[", "")
+            review['review_text'] = review['review_text'].replace("(hide spoiler)]", "") 
+            if review['review_text'][0] != '\"':
+                review['review_text'] = "\"" + review['review_text']
+            if review['review_text'][-1] != '\"':
+                review['review_text'] += "\""
+
             review_id = review['review_id']
             book_id = review['book_id']
             rating = review['rating']

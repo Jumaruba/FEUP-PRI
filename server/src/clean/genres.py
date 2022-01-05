@@ -10,13 +10,13 @@ class GenresClean:
     def get_names(self, group_names):
         arr = group_names.split(",")
         arr = list(map(str.strip, arr))
-        return arr 
+        return arr
         
     def get_genres(self, genres_groups):
         genres = []
         for genres_group in genres_groups: 
             genres += self.get_names(genres_group)
-        return genres 
+        return ';'.join(genres )
 
     def clean(self, path):
         self.cursor.execute("DROP TABLE IF EXISTS genres") 
@@ -31,7 +31,7 @@ class GenresClean:
 
             if bool(genres['genres']):  
                 genres_arr = self.get_genres(list(genres["genres"].keys()))
-                insert.append([genres['book_id'], str(genres_arr)])           
+                insert.append([genres['book_id'], genres_arr])           
         genres_raw.close()
         
         insert_records = "INSERT INTO genres(book_id, genres) VALUES(?, ?)"

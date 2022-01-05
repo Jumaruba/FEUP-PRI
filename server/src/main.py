@@ -17,14 +17,14 @@ REVIEWS_PATH = '../data/raw/reviews.json'
 def dump_csv(cursor):
     cursor.execute("SELECT * FROM books_combined") 
     rows = cursor.fetchall()
-    with open('../data/clean/books.csv', 'w') as f:
+    with open('../data/search/books.csv', 'w') as f:
         writer = csv.writer(f)
-        writer.writerow(["id", "title", "image_url", "num_pages", "publisher", "date", "description", "isbn", "genres", " authors"])
+        writer.writerow(["id", "title", "image_url", "num_pages", "publisher", "date", "description", "isbn", "genres", "authors"])
         writer.writerows(rows)
     
     cursor.execute("SELECT * FROM reviews_combined") 
     rows = cursor.fetchall()
-    with open('../data/clean/reviews.csv', 'w') as f:
+    with open('../data/search/reviews.csv', 'w') as f:
         writer = csv.writer(f)
         writer.writerow(["review_id", "book_id", "rating", "review_text", "date_added", "title", "genres", "authors"])
         writer.writerows(rows)

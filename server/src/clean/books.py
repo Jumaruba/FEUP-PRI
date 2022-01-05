@@ -37,7 +37,7 @@ class BooksClean:
 
         book_insert = defaultdict(list)
         books_raw = open(path, "r")
-        for index, books_obj in enumerate(books_raw): 
+        for books_obj in books_raw: 
             book = json.loads(books_obj)
             if  bool(book["publication_day"]) and bool(book["publication_month"]) and bool(book["publication_year"]) and book['description'] and book['isbn'] and book['book_id'] and (book['language_code'] == 'eng') and bool(book['num_pages']):   
                 day = int(book["publication_day"])

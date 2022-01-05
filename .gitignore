@@ -27,6 +27,8 @@ src/queries/*
 # New scrapping
 server/data/clean/books.csv
 server/data/clean/reviews.csv
+server/data/search/books.csv
+server/data/search/reviews.csv
 server/data/raw/*.json
 
 # Database
