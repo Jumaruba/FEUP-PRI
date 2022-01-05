@@ -11,19 +11,19 @@ services:
   #     - ./frontend/src/:/frontend/src/
 
   # nginx:
-  #   build: ./nginx
+  #   build: ./reverse_proxy
   #   ports:
   #     - 9000:9000
   #   depends_on:
   #     - solr
 
   solr:
-    build: ./src
+    build: ./server
     container_name: solr
     env_file:
-      - src/.env
+      - server/.env
     ports: 
       - 8983:8983
     volumes:
-      - ./src/solr_config/:/solr_config/
-      - ./src/data/search/:/data/
+      - ./server/solr_config/:/solr_config/
+      - ./server/data/search/:/data/

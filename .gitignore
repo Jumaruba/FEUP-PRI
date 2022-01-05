@@ -1,6 +1,7 @@
 .vscode/ 
 
 # PYCACHE
+__pycache__
 __pycache__/**
 src/pipeline/__pycache__/**
 src/pipeline/cleaning/__pycache__/**
@@ -17,18 +18,16 @@ src/data/raw/**
 src/data/clean/**
 src/data/documents/**
 
-
 # Virtual Env
 pri_venv/**
-
-
 src/queries/precision_recall.pdf
 src/queries/results.tex
 src/queries/*
 
 # New scrapping
-scrapping/data/**
+server/data/clean/books.csv
+server/data/clean/reviews.csv
+server/data/raw/*.json
 
-src/data/search/books.csv
-
-src/data/search/reviews.csv
+# Database
+*.db

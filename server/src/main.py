@@ -19,7 +19,7 @@ def dump_csv(cursor):
     rows = cursor.fetchall()
     with open('../data/clean/books.csv', 'w') as f:
         writer = csv.writer(f)
-        writer.writerow(["id", "title", "image_url", "num_pages", "publisher", "date", "language_code", "description", "isbn", "genres", " authors"])
+        writer.writerow(["id", "title", "image_url", "num_pages", "publisher", "date", "description", "isbn", "genres", " authors"])
         writer.writerows(rows)
     
     cursor.execute("SELECT * FROM reviews_combined") 
