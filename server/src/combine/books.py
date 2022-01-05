@@ -37,7 +37,7 @@ class BooksCombine:
                             author VARCHAR(255));''')
 
         self.cursor.execute('''INSERT INTO books_combined(id, title, image_url, num_pages, publisher, date, description, isbn, genres, author)
-                            SELECT id, title, image_url, num_pages, publisher, date, description, isbn, ('"' || genres || '"') as genres, group_concat(author, ';') as author
+                            SELECT id, title, image_url, num_pages, publisher, date, description, isbn, genres as genres, group_concat(author, ';') as author
                             FROM books_author_name
                             GROUP BY id, title, image_url, num_pages, publisher, date, description, isbn;''')
 
