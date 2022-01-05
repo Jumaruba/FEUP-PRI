@@ -9,10 +9,17 @@ class BooksClean:
         self.cursor = cursor
 
     def get_authors(self, authors_arr):
-        authors_names = []
+        authors_ids = []
         for author_obj in authors_arr:
-            authors_names.append(int(author_obj["author_id"]))
-        return authors_names
+            authors_ids.append(int(author_obj["author_id"]))
+        return authors_ids
+
+
+    def get_series(self, series_arr):
+        series_ids = []
+        for series_id in series_arr:
+            series_ids.append(int(series_id))
+        return series_ids
 
     def recentBook(self, bookList):
         older = bookList[0]
@@ -25,15 +32,29 @@ class BooksClean:
         # -- Table book
         self.cursor.execute("DROP TABLE IF EXISTS book")
         self.cursor.execute('''CREATE TABLE book (
-                            id INTEGER,
+                            book_id INTEGER,
                             title VARCHAR(255),
                             image_url VARCHAR(255),
                             num_pages VARCHAR(255),
                             publisher VARCHAR(255),
                             date VARCHAR(255),
-                            author VARCHAR(255),
                             description VARCHAR(255),
                             isbn INTEGER);''')
+        # -- Table that relates an author to a book
+        self.cursor.execute("DROP TABLE IF EXISTS book_author")
+        self.cursor.execute('''CREATE TABLE book_author (
+                            book_id INTEGER,
+                            author_id INTEGER,
+                            FOREIGN KEY(book_id) REFERENCES book(book_id),
+                            FOREIGN KEY(author_id) REFERENCES author(author_id));''')
+        
+        # -- Table that relates a series to a book
+        self.cursor.execute("DROP TABLE IF EXISTS book_series")
+        self.cursor.execute('''CREATE TABLE book_series (
+                            book_id INTEGER,
+                            series_id INTEGER,
+                            FOREIGN KEY(book_id) REFERENCES book(book_id),
+                            FOREIGN KEY(series_id) REFERENCES series(series_id));''')
 
         book_insert = defaultdict(list)
         books_raw = open(path, "r")
@@ -50,21 +71,34 @@ class BooksClean:
                 num_pages = int(book['num_pages']) 
                 publisher = book['publisher']
                 date = "%04d-%02d-%02d" % (year,month,day)
-                author = self.get_authors(book["authors"])
+                authors = self.get_authors(book["authors"])
+                series_arr = self.get_series(book["series"])
                 description = book['description']
                 isbn = book['isbn']
-                book_insert[title].append([book_id, title, image_url, num_pages, publisher, date, author, description, isbn])
+                book_insert[title].append([book_id, title, image_url, num_pages, publisher, date, authors, series_arr, description, isbn])
         books_raw.close()
 
-        insert = []
+        insert_books = []
+        insert_book_authors = []
+        insert_book_series = []
         for key in book_insert:
             new_book = self.recentBook(book_insert[key])
-            authors = new_book[6]
-            for author in authors:
-                insert.append([new_book[0], new_book[1], new_book[2], new_book[3], new_book[4], new_book[5], author, new_book[7], new_book[8]])
+            insert_books.append([new_book[0], new_book[1], new_book[2], new_book[3], new_book[4], new_book[5], new_book[8], new_book[9]])
+
+            authors_arr = new_book[6]
+            for author in authors_arr:
+                insert_book_authors.append([new_book[0],author])
+
+            series_arr = new_book[7]
+            for series in series_arr:
+                insert_book_series.append([new_book[0],series])
             
-        insert_records = "INSERT INTO book(id,title,image_url,num_pages,publisher,date,author,description,isbn) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
-        self.cursor.executemany(insert_records, insert)
+        insert_book_records = "INSERT INTO book(book_id,title,image_url,num_pages,publisher,date,description,isbn) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+        insert_book_authors_records = "INSERT INTO book_author(book_id,author_id) VALUES (?, ?)"
+        insert_book_series_records = "INSERT INTO book_series(book_id,series_id) VALUES (?, ?)"
+        self.cursor.executemany(insert_book_records, insert_books)
+        self.cursor.executemany(insert_book_authors_records, insert_book_authors)
+        self.cursor.executemany(insert_book_series_records, insert_book_series)
         self.connection.commit()
         
 
