@@ -1,16 +1,15 @@
 {
-    "add-field-type": [
-        {
-            "name":"text",
-            "class":"solr.TextField"
+    "add-field-type": [{
+            "name": "text",
+            "class": "solr.TextField"
         },
         {
-            "name":"bool",
-            "class":"solr.BoolField"
+            "name": "bool",
+            "class": "solr.BoolField"
         },
         {
-            "name":"int",
-            "class":"TrieIntField"
+            "name": "int",
+            "class": "TrieIntField"
         },
         {
             "name": "float",
@@ -23,117 +22,142 @@
         {
             "name": "comma-separated-list",
             "class": "solr.TextField",
-            "analyzer" : {
+            "analyzer": {
                 "tokenizer": {
-                    "class":"solr.SimplePatternTokenizerFactory", 
-                    "pattern": "[^;]+" 
+                    "class": "solr.SimplePatternTokenizerFactory",
+                    "pattern": "[^;]+"
                 }
             }
-        }, 
+        },
         {
             "name": "description",
             "class": "solr.TextField",
             "indexAnalyzer": {
                 "tokenizer": {
-                    "class":"solr.StandardTokenizerFactory"
+                    "class": "solr.StandardTokenizerFactory"
                 },
-                "filters":[  
-                    {"class": "solr.LowerCaseFilterFactory"},
-                    {"class": "solr.EnglishMinimalStemFilterFactory"}
+                "filters": [{
+                        "class": "solr.LowerCaseFilterFactory"
+                    },
+                    {
+                        "class": "solr.EnglishMinimalStemFilterFactory"
+                    }
                 ]
-            }, 
+            },
             "queryAnalyzer": {
                 "tokenizer": {
-                    "class":"solr.StandardTokenizerFactory"
-                }, 
-                "filters":[
-                    {"class":"solr.SynonymGraphFilterFactory",
-                        "expand":"true",
-                        "ignoreCase":"true",
-                        "synonyms":"synonyms.txt"
-                    }, 
-                    {"class": "solr.LowerCaseFilterFactory"},
-                    {"class": "solr.EnglishMinimalStemFilterFactory"}
+                    "class": "solr.StandardTokenizerFactory"
+                },
+                "filters": [{
+                        "class": "solr.SynonymGraphFilterFactory",
+                        "expand": "true",
+                        "ignoreCase": "true",
+                        "synonyms": "synonyms.txt"
+                    },
+                    {
+                        "class": "solr.LowerCaseFilterFactory"
+                    },
+                    {
+                        "class": "solr.EnglishMinimalStemFilterFactory"
+                    }
                 ]
             }
         },
         {
-          "name": "title",
-          "class": "solr.TextField",
-          "indexAnalyzer": {
+            "name": "title",
+            "class": "solr.TextField",
+            "indexAnalyzer": {
                 "tokenizer": {
-                    "class":"solr.StandardTokenizerFactory"
+                    "class": "solr.StandardTokenizerFactory"
                 },
-                "filters":[  
-                    {"class": "solr.LowerCaseFilterFactory"}
-                ]
-          }, 
-          "queryAnalyzer": {
+                "filters": [{
+                    "class": "solr.LowerCaseFilterFactory"
+                }]
+            },
+            "queryAnalyzer": {
                 "tokenizer": {
-                    "class":"solr.StandardTokenizerFactory"
+                    "class": "solr.StandardTokenizerFactory"
                 },
-                "filters":[  
-                    {"class": "solr.LowerCaseFilterFactory"}
-                ]
-          }
+                "filters": [{
+                    "class": "solr.LowerCaseFilterFactory"
+                }]
+            }
         },
         {
             "name": "review",
             "class": "solr.TextField",
             "indexAnalyzer": {
                 "tokenizer": {
-                    "class":"solr.StandardTokenizerFactory"
+                    "class": "solr.StandardTokenizerFactory"
                 },
-                "filters":[  
-                    {"class": "solr.LowerCaseFilterFactory"},
-                    {"class": "solr.PorterStemFilterFactory"},
-                    {"class": "solr.EnglishPossessiveFilterFactory"},
-                    {"class": "solr.EnglishMinimalStemFilterFactory"}
+                "filters": [{
+                        "class": "solr.LowerCaseFilterFactory"
+                    },
+                    {
+                        "class": "solr.PorterStemFilterFactory"
+                    },
+                    {
+                        "class": "solr.EnglishPossessiveFilterFactory"
+                    },
+                    {
+                        "class": "solr.EnglishMinimalStemFilterFactory"
+                    }
 
                 ]
-            }, 
+            },
             "queryAnalyzer": {
                 "tokenizer": {
-                    "class":"solr.StandardTokenizerFactory"
+                    "class": "solr.StandardTokenizerFactory"
                 },
-                "filters":[  
-                    {"class":"solr.SynonymGraphFilterFactory",
-                        "expand":"true",
-                        "ignoreCase":"true",
-                        "synonyms":"synonyms.txt"
-                    }, 
-                    {"class": "solr.LowerCaseFilterFactory"},
-                    {"class": "solr.PorterStemFilterFactory"},
-                    {"class": "solr.EnglishPossessiveFilterFactory"},
-                    {"class": "solr.EnglishMinimalStemFilterFactory"},
-                    {"class": "solr.StopFilterFactory", "words":"stopwords.txt", "ignoreCase":true}
+                "filters": [{
+                        "class": "solr.SynonymGraphFilterFactory",
+                        "expand": "true",
+                        "ignoreCase": "true",
+                        "synonyms": "synonyms.txt"
+                    },
+                    {
+                        "class": "solr.LowerCaseFilterFactory"
+                    },
+                    {
+                        "class": "solr.PorterStemFilterFactory"
+                    },
+                    {
+                        "class": "solr.EnglishPossessiveFilterFactory"
+                    },
+                    {
+                        "class": "solr.EnglishMinimalStemFilterFactory"
+                    },
+                    {
+                        "class": "solr.StopFilterFactory",
+                        "words": "stopwords.txt",
+                        "ignoreCase": true
+                    }
                 ]
             }
-          }
+        }
     ],
 
 
-    "add-field": [
-        {
+    "add-field": [{
             "name": "isbn",
             "type": "text",
             "indexed": false
         },
         {
-            "name":"num_pages", 
+            "name": "num_pages",
             "type": "int",
             "indexed": false
-        }, 
+        },
         {
-            "name": "image_url", 
+            "name": "image_url",
             "type": "text",
             "indexed": false
         },
         {
-            "name": "book_id", 
+            "name": "book_id",
             "type": "int",
             "indexed": false
-        }, 
+        },
         {
             "name": "date",
             "type": "date",
@@ -142,32 +166,37 @@
         {
             "name": "genres",
             "type": "comma-separated-list",
-            "indexed":true
-        }, 
+            "indexed": true
+        },
         {
             "name": "authors",
             "type": "comma-separated-list",
             "indexed": true
-        }, 
+        },
+        {
+            "name": "series",
+            "type": "comma-separated-list",
+            "indexed": true
+        },
         {
             "name": "language_code",
             "type": "text",
             "indexed": false
         },
-        { 
-            "name": "description", 
+        {
+            "name": "description",
             "type": "description",
             "indexed": true
-        }, 
+        },
         {
             "name": "average_rating",
             "type": "float",
             "indexed": true
         },
         {
-          "name": "title", 
-          "type": "title",
-          "indexed": true
+            "name": "title",
+            "type": "title",
+            "indexed": true
         },
         {
             "name": "format",

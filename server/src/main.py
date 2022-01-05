@@ -17,7 +17,7 @@ REVIEWS_PATH = '../data/raw/reviews.json'
 SERIES_PATH = '../data/raw/series.json'
 
 def dump_csv(cursor):
-    cursor.execute("SELECT * FROM book_search") 
+    cursor.execute("SELECT * FROM books_combined") 
     rows = cursor.fetchall()
     with open('../data/search/books.csv', 'w') as f:
         writer = csv.writer(f)
