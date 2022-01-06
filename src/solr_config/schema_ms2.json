@@ -201,7 +201,7 @@
 
         {
             "name": "review_id",
-            "type": "int",
+            "type": "text",
             "indexed": false
         },
         {

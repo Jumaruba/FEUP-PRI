@@ -5,10 +5,6 @@
             "class":"solr.TextField"
         },
         {
-            "name":"bool",
-            "class":"solr.BoolField"
-        },
-        {
             "name":"int",
             "class":"TrieIntField"
         },
@@ -121,18 +117,18 @@
 
     "add-field": [
         {
-            "name": "isbn13",
-            "type": "text",
-            "indexed": false
+            "name": "book_id", 
+            "type": "int",
+            "indexed": true
+        }, 
+        {
+            "name": "title", 
+            "type": "title",
+            "indexed": true
         },
         {
-            "name": "isbn",
+            "name": "image_url", 
             "type": "text",
-            "indexed": false
-        },
-        {
-            "name": "is_ebook",
-            "type": "bool",
             "indexed": false
         },
         {
@@ -141,19 +137,29 @@
             "indexed": false
         }, 
         {
-            "name": "image_url", 
+            "name":"format",
             "type": "text",
-            "indexed": false
+            "indexed":false
         },
         {
-            "name": "book_id", 
-            "type": "int",
+            "name": "publisher",
+            "type": "text",
             "indexed": true
-        }, 
+        },
         {
             "name": "date",
             "type": "date",
             "indexed": true
+        },
+        { 
+            "name": "description", 
+            "type": "description",
+            "indexed": true
+        }, 
+        {
+            "name": "isbn",
+            "type": "text",
+            "indexed": false
         },
         {
             "name": "genres",
@@ -171,43 +177,13 @@
             "indexed":true
         },  
         {
-            "name": "language_code",
-            "type": "text",
-            "indexed": false
-        },
-        { 
-            "name": "description", 
-            "type": "description",
-            "indexed": true
-        }, 
-        {
             "name": "average_rating",
             "type": "float",
             "indexed": true
         },
         {
-          "name": "title", 
-          "type": "title",
-          "indexed": true
-        },
-        {
-            "name": "edition_information",
-            "type": "text"
-        },
-        {
-            "name": "format",
-            "type": "text",
-            "indexed": false
-        },
-        {
-            "name": "publisher",
-            "type": "text",
-            "indexed": true
-        },
-
-        {
             "name": "review_id",
-            "type": "int",
+            "type": "text",
             "indexed": false
         },
         {
