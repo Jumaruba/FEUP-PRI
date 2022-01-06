@@ -8,6 +8,7 @@ class ReviewsClean:
         self.cursor = cursor
 
     def clean(self, path):
+        print("Cleaning Reviews")
         self.cursor.execute("DROP TABLE IF EXISTS review")
         self.cursor.execute('''CREATE TABLE review (
                             review_id VARCHAR(255) PRIMARY KEY,
@@ -40,3 +41,4 @@ class ReviewsClean:
         self.cursor.executemany(insert_records, insert)
         self.connection.commit()
         reviews_raw.close() 
+        print("Finished Cleaning Reviews")

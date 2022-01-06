@@ -28,7 +28,14 @@ class BooksClean:
                 if older[5] > book[5]: older = book
         return older
 
+    def book_to_store(self, book):
+        return bool(book["publication_day"]) and bool(book["publication_month"]) \
+        and bool(book["publication_year"]) and book['description'] \
+        and book['isbn'] and book['book_id'] and \
+        (book['language_code'] == 'eng') and bool(book['num_pages'])
+
     def clean(self, path):
+        print("Cleaning Books")
         # -- Table book
         self.cursor.execute("DROP TABLE IF EXISTS book")
         self.cursor.execute('''CREATE TABLE book (
@@ -36,6 +43,7 @@ class BooksClean:
                             title VARCHAR(255),
                             image_url VARCHAR(255),
                             num_pages VARCHAR(255),
+                            format VARCHAR(255),
                             publisher VARCHAR(255),
                             date VARCHAR(255),
                             description VARCHAR(255),
@@ -60,7 +68,7 @@ class BooksClean:
         books_raw = open(path, "r")
         for books_obj in books_raw: 
             book = json.loads(books_obj)
-            if  bool(book["publication_day"]) and bool(book["publication_month"]) and bool(book["publication_year"]) and book['description'] and book['isbn'] and book['book_id'] and (book['language_code'] == 'eng') and bool(book['num_pages']):   
+            if self.book_to_store(book):   
                 day = int(book["publication_day"])
                 month = int(book["publication_month"])
                 year = int(book["publication_year"])
@@ -69,13 +77,14 @@ class BooksClean:
                 title = book['title']
                 image_url = book['image_url']
                 num_pages = int(book['num_pages']) 
+                format = book['format']
                 publisher = book['publisher']
                 date = "%04d-%02d-%02d" % (year,month,day)
                 authors = self.get_authors(book["authors"])
                 series_arr = self.get_series(book["series"])
                 description = book['description']
                 isbn = book['isbn']
-                book_insert[title].append([book_id, title, image_url, num_pages, publisher, date, authors, series_arr, description, isbn])
+                book_insert[title].append([book_id, title, image_url, num_pages, format, publisher, date, authors, series_arr, description, isbn])
         books_raw.close()
 
         insert_books = []
@@ -83,22 +92,22 @@ class BooksClean:
         insert_book_series = []
         for key in book_insert:
             new_book = self.recentBook(book_insert[key])
-            insert_books.append([new_book[0], new_book[1], new_book[2], new_book[3], new_book[4], new_book[5], new_book[8], new_book[9]])
+            insert_books.append([new_book[0], new_book[1], new_book[2], new_book[3], new_book[4], new_book[5], new_book[6], new_book[9], new_book[10]])
 
-            authors_arr = new_book[6]
+            authors_arr = new_book[7]
             for author in authors_arr:
                 insert_book_authors.append([new_book[0],author])
 
-            series_arr = new_book[7]
+            series_arr = new_book[8]
             for series in series_arr:
                 insert_book_series.append([new_book[0],series])
             
-        insert_book_records = "INSERT INTO book(book_id,title,image_url,num_pages,publisher,date,description,isbn) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+        insert_book_records = "INSERT INTO book(book_id,title,image_url,num_pages,format,publisher,date,description,isbn) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
         insert_book_authors_records = "INSERT INTO book_author(book_id,author_id) VALUES (?, ?)"
         insert_book_series_records = "INSERT INTO book_series(book_id,series_id) VALUES (?, ?)"
         self.cursor.executemany(insert_book_records, insert_books)
         self.cursor.executemany(insert_book_authors_records, insert_book_authors)
         self.cursor.executemany(insert_book_series_records, insert_book_series)
         self.connection.commit()
+        print("Finished Cleaning Books")
         
-

@@ -16,6 +16,7 @@ class AuthorsClean:
 
 
     def clean(self, path):
+        print("Cleaning Authors")
         self.cursor.execute("DROP TABLE IF EXISTS author")
         self.cursor.execute('''CREATE TABLE author (
                             author_id INTEGER PRIMARY KEY,
@@ -35,4 +36,5 @@ class AuthorsClean:
         insert_records = "INSERT INTO author(author_id,name) VALUES(?, ?)"
         self.cursor.executemany(insert_records, insert)
         self.connection.commit()
+        print("Finished Cleaning Authors")
         

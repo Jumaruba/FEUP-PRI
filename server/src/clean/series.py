@@ -8,6 +8,7 @@ class SeriesClean:
         self.cursor = cursor
 
     def clean(self, path):
+        print("Cleaning Series")
         self.cursor.execute("DROP TABLE IF EXISTS series") 
         self.cursor.execute('''CREATE TABLE series (
                             series_id PRIMARY KEY,
@@ -23,6 +24,7 @@ class SeriesClean:
         insert_records = "INSERT INTO series(series_id, series_name) VALUES(?, ?)"
         self.cursor.executemany(insert_records, insert)
         self.connection.commit()
+        print("Finished Cleaning Series")
         
 
 

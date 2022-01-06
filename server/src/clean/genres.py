@@ -19,6 +19,7 @@ class GenresClean:
         return ';'.join(genres )
 
     def clean(self, path):
+        print("Cleaning Genres")
         self.cursor.execute("DROP TABLE IF EXISTS genres") 
         self.cursor.execute('''CREATE TABLE genres (
                             book_id PRIMARY KEY,
@@ -37,6 +38,7 @@ class GenresClean:
         insert_records = "INSERT INTO genres(book_id, genres) VALUES(?, ?)"
         self.cursor.executemany(insert_records, insert)
         self.connection.commit()
+        print("Finished Cleaning Genres")
         
 
 
