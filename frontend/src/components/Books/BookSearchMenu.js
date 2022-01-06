@@ -1,6 +1,6 @@
 import React from 'react'; 
 
-import ThematicSearch from '../../searches/ThematicSearch';
+import ThematicSearch from '../../api/ThematicSearch';
 import {Grid, Card, Stack, CardHeader, CardContent} from '@mui/material'; 
 import { makeStyles } from '@mui/styles';
 

@@ -1,10 +1,7 @@
 import React from 'react';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Grid';
+import { Box, Card, Stack, Grid, Checkbox} from '@mui/material';
 
-import SentimentSearch from '../searches/SentimentSearch';
+import SentimentSearch from '../api/SentimentSearch';
 import ReviewElement from '../components/Reviews/ReviewElement';
 import Listing from '../components/Listing';
 
@@ -41,6 +38,7 @@ const SearchPage = () => {
           <Card style={cardSearchStyle} variant="outlined">
             <h2>Advanced Review Search</h2>
             <Stack spacing={2}>
+              <Checkbox/>
               <SentimentSearch fetch={fetchReviews} />
             </Stack>
           </Card>
