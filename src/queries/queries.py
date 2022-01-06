@@ -4,6 +4,7 @@ from metrics import generate_metrics
 def query_exe(query, file, id_fieldname, path) -> None:
     results = requests.get(query).json()['response']['docs']
     relevant = list(map(lambda el: int(el.strip().split(",")[0]), open(file).readlines()))  
+    # relevant = list(map(lambda el: el.strip().split(",")[0], open(file).readlines()))  
     generate_metrics(results, relevant, id_fieldname, path)      
 
 #############
@@ -63,8 +64,8 @@ def query_world_war_nofilter():
     query_exe(QUERY_BOOKS_6, BOOKS_QRELS_FILEPATH_3, "book_id", "world_war_nofilter/boost/")
 
 def query_reviews():
-    REVIEWS_BAD_FILEPATH = "../data/queries/reviews/i_am_the_messenger/bad.txt" 
-    REVIEWS_GOOD_FILEPATH = "../data/queries/reviews/i_am_the_messenger/good.txt" 
+    REVIEWS_BAD_FILEPATH = "../data/queries/reviews/book_jumper/bad.txt" 
+    REVIEWS_GOOD_FILEPATH = "../data/queries/reviews/book_jumper/good.txt" 
     """
     bad_search_review = "hated this books"
     # Bad.
@@ -130,64 +131,89 @@ def query_science_nofilter():
 #############
 
 #TODO
-def query_cookbook():
-    pass
+# Other ideas:
+# - cook/it books
+# - ease of reading
 
 # TODO - evaluate again when new dataset is ready
 def query_negative_reviews_m3():
-    REVIEWS_NEGATIVE_FEEDBACK_FILEPATH = "../data/queries/reviews/i_am_the_messenger/negative_relevant.txt" 
+    """
+    SYSTEM 1 <=> QUERY_REVIEWS_M3_1: Limits rating and sorts by rating
+    SYSTEM 2 <=> QUERY_REVIEWS_M3_2: Limits rating, sorts by rating and 
+        searches for negative words (Test with query time(MS2) and index time synonyms(MS3))
+    SYSTEM 3 <=> QUERY_REVIEWS_M3_3: Limits rating, and uses boost function that considers
+        the frequency of negative and positive words and the rating
+        searches for negative words (Test with query time(MS2) and index time synonyms(MS3))
+    """
+    REVIEWS_NEGATIVE_FEEDBACK_FILEPATH = "../data/queries/reviews/book_jumper/negative_relevant.txt" 
     
     # Rating limit
-    QUERY_REVIEWS_M3_1 = """http://localhost:8983/solr/reviews/select?q=title:"I Am the Messenger" 
+    QUERY_REVIEWS_M3_1 = """http://localhost:8983/solr/reviews/select?q=title:"The Book Jumper" 
                         rating:[0 TO 3]&q.op=AND&indent=true&
                         sort=field(rating, min) asc
-                        &rows=14&wt=json"""
-    # TODO: Test with query time synonyms and with index time synonyms
+                        &rows=16&wt=json"""
+ 
     # Rating limit and sort
-    QUERY_REVIEWS_M3_2 = """http://localhost:8983/solr/reviews/select?q=title:"I Am the Messenger" 
+    QUERY_REVIEWS_M3_2 = """http://localhost:8983/solr/reviews/select?q=title:"The Book Jumper" 
                         review_text:disappointed rating:[0 TO 4]&q.op=AND&indent=true&
                         sort=field(rating, min) asc
-                        &rows=14&wt=json"""
+                        &rows=16&wt=json"""
     # Rating limit and boost function
-    QUERY_REVIEWS_M3_3 = """http://localhost:8983/solr/reviews/select?q=title:"I Am the Messenger" 
+    QUERY_REVIEWS_M3_3 = """http://localhost:8983/solr/reviews/select?q=title:"The Book Jumper" 
                         review_text:disappointed rating:[0 TO 4]&q.op=AND&defType=edismax&indent=true&
                         bf=div(if(termfreq(review_text,loved),div(termfreq(review_text,disappointed),termfreq(review_text,loved)),termfreq(review_text,disappointed)),sum(rating,1))^20
-                        &rows=14&wt=json"""
+                        &rows=16&wt=json"""
 
-    # print("[NEGATIVE REVIEWS] rating limit")
-    #query_exe(QUERY_REVIEWS_M3_1, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/no_schema/limit/")
+    QUERY_REVIEWS_M3_4 = """http://localhost:8983/solr/reviews/select?q=title:"The Book Jumper" rating:[0 TO 4]&q.op=AND&defType=edismax&indent=true&
+                        bf=div(if(termfreq(review_text,loved),div(termfreq(review_text,disappointed),termfreq(review_text,loved)),termfreq(review_text,disappointed)),sum(rating,1))^20
+                        &rows=16&wt=json"""
+
+    QUERY_REVIEWS_M3_5 = """http://localhost:8983/solr/reviews/select?q=title:"The Book Jumper" rating:[0 TO 3]&q.op=AND&defType=edismax&indent=true&
+                    bf=if(termfreq(review_text,loved),div(termfreq(review_text,disappointed),termfreq(review_text,loved)),termfreq(review_text,disappointed))^20 div(1,sum(rating,1))^5
+                    &rows=16&wt=json"""
+
+
+    # FOLDER = 'index_synonyms'
+    FOLDER = 'query_synonyms'
+
+    print("[NEGATIVE REVIEWS] rating limit")
+    query_exe(QUERY_REVIEWS_M3_1, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/"+FOLDER+"/1_limit/")
     print("[NEGATIVE REVIEWS] search negative word, rating limit and sort")
-    query_exe(QUERY_REVIEWS_M3_2, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/query_synonyms/sort/")  
+    query_exe(QUERY_REVIEWS_M3_2, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/"+FOLDER+"/2_sort/")  
     print("[NEGATIVE REVIEWS] search negative word, rating limit and boost function")
-    query_exe(QUERY_REVIEWS_M3_3, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/query_synonyms/boost/")  
+    query_exe(QUERY_REVIEWS_M3_3, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/"+FOLDER+"/3_boost/")  
+    print("[NEGATIVE REVIEWS] rating limit and boost function")
+    query_exe(QUERY_REVIEWS_M3_4, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/"+FOLDER+"/4_boost2/")  
+    print("[NEGATIVE REVIEWS] rating limit and 2 boost functions")
+    query_exe(QUERY_REVIEWS_M3_5, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/"+FOLDER+"/5_boost3/")  
 
 # TODO - test boost funciton when new dataset is ready
 def query_positive_reviews_m3():
-    REVIEWS_POSITVE_FEEDBACK_FILEPATH = "../data/queries/reviews/i_am_the_messenger/positive_relevant.txt" 
+    REVIEWS_POSITVE_FEEDBACK_FILEPATH = "../data/queries/reviews/book_jumper/positive_relevant.txt" 
     
     # Rating limit
     QUERY_REVIEWS_M3_4 = """http://localhost:8983/solr/reviews/select?q=title:"I Am the Messenger" 
                         rating:[3 TO 5]&q.op=AND&indent=true&
                         sort=field(rating, max) asc
-                        &rows=14&wt=json"""
+                        &rows=12&wt=json"""
     # TODO: Test with query time synonyms and with index time synonyms
     # Rating limit and sort
     QUERY_REVIEWS_M3_5 = """http://localhost:8983/solr/reviews/select?q=title:"I Am the Messenger" 
                         review_text:disappointed rating:[3 TO 5]&q.op=AND&indent=true&
                         sort=field(rating, max) asc
-                        &rows=14&wt=json"""
+                        &rows=12&wt=json"""
     # Rating limit and boost function
     QUERY_REVIEWS_M3_6 = """http://localhost:8983/solr/reviews/select?q=title:"I Am the Messenger" 
                         review_text:disappointed rating:[3 TO 5]&q.op=AND&defType=edismax&indent=true&
                         bf=mul(if(termfreq(review_text,disappointed),div(termfreq(review_text,loved),termfreq(review_text,disappointed)),termfreq(review_text,loved)),sum(rating,1))^20
-                        &rows=14&wt=json"""
+                        &rows=12&wt=json"""
 
     # print("[POSITIVE REVIEWS] rating limit")
     #query_exe(QUERY_REVIEWS_M3_4, REVIEWS_POSITVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/no_schema/limit/")
     print("[POSITIVE REVIEWS] search positive word, rating limit and sort")
-    query_exe(QUERY_REVIEWS_M3_5, REVIEWS_POSITVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/query_synonyms/sort/")  
+    query_exe(QUERY_REVIEWS_M3_5, REVIEWS_POSITVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/index_synonyms/sort/")  
     print("[POSITIVE REVIEWS] search positive word, rating limit and boost function")
-    query_exe(QUERY_REVIEWS_M3_6, REVIEWS_POSITVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/query_synonyms/boost/")  
+    query_exe(QUERY_REVIEWS_M3_6, REVIEWS_POSITVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/index_synonyms/boost/")  
 
 #TODO
 def query_series():
@@ -201,7 +227,7 @@ def query_series():
     # qq1=query($qq2)&qq2=title:/.*[0-9]+.*/
 
 def query_author():
-    AUTHORS_FILEPATH = "../data/queries/authors/i_am_the_messenger/positive_relevant.txt" 
+    AUTHORS_FILEPATH = "../data/queries/authors/book_jumper/positive_relevant.txt" 
     
     # TODO - test with old and new schema
     # Simple search

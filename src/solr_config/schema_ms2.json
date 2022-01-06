@@ -142,7 +142,7 @@
         {
             "name": "book_id", 
             "type": "int",
-            "indexed": false
+            "indexed": true
         }, 
         {
             "name": "date",
