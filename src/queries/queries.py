@@ -144,6 +144,10 @@ def query_negative_reviews_m3():
     SYSTEM 3 <=> QUERY_REVIEWS_M3_3: Limits rating, and uses boost function that considers
         the frequency of negative and positive words and the rating
         searches for negative words (Test with query time(MS2) and index time synonyms(MS3))
+    SYSTEM 4 <=> QUERY_REVIEWS_M3_4: Limits rating, and uses boost function that considers
+        the frequency of negative and positive words and the rating (Test with query time(MS2) and index time synonyms(MS3))
+    SYSTEM 5 <=> QUERY_REVIEWS_M3_5: Limits rating, and uses 2 boost functions that considers
+        the frequency of negative and positive words and the rating separatly (Test with query time(MS2) and index time synonyms(MS3))
     """
     REVIEWS_NEGATIVE_FEEDBACK_FILEPATH = "../data/queries/reviews/book_jumper/negative_relevant.txt" 
     
