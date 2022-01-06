@@ -6,7 +6,7 @@ import os
 
 # Argument positions in books.csv
 BOOK_ID_POS = -3
-AUTHORS_POS = 6
+AUTHORS_POS = 7
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 

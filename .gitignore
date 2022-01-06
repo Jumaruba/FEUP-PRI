@@ -1,5 +1,8 @@
 .vscode/ 
 
+# Virtual Env
+pri_venv/**
+
 # PYCACHE
 __pycache__/**
 src/pipeline/__pycache__/**
@@ -9,7 +12,12 @@ src/pipeline/combine/__pycache__/**
 src/pipeline/explore/utils/__pycache__/
 src/pipeline/clean/__pycache__/
 
-# DATA
+# Queries MS2
+src/queries/precision_recall.pdf
+src/queries/results.tex
+src/queries/*
+
+# DATA MS2
 src/data/processed/**
 src/data/explore/**
 src/data/combine/**
@@ -17,18 +25,8 @@ src/data/raw/**
 src/data/clean/**
 src/data/documents/**
 
-
-# Virtual Env
-pri_venv/**
-
-
-
-
-
-
-
-src/queries/precision_recall.pdf
-
-src/queries/results.tex
-
-src/queries/*
+# DATA MS3
+server/data/books.db
+server/data/raw/*
+server/data/search/books.csv
+server/data/search/reviews.csv

@@ -23,10 +23,10 @@
         {
             "name": "comma-separated-list",
             "class": "solr.TextField",
-            "analyzer" : {
+            "indexAnalyzer" : {
                 "tokenizer": {
                     "class":"solr.SimplePatternTokenizerFactory", 
-                    "pattern": "[^;]+" 
+                    "pattern": "[^ ;]+" 
                 }
             }
         }, 
@@ -116,7 +116,7 @@
         {
             "name": "book_id", 
             "type": "int",
-            "indexed": false
+            "indexed": true
         }, 
         {
             "name": "date",
@@ -131,6 +131,11 @@
         {
             "name": "authors",
             "type": "comma-separated-list"
+        }, 
+        {
+            "name": "series",
+            "type": "comma-separated-list",
+            "indexed":true
         }, 
         {
             "name": "language_code",
@@ -164,12 +169,12 @@
         {
             "name": "publisher",
             "type": "text",
-            "indexed": false
+            "indexed": true
         },
 
         {
             "name": "review_id",
-            "type": "int",
+            "type": "text",
             "indexed": false
         },
         {
