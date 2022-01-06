@@ -1,10 +1,11 @@
 import requests 
-from metrics import generate_metrics
+#from metrics import generate_metrics
+from metrics_reviews import generate_metrics
 
 def query_exe(query, file, id_fieldname, path) -> None:
     results = requests.get(query).json()['response']['docs']
-    relevant = list(map(lambda el: int(el.strip().split(",")[0]), open(file).readlines()))  
-    # relevant = list(map(lambda el: el.strip().split(",")[0], open(file).readlines()))  
+    #relevant = list(map(lambda el: int(el.strip().split(",")[0]), open(file).readlines()))  
+    relevant = list(map(lambda el: el.strip().split(",")[0], open(file).readlines()))  
     generate_metrics(results, relevant, id_fieldname, path)      
 
 #############
@@ -135,50 +136,52 @@ def query_science_nofilter():
 # - cook/it books
 # - ease of reading
 
-# TODO - evaluate again when new dataset is ready
 def query_negative_reviews_m3():
     """
     SYSTEM 1 <=> QUERY_REVIEWS_M3_1: Limits rating and sorts by rating
-    SYSTEM 2 <=> QUERY_REVIEWS_M3_2: Limits rating, sorts by rating and 
-        searches for negative words (Test with query time(MS2) and index time synonyms(MS3))
-    SYSTEM 3 <=> QUERY_REVIEWS_M3_3: Limits rating, and uses boost function that considers
-        the frequency of negative and positive words and the rating
-        searches for negative words (Test with query time(MS2) and index time synonyms(MS3))
+
+    (Test S2,S3,S4,S5 with query time(MS2) and index time synonyms(MS3))
+    SYSTEM 2 <=> QUERY_REVIEWS_M3_2: Limits rating, sorts by rating and searches for negative words 
+    SYSTEM 3 <=> QUERY_REVIEWS_M3_3: Limits rating, searches for negative words and uses boost function that considers
+        the frequency of negative and positive words and the rating 
     SYSTEM 4 <=> QUERY_REVIEWS_M3_4: Limits rating, and uses boost function that considers
-        the frequency of negative and positive words and the rating (Test with query time(MS2) and index time synonyms(MS3))
-    SYSTEM 5 <=> QUERY_REVIEWS_M3_5: Limits rating, and uses 2 boost functions that considers
-        the frequency of negative and positive words and the rating separatly (Test with query time(MS2) and index time synonyms(MS3))
+        the frequency of negative and positive words and the rating
+    SYSTEM 5 <=> QUERY_REVIEWS_M3_5: Limits rating, and uses 2 boost functions:
+        one that considers the frequency of negative and positive words and the other whiche boosts the rating 
     """
     REVIEWS_NEGATIVE_FEEDBACK_FILEPATH = "../data/queries/reviews/book_jumper/negative_relevant.txt" 
     
-    # Rating limit
+    # Rating limit and sort
     QUERY_REVIEWS_M3_1 = """http://localhost:8983/solr/reviews/select?q=title:"The Book Jumper" 
                         rating:[0 TO 3]&q.op=AND&indent=true&
                         sort=field(rating, min) asc
                         &rows=16&wt=json"""
  
-    # Rating limit and sort
+    # Rating limit, sort and search for negative words
     QUERY_REVIEWS_M3_2 = """http://localhost:8983/solr/reviews/select?q=title:"The Book Jumper" 
-                        review_text:disappointed rating:[0 TO 4]&q.op=AND&indent=true&
+                        review_text:disappointed rating:[0 TO 3]&q.op=AND&indent=true&
                         sort=field(rating, min) asc
                         &rows=16&wt=json"""
-    # Rating limit and boost function
+
+    # Rating limit, boost function and search for negative words
     QUERY_REVIEWS_M3_3 = """http://localhost:8983/solr/reviews/select?q=title:"The Book Jumper" 
-                        review_text:disappointed rating:[0 TO 4]&q.op=AND&defType=edismax&indent=true&
+                        review_text:disappointed rating:[0 TO 3]&q.op=AND&defType=edismax&indent=true&
                         bf=div(if(termfreq(review_text,loved),div(termfreq(review_text,disappointed),termfreq(review_text,loved)),termfreq(review_text,disappointed)),sum(rating,1))^20
                         &rows=16&wt=json"""
 
-    QUERY_REVIEWS_M3_4 = """http://localhost:8983/solr/reviews/select?q=title:"The Book Jumper" rating:[0 TO 4]&q.op=AND&defType=edismax&indent=true&
+    # Rating limit, same boost function but WITHOUT searching for negative words
+    QUERY_REVIEWS_M3_4 = """http://localhost:8983/solr/reviews/select?q=title:"The Book Jumper" rating:[0 TO 3]&q.op=AND&defType=edismax&indent=true&
                         bf=div(if(termfreq(review_text,loved),div(termfreq(review_text,disappointed),termfreq(review_text,loved)),termfreq(review_text,disappointed)),sum(rating,1))^20
                         &rows=16&wt=json"""
 
+    # Rating limit and 2 boost functions, one for the frequency of positive and negative words, and another for the rating
     QUERY_REVIEWS_M3_5 = """http://localhost:8983/solr/reviews/select?q=title:"The Book Jumper" rating:[0 TO 3]&q.op=AND&defType=edismax&indent=true&
                     bf=if(termfreq(review_text,loved),div(termfreq(review_text,disappointed),termfreq(review_text,loved)),termfreq(review_text,disappointed))^20 div(1,sum(rating,1))^5
                     &rows=16&wt=json"""
 
 
-    # FOLDER = 'index_synonyms'
-    FOLDER = 'query_synonyms'
+    FOLDER = 'index_synonyms'
+    # FOLDER = 'query_synonyms'
 
     print("[NEGATIVE REVIEWS] rating limit")
     query_exe(QUERY_REVIEWS_M3_1, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/"+FOLDER+"/1_limit/")
@@ -191,7 +194,7 @@ def query_negative_reviews_m3():
     print("[NEGATIVE REVIEWS] rating limit and 2 boost functions")
     query_exe(QUERY_REVIEWS_M3_5, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/"+FOLDER+"/5_boost3/")  
 
-# TODO - test boost funciton when new dataset is ready
+
 def query_positive_reviews_m3():
     REVIEWS_POSITVE_FEEDBACK_FILEPATH = "../data/queries/reviews/book_jumper/positive_relevant.txt" 
     

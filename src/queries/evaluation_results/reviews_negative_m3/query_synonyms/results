@@ -66,7 +66,6 @@ True
 True
 True
 True
-False
 True
 False
 False
@@ -75,25 +74,26 @@ False
 False
 False
 False
+True
 False
-False
+True
 ==== titles ===
 1eeefb72529cf5b97386607f514d44a1
 5b8121a1352a68a8aa1754ef77ed19ef
 cd537a199b66a8c34c05e6eaa07dbcc5
 f6ef87da4dc6272da57d975f565fc130
 2341f6f9a699beefd4daf6c97e1f6634
-0637ceeb466cc8e765a308538427556d
 2cc0a7769fef4788480b170f19ffe790
 2f560c7d93588f5b2d4817f21497fbef
 6c773b06b15d443e0d77b4c1a699ae7e
 6d00bdbeb95db7b60359b03801a379cc
 6d29727e3b54d0bb3544882f25c0d481
 7d54d8b9b95f80fabead399cc48817c3
-7dec862d77e7d6cf870e7edc3f3646ac
 811ad0abc2af2c0ed94e8877216fea5b
-8408748cd3007838de391c7b2a28ddf2
 9f38bfaa7cbccf6fa958d0a0f9f284eb
+9f60711514923963d5ef213cb4791bc2
+a1391eb291a371bf9aec4fa56949512c
+a20a81149bc69a0b8b9edaf2e601a49f
 [NEGATIVE REVIEWS] rating limit and 2 boost functions
 ==== is in relevant ===
 True
