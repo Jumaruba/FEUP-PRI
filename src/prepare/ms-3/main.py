@@ -10,23 +10,23 @@ from clean.series import SeriesClean
 from combine.books import BooksCombine
 from combine.reviews import ReviewsCombine
 
-AUTHORS_PATH = '../data/raw/authors.json'
-BOOKS_PATH = '../data/raw/books.json'
-GENRES_PATH = '../data/raw/genres.json'
-REVIEWS_PATH = '../data/raw/reviews.json'
-SERIES_PATH = '../data/raw/series.json'
+AUTHORS_PATH = '../../data/raw/authors.json'
+BOOKS_PATH = '../../data/raw/books.json'
+GENRES_PATH = '../../data/raw/genres.json'
+REVIEWS_PATH = '../../data/raw/reviews.json'
+SERIES_PATH = '../../data/raw/series.json'
 
 def dump_csv(cursor):
     cursor.execute("SELECT * FROM books_combined") 
     rows = cursor.fetchall()
-    with open('../data/search/books.csv', 'w') as f:
+    with open('../../data/search/books.csv', 'w') as f:
         writer = csv.writer(f)
         writer.writerow(["book_id", "title", "image_url", "num_pages", "format", "publisher", "date", "description", "isbn", "genres", "authors", "series"])
         writer.writerows(rows)
     
     cursor.execute("SELECT * FROM reviews_combined") 
     rows = cursor.fetchall()
-    with open('../data/search/reviews.csv', 'w') as f:
+    with open('../../data/search/reviews.csv', 'w') as f:
         writer = csv.writer(f)
         writer.writerow(["review_id", "book_id", "rating", "review_text", "date_added", "title", "genres", "authors"])
         writer.writerows(rows)
