@@ -4,6 +4,9 @@ from metrics_reviews import generate_metrics
 
 def query_exe(query, file, id_fieldname, path) -> None:
     results = requests.get(query).json()['response']['docs']
+    if not results:
+        print("PRECISON = 0; RECALL = 0")
+        return
     #relevant = list(map(lambda el: int(el.strip().split(",")[0]), open(file).readlines()))  
     relevant = list(map(lambda el: el.strip().split(",")[0], open(file).readlines()))  
     generate_metrics(results, relevant, id_fieldname, path)      
@@ -166,17 +169,17 @@ def query_negative_reviews_m3():
     # Rating limit, boost function and search for negative words
     QUERY_REVIEWS_M3_3 = """http://localhost:8983/solr/reviews/select?q=title:"The Book Jumper" 
                         review_text:disappointed rating:[0 TO 3]&q.op=AND&defType=edismax&indent=true&
-                        bf=div(if(termfreq(review_text,loved),div(termfreq(review_text,disappointed),termfreq(review_text,loved)),termfreq(review_text,disappointed)),sum(rating,1))^20
+                        bf=div(if(termfreq(review_text,amazing),div(termfreq(review_text,disappointed),termfreq(review_text,amazing)),termfreq(review_text,disappointed)),sum(rating,1))^20
                         &rows=16&wt=json"""
 
     # Rating limit, same boost function but WITHOUT searching for negative words
     QUERY_REVIEWS_M3_4 = """http://localhost:8983/solr/reviews/select?q=title:"The Book Jumper" rating:[0 TO 3]&q.op=AND&defType=edismax&indent=true&
-                        bf=div(if(termfreq(review_text,loved),div(termfreq(review_text,disappointed),termfreq(review_text,loved)),termfreq(review_text,disappointed)),sum(rating,1))^20
+                        bf=div(if(termfreq(review_text,amazing),div(termfreq(review_text,disappointed),termfreq(review_text,amazing)),termfreq(review_text,disappointed)),sum(rating,1))^20
                         &rows=16&wt=json"""
 
     # Rating limit and 2 boost functions, one for the frequency of positive and negative words, and another for the rating
     QUERY_REVIEWS_M3_5 = """http://localhost:8983/solr/reviews/select?q=title:"The Book Jumper" rating:[0 TO 3]&q.op=AND&defType=edismax&indent=true&
-                    bf=if(termfreq(review_text,loved),div(termfreq(review_text,disappointed),termfreq(review_text,loved)),termfreq(review_text,disappointed))^20 div(1,sum(rating,1))^5
+                    bf=if(termfreq(review_text,amazing),div(termfreq(review_text,disappointed),termfreq(review_text,amazing)),termfreq(review_text,disappointed))^20 div(1,sum(rating,1))^5
                     &rows=16&wt=json"""
 
 
@@ -196,31 +199,50 @@ def query_negative_reviews_m3():
 
 
 def query_positive_reviews_m3():
-    REVIEWS_POSITVE_FEEDBACK_FILEPATH = "../data/queries/reviews/book_jumper/positive_relevant.txt" 
+    REVIEWS_POSITIVE_FEEDBACK_FILEPATH = "../data/queries/reviews/book_jumper/positive_relevant.txt" 
     
-    # Rating limit
-    QUERY_REVIEWS_M3_4 = """http://localhost:8983/solr/reviews/select?q=title:"I Am the Messenger" 
-                        rating:[3 TO 5]&q.op=AND&indent=true&
-                        sort=field(rating, max) asc
-                        &rows=12&wt=json"""
-    # TODO: Test with query time synonyms and with index time synonyms
     # Rating limit and sort
-    QUERY_REVIEWS_M3_5 = """http://localhost:8983/solr/reviews/select?q=title:"I Am the Messenger" 
-                        review_text:disappointed rating:[3 TO 5]&q.op=AND&indent=true&
+    QUERY_REVIEWS_M3_6 = """http://localhost:8983/solr/reviews/select?q=title:"The Book Jumper" 
+                        rating:[4 TO 5]&q.op=AND&indent=true&
                         sort=field(rating, max) asc
-                        &rows=12&wt=json"""
-    # Rating limit and boost function
-    QUERY_REVIEWS_M3_6 = """http://localhost:8983/solr/reviews/select?q=title:"I Am the Messenger" 
-                        review_text:disappointed rating:[3 TO 5]&q.op=AND&defType=edismax&indent=true&
-                        bf=mul(if(termfreq(review_text,disappointed),div(termfreq(review_text,loved),termfreq(review_text,disappointed)),termfreq(review_text,loved)),sum(rating,1))^20
-                        &rows=12&wt=json"""
+                        &rows=10&wt=json"""
 
-    # print("[POSITIVE REVIEWS] rating limit")
-    #query_exe(QUERY_REVIEWS_M3_4, REVIEWS_POSITVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/no_schema/limit/")
-    print("[POSITIVE REVIEWS] search positive word, rating limit and sort")
-    query_exe(QUERY_REVIEWS_M3_5, REVIEWS_POSITVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/index_synonyms/sort/")  
-    print("[POSITIVE REVIEWS] search positive word, rating limit and boost function")
-    query_exe(QUERY_REVIEWS_M3_6, REVIEWS_POSITVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/index_synonyms/boost/")  
+    # Rating limit, sort and search for positive words
+    QUERY_REVIEWS_M3_7 = """http://localhost:8983/solr/reviews/select?q=title:"The Book Jumper" 
+                        review_text:amazing rating:[4 TO 5]&q.op=AND&indent=true&
+                        sort=field(rating, max) asc
+                        &rows=10&wt=json"""
+    # Rating limit, boost function and search for positve words
+    QUERY_REVIEWS_M3_8 = """http://localhost:8983/solr/reviews/select?q=title:"The Book Jumper" 
+                        review_text:amazing rating:[4 TO 5]&q.op=AND&defType=edismax&indent=true&
+                        bf=mul(if(termfreq(review_text,disappointed),div(termfreq(review_text,amazing),termfreq(review_text,disappointed)),termfreq(review_text,amazing)),sum(rating,1))^20
+                        &rows=10&wt=json"""
+
+    # Rating limit, same boost function but WITHOUT searching for positve words
+    QUERY_REVIEWS_M3_9 = """http://localhost:8983/solr/reviews/select?q=title:"The Book Jumper" 
+                    rating:[4 TO 5]&q.op=AND&defType=edismax&indent=true&
+                    bf=mul(if(termfreq(review_text,disappointed),div(termfreq(review_text,amazing),termfreq(review_text,disappointed)),termfreq(review_text,amazing)),sum(rating,1))^20
+                    &rows=10&wt=json"""
+
+    # Rating limit and 2 boost functions, one for the frequency of positive and negative words, and another for the rating
+    QUERY_REVIEWS_M3_10 = """http://localhost:8983/solr/reviews/select?q=title:"The Book Jumper" rating:[4 TO 5]&q.op=AND&defType=edismax&indent=true&
+                    bf=if(termfreq(review_text,disappointed),div(termfreq(review_text,amazing),termfreq(review_text,disappointed)),termfreq(review_text,amazing))^20 sum(rating,1)^5
+                    &rows=10&wt=json"""
+
+    FOLDER = 'index_synonyms'
+    # FOLDER = 'query_synonyms'
+
+    print("[POSITIVE REVIEWS] rating limit")
+    query_exe(QUERY_REVIEWS_M3_6, REVIEWS_POSITIVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/"+FOLDER+"/1_limit/")
+    print("\n[POSITIVE REVIEWS] search positive word, rating limit and sort")
+    query_exe(QUERY_REVIEWS_M3_7, REVIEWS_POSITIVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/"+FOLDER+"/2_sort/")  
+    print("\n[POSITIVE REVIEWS] search positive word, rating limit and boost function")
+    query_exe(QUERY_REVIEWS_M3_8, REVIEWS_POSITIVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/"+FOLDER+"/3_boost/")  
+    print("\n[POSITIVE REVIEWS] rating limit and boost function")
+    query_exe(QUERY_REVIEWS_M3_9, REVIEWS_POSITIVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/"+FOLDER+"/4_boost2/")  
+    print("\n[POSITIVE REVIEWS] rating limit and 2 boost functions")
+    query_exe(QUERY_REVIEWS_M3_10, REVIEWS_POSITIVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/"+FOLDER+"/5_boost3/")  
+
 
 #TODO
 def query_series():
@@ -271,4 +293,5 @@ if __name__ == "__main__":
     #query_science()
     #query_world_war_nofilter()
     #query_science_nofilter()
-    query_negative_reviews_m3()
+    #query_negative_reviews_m3()
+    query_positive_reviews_m3()
