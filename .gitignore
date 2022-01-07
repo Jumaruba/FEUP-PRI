@@ -4,6 +4,7 @@
 pri_venv/**
 
 # PYCACHE
+__pycache__
 __pycache__/**
 src/pipeline/__pycache__/**
 src/pipeline/cleaning/__pycache__/**
@@ -20,6 +21,21 @@ src/data/raw/**
 src/data/clean/**
 src/data/documents/**
 
+# Virtual Env
+pri_venv/**
+src/queries/precision_recall.pdf
+src/queries/results.tex
+src/queries/*
+
+# New scrapping
+server/data/clean/books.csv
+server/data/clean/reviews.csv
+server/data/search/books.csv
+server/data/search/reviews.csv
+server/data/raw/*.json
+
+# Database
+*.db
 # DATA MS3
 src/queries/evaluation_results/**
 src/queries/statistics/**

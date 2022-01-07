@@ -1,6 +1,7 @@
 import React from 'react';
 import {Card, CardContent, CardMedia, Typography, Box} from '@mui/material'; 
 import {makeStyles} from '@mui/styles'; 
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles({
     title: {
@@ -26,6 +27,8 @@ const useStyles = makeStyles({
     }
 }); 
 const BookElement = ({element}) => { 
+    const navigate = useNavigate();
+
     const properties = {
         "Rating": element.average_rating,
         "Publisher": element.publisher, 
@@ -33,9 +36,14 @@ const BookElement = ({element}) => {
         "Authors": element.authors,
         "Genres": element.genres.replaceAll(";", "; "),
     }
+
+    const handleClick = () => {
+        navigate('/book?id=' + element.id);
+    }
+
     const classes = useStyles();
     return (
-        <Card className={classes.card} elevation={3}> 
+        <Card className={classes.card} elevation={3} onClick={handleClick}> 
             <CardMedia 
                 component='img' 
                 image={element.image_url} 
@@ -54,8 +62,6 @@ const BookElement = ({element}) => {
                             <span>{properties[propertyName]}</span>
                         </Typography> 
                     ))}
-
-
                 </CardContent> 
             </Box> 
         </Card> 
