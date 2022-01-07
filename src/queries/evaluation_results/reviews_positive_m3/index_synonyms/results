@@ -1,0 +1,99 @@
+[POSITIVE REVIEWS] rating limit
+==== is in relevant ===
+False
+False
+True
+False
+True
+False
+True
+False
+True
+True
+==== titles ===
+0637ceeb466cc8e765a308538427556d
+7dec862d77e7d6cf870e7edc3f3646ac
+8408748cd3007838de391c7b2a28ddf2
+b52639849b53e0e6f28c7a734f26f5b4
+bab8fc51865485947f01503e2b6050b3
+c8cfc63f0fed13b473e76dc73bf5872b
+d3004b5375935ac64d261b63ec056ea0
+d96e3498577de14553ba9eeade50a60b
+0ea7c474c339c7670548ddd5cedf8b3a
+a29fdcc852992d873b9a7e9ebecce955
+[POSITIVE REVIEWS] search positive word, rating limit and sort
+==== is in relevant ===
+True
+False
+True
+True
+True
+True
+==== titles ===
+8408748cd3007838de391c7b2a28ddf2
+b52639849b53e0e6f28c7a734f26f5b4
+bab8fc51865485947f01503e2b6050b3
+d3004b5375935ac64d261b63ec056ea0
+0ea7c474c339c7670548ddd5cedf8b3a
+a29fdcc852992d873b9a7e9ebecce955
+[POSITIVE REVIEWS] search positive word, rating limit and boost function
+==== is in relevant ===
+True
+True
+True
+True
+True
+False
+==== titles ===
+d3004b5375935ac64d261b63ec056ea0
+a29fdcc852992d873b9a7e9ebecce955
+bab8fc51865485947f01503e2b6050b3
+8408748cd3007838de391c7b2a28ddf2
+0ea7c474c339c7670548ddd5cedf8b3a
+b52639849b53e0e6f28c7a734f26f5b4
+[POSITIVE REVIEWS] rating limit and boost function
+==== is in relevant ===
+True
+True
+True
+True
+True
+False
+False
+False
+False
+False
+==== titles ===
+d3004b5375935ac64d261b63ec056ea0
+a29fdcc852992d873b9a7e9ebecce955
+bab8fc51865485947f01503e2b6050b3
+8408748cd3007838de391c7b2a28ddf2
+0ea7c474c339c7670548ddd5cedf8b3a
+b52639849b53e0e6f28c7a734f26f5b4
+0637ceeb466cc8e765a308538427556d
+7dec862d77e7d6cf870e7edc3f3646ac
+c8cfc63f0fed13b473e76dc73bf5872b
+d96e3498577de14553ba9eeade50a60b
+[POSITIVE REVIEWS] rating limit and 2 boost functions
+==== is in relevant ===
+True
+True
+True
+True
+True
+False
+False
+False
+False
+False
+==== titles ===
+d3004b5375935ac64d261b63ec056ea0
+a29fdcc852992d873b9a7e9ebecce955
+bab8fc51865485947f01503e2b6050b3
+8408748cd3007838de391c7b2a28ddf2
+0ea7c474c339c7670548ddd5cedf8b3a
+b52639849b53e0e6f28c7a734f26f5b4
+0637ceeb466cc8e765a308538427556d
+7dec862d77e7d6cf870e7edc3f3646ac
+c8cfc63f0fed13b473e76dc73bf5872b
+d96e3498577de14553ba9eeade50a60b

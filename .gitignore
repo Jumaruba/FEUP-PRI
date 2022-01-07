@@ -12,11 +12,6 @@ src/pipeline/combine/__pycache__/**
 src/pipeline/explore/utils/__pycache__/
 src/pipeline/clean/__pycache__/
 
-# Queries MS2
-src/queries/precision_recall.pdf
-src/queries/results.tex
-src/queries/*
-
 # DATA MS2
 src/data/processed/**
 src/data/explore/**
@@ -30,3 +25,25 @@ server/data/books.db
 server/data/raw/*
 server/data/search/books.csv
 server/data/search/reviews.csv
+
+src/queries/evaluation_results/reviews_negative_m3/index_synonyms/1_limit/results.tex
+
+src/queries/evaluation_results/reviews_negative_m3/index_synonyms/2_sort/results.tex
+
+src/queries/evaluation_results/reviews_negative_m3/index_synonyms/3_boost/results.tex
+
+src/queries/evaluation_results/reviews_negative_m3/index_synonyms/4_boost2/results.tex
+
+src/queries/evaluation_results/reviews_negative_m3/index_synonyms/5_boost3/results.tex
+
+src/queries/evaluation_results/reviews_negative_m3/query_synonyms/1_limit/results.tex
+
+src/queries/evaluation_results/reviews_negative_m3/query_synonyms/2_sort/results.tex
+
+src/queries/evaluation_results/reviews_negative_m3/query_synonyms/3_boost/results.tex
+
+src/queries/evaluation_results/reviews_negative_m3/query_synonyms/4_boost2/results.tex
+
+src/queries/evaluation_results/reviews_negative_m3/query_synonyms/5_boost3/results.tex
+
+*.pyc
