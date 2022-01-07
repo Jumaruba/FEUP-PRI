@@ -57,7 +57,7 @@ evaluation_metrics = {
 }
 
 
-def generate_metrics(results, relevant, id_fieldname, path):
+def generate_metrics_reviews(results, relevant, id_fieldname, path):
     path = "evaluation_results/" + path
     if not os.path.exists(path):
         os.makedirs(path)

@@ -2,7 +2,7 @@ import ast
 import json
 import os
 import pandas as pd
-from utils import * 
+from queries.utils import * 
 
 def get_df(path_name):
     csv = open(get_combine_path(path_name), "r", encoding="utf-8", newline="\n")  

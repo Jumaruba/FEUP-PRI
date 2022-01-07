@@ -1,15 +1,28 @@
 import requests 
-#from metrics import generate_metrics
-from metrics_reviews import generate_metrics
+from metrics_books import generate_metrics_books
+from metrics_reviews import generate_metrics_reviews
+
+
+def get_results(query): 
+    #print(query)
+    results = requests.get(query).json()['response']['docs']
+    if not results: 
+        print("No results")
+        return None
+    return results
 
 def query_exe(query, file, id_fieldname, path) -> None:
-    results = requests.get(query).json()['response']['docs']
-    if not results:
-        print("PRECISON = 0; RECALL = 0")
+    results = get_results(query) 
+    relevant = list(map(lambda el: int(el.strip().split(",")[0]), open(file).readlines()))  
+    generate_metrics_books(results, relevant, id_fieldname, path)        
+
+def query_reviews(query, file, id_fieldname, path) -> None: 
+    results = get_results(query) 
+    if results == None: 
         return
-    #relevant = list(map(lambda el: int(el.strip().split(",")[0]), open(file).readlines()))  
     relevant = list(map(lambda el: el.strip().split(",")[0], open(file).readlines()))  
-    generate_metrics(results, relevant, id_fieldname, path)      
+    generate_metrics_reviews(results, relevant, id_fieldname, path)       
+
 
 #############
 # Milestone 2
@@ -67,7 +80,7 @@ def query_world_war_nofilter():
     query_exe(QUERY_BOOKS_5, BOOKS_QRELS_FILEPATH_3, "book_id", "world_war_nofilter/no_boost/") 
     query_exe(QUERY_BOOKS_6, BOOKS_QRELS_FILEPATH_3, "book_id", "world_war_nofilter/boost/")
 
-def query_reviews():
+def query_reviews_ms2():
     REVIEWS_BAD_FILEPATH = "../data/queries/reviews/book_jumper/bad.txt" 
     REVIEWS_GOOD_FILEPATH = "../data/queries/reviews/book_jumper/good.txt" 
     """
@@ -177,7 +190,7 @@ def query_negative_reviews_m3():
                         bf=div(if(termfreq(review_text,amazing),div(termfreq(review_text,disappointed),termfreq(review_text,amazing)),termfreq(review_text,disappointed)),sum(rating,1))^20
                         &rows=16&wt=json"""
 
-    # Rating limit and 2 boost functions, one for the frequency of positive and negative words, and another for the rating
+    # Rating limit and 2 boost functions, one for the frequency of positive and negative words, and another for the rating 
     QUERY_REVIEWS_M3_5 = """http://localhost:8983/solr/reviews/select?q=title:"The Book Jumper" rating:[0 TO 3]&q.op=AND&defType=edismax&indent=true&
                     bf=if(termfreq(review_text,amazing),div(termfreq(review_text,disappointed),termfreq(review_text,amazing)),termfreq(review_text,disappointed))^20 div(1,sum(rating,1))^5
                     &rows=16&wt=json"""
@@ -187,15 +200,15 @@ def query_negative_reviews_m3():
     # FOLDER = 'query_synonyms'
 
     print("[NEGATIVE REVIEWS] rating limit")
-    query_exe(QUERY_REVIEWS_M3_1, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/"+FOLDER+"/1_limit/")
+    query_reviews(QUERY_REVIEWS_M3_1, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/"+FOLDER+"/1_limit/")
     print("[NEGATIVE REVIEWS] search negative word, rating limit and sort")
-    query_exe(QUERY_REVIEWS_M3_2, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/"+FOLDER+"/2_sort/")  
+    query_reviews(QUERY_REVIEWS_M3_2, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/"+FOLDER+"/2_sort/")  
     print("[NEGATIVE REVIEWS] search negative word, rating limit and boost function")
-    query_exe(QUERY_REVIEWS_M3_3, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/"+FOLDER+"/3_boost/")  
+    query_reviews(QUERY_REVIEWS_M3_3, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/"+FOLDER+"/3_boost/")  
     print("[NEGATIVE REVIEWS] rating limit and boost function")
-    query_exe(QUERY_REVIEWS_M3_4, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/"+FOLDER+"/4_boost2/")  
+    query_reviews(QUERY_REVIEWS_M3_4, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/"+FOLDER+"/4_boost2/")  
     print("[NEGATIVE REVIEWS] rating limit and 2 boost functions")
-    query_exe(QUERY_REVIEWS_M3_5, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/"+FOLDER+"/5_boost3/")  
+    query_reviews(QUERY_REVIEWS_M3_5, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/"+FOLDER+"/5_boost3/")  
 
 
 def query_positive_reviews_m3():
@@ -233,15 +246,15 @@ def query_positive_reviews_m3():
     # FOLDER = 'query_synonyms'
 
     print("[POSITIVE REVIEWS] rating limit")
-    query_exe(QUERY_REVIEWS_M3_6, REVIEWS_POSITIVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/"+FOLDER+"/1_limit/")
+    query_reviews(QUERY_REVIEWS_M3_6, REVIEWS_POSITIVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/"+FOLDER+"/1_limit/")
     print("\n[POSITIVE REVIEWS] search positive word, rating limit and sort")
-    query_exe(QUERY_REVIEWS_M3_7, REVIEWS_POSITIVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/"+FOLDER+"/2_sort/")  
+    query_reviews(QUERY_REVIEWS_M3_7, REVIEWS_POSITIVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/"+FOLDER+"/2_sort/")  
     print("\n[POSITIVE REVIEWS] search positive word, rating limit and boost function")
-    query_exe(QUERY_REVIEWS_M3_8, REVIEWS_POSITIVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/"+FOLDER+"/3_boost/")  
+    query_reviews(QUERY_REVIEWS_M3_8, REVIEWS_POSITIVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/"+FOLDER+"/3_boost/")  
     print("\n[POSITIVE REVIEWS] rating limit and boost function")
-    query_exe(QUERY_REVIEWS_M3_9, REVIEWS_POSITIVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/"+FOLDER+"/4_boost2/")  
+    query_reviews(QUERY_REVIEWS_M3_9, REVIEWS_POSITIVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/"+FOLDER+"/4_boost2/")  
     print("\n[POSITIVE REVIEWS] rating limit and 2 boost functions")
-    query_exe(QUERY_REVIEWS_M3_10, REVIEWS_POSITIVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/"+FOLDER+"/5_boost3/")  
+    query_reviews(QUERY_REVIEWS_M3_10, REVIEWS_POSITIVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/"+FOLDER+"/5_boost3/")  
 
 
 #TODO
@@ -293,5 +306,5 @@ if __name__ == "__main__":
     #query_science()
     #query_world_war_nofilter()
     #query_science_nofilter()
-    #query_negative_reviews_m3()
-    query_positive_reviews_m3()
+    query_negative_reviews_m3()
+    #query_positive_reviews_m3()

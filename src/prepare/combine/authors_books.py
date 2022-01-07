@@ -1,7 +1,7 @@
 import csv
 import pandas as pd 
 import ast
-from utils import *
+from queries.utils import *
 import os 
 
 # Argument positions in books.csv

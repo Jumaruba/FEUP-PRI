@@ -1,29 +1,29 @@
 version: "3"
 
 services:
-  # frontend:
-  #   build: ./frontend
-  #   ports:
-  #     - 3000:3000
-  #   depends_on:
-  #     - solr
-  #   volumes:
-  #     - ./frontend/src/:/frontend/src/
+  #frontend:
+  #  build: ./frontend
+  #  ports:
+  #    - 3000:3000
+  #  depends_on:
+  #    - solr
+  #  volumes:
+  #    - ./frontend/src/:/frontend/src/
 
-  # nginx:
-  #   build: ./reverse_proxy
-  #   ports:
-  #     - 9000:9000
-  #   depends_on:
-  #     - solr
+  #nginx:
+  #  build: ./reverse_proxy
+  #  ports:
+  #    - 9000:9000
+  #  depends_on:
+  #    - solr
 
   solr:
-    build: ./src
+    build: ./solr
     container_name: solr
     env_file:
-      - src/.env
+      - solr/.env
     ports: 
       - 8983:8983
     volumes:
-      - ./src/solr_config/:/solr_config/
+      - ./solr/solr_config/:/solr_config/
       - ./src/data/search/:/data/
