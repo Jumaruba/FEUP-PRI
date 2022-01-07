@@ -21,31 +21,7 @@ src/data/clean/**
 src/data/documents/**
 
 # DATA MS3
-server/data/books.db
-server/data/raw/*
-server/data/search/books.csv
-server/data/search/reviews.csv
-
-src/queries/evaluation_results/reviews_negative_m3/index_synonyms/1_limit/results.tex
-
-src/queries/evaluation_results/reviews_negative_m3/index_synonyms/2_sort/results.tex
-
-src/queries/evaluation_results/reviews_negative_m3/index_synonyms/3_boost/results.tex
-
-src/queries/evaluation_results/reviews_negative_m3/index_synonyms/4_boost2/results.tex
-
-src/queries/evaluation_results/reviews_negative_m3/index_synonyms/5_boost3/results.tex
-
-src/queries/evaluation_results/reviews_negative_m3/query_synonyms/1_limit/results.tex
-
-src/queries/evaluation_results/reviews_negative_m3/query_synonyms/2_sort/results.tex
-
-src/queries/evaluation_results/reviews_negative_m3/query_synonyms/3_boost/results.tex
-
-src/queries/evaluation_results/reviews_negative_m3/query_synonyms/4_boost2/results.tex
-
-src/queries/evaluation_results/reviews_negative_m3/query_synonyms/5_boost3/results.tex
-
 src/queries/evaluation_results/**
 src/queries/statistics/**
+src/data/search/*.csv
 *.pyc
