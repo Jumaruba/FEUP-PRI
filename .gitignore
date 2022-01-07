@@ -46,4 +46,6 @@ src/queries/evaluation_results/reviews_negative_m3/query_synonyms/4_boost2/resul
 
 src/queries/evaluation_results/reviews_negative_m3/query_synonyms/5_boost3/results.tex
 
+src/queries/evaluation_results/**
+src/queries/statistics/**
 *.pyc

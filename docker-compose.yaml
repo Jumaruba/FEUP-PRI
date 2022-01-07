@@ -26,4 +26,4 @@ services:
       - 8983:8983
     volumes:
       - ./src/solr_config/:/solr_config/
-      - ./server/data/search/:/data/
+      - ./src/data/search/:/data/
