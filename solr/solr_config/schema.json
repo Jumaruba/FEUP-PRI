@@ -26,10 +26,47 @@
                 },
                 "filters": [
                     {"class":"solr.PatternReplaceFilterFactory", 
-                    "pattern":"([^a-zA-Z0-9-'])", "replacement":""}
+                    "pattern":"([^a-zA-Z0-9-'])", "replacement":""},
+                    {"class": "solr.LowerCaseFilterFactory"}
+                ]
+            },
+            "queryAnalyzer": {
+                "tokenizer": {
+                    "class":"solr.SimplePatternTokenizerFactory", 
+                    "pattern": "[^. ;]+" 
+                },
+                "filters":[
+                    {"class":"solr.PatternReplaceFilterFactory", 
+                        "pattern":"([^a-zA-Z0-9-'])", "replacement":""},
+                    {"class": "solr.LowerCaseFilterFactory"}
                 ]
             }
         }, 
+        {
+            "name": "authors",
+            "class": "solr.TextField",
+            "indexAnalyzer" : {
+                "tokenizer": {
+                    "class":"solr.SimplePatternTokenizerFactory", 
+                    "pattern": "[^ ;]+" 
+                },
+                "filters": [
+                    {"class": "solr.LowerCaseFilterFactory"},
+                    {"class":"solr.PatternReplaceFilterFactory", 
+                    "pattern":"([^a-zA-Z0-9-'])", "replacement":""}
+                ]
+            },
+            "queryAnalyzer": {
+                "tokenizer": {
+                    "class":"solr.SimplePatternTokenizerFactory"},
+                "filters":[
+                    {"class": "solr.LowerCaseFilterFactory"},
+                    {"class":"solr.PatternReplaceFilterFactory", 
+                        "pattern":"([^a-z0-9-'])", "replacement":""},
+                    {"class": "solr.ShingleFilterFactory", "maxShingleSize":4}
+                ]
+            }
+        },
         {
             "name": "description",
             "class": "solr.TextField",
@@ -96,7 +133,7 @@
                     {"class": "solr.LowerCaseFilterFactory"},
                     {"class": "solr.PorterStemFilterFactory"},
                     {"class": "solr.EnglishPossessiveFilterFactory"},
-                    {"class": "solr.EnglishMinimalStemFilterFactory"},
+                    {"class": "solr.EnglishMinimalStemFilterFactory"}
                 ]
             }, 
             "queryAnalyzer": {
@@ -168,7 +205,7 @@
         }, 
         {
             "name": "authors",
-            "type": "comma-separated-list",
+            "type": "authors",
             "indexed": true
         },
         {
