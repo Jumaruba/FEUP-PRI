@@ -1,13 +1,12 @@
 import React from 'react'; 
-
-import ThematicSearch from '../../api/ThematicSearch';
-import {Card, Stack, CardHeader, CardContent} from '@mui/material'; 
+import SentimentSearch from '../../api/SentimentSearch.js'
+import {Grid, Card, Stack, CardHeader, CardContent} from '@mui/material'; 
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
  cardSearch: {
     textAlign: "center",
-    width: "100%",
+    width: "80%",
   }, 
   cardTitle : {
     padding: "1em",
@@ -15,19 +14,19 @@ const useStyles = makeStyles({
   
 }); 
 
-const BookSearchMenu = ({fetchBooks}) => {  
+const ReviewSearchMenu = ({fetchReviews}) => {  
 
   const classes = useStyles();
     return (
         <Card className={classes.cardSearch}>
-          <CardHeader className={classes.cardTitle} title="Advanced Book Search"/>
+          <CardHeader className={classes.cardTitle} title="Advanced Review Search"/>
           <CardContent> 
             <Stack spacing={2}>
-            <ThematicSearch fetch={fetchBooks} />
+            <SentimentSearch fetch={fetchReviews} />
             </Stack> 
           </CardContent>
         </Card>
     )
 };
 
-export default BookSearchMenu; 
+export default ReviewSearchMenu; 

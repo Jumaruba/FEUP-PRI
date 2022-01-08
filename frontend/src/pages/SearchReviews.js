@@ -1,58 +1,38 @@
 import React from 'react';
-import { Box, Card, Stack, Grid, Checkbox} from '@mui/material';
-
-import SentimentSearch from '../api/SentimentSearch';
+import { Box } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import ReviewElement from '../components/Reviews/ReviewElement';
 import Listing from '../components/Listing';
+import SearchMenu from '../components/Reviews/ReviewsSearchMenu';
 
-var cardSearchStyle = {
-  textAlign: 'center',
-  marginLeft: 'auto',
-  marginRight: 'auto',
-  display: 'block',
-  width: '80%',
-  height: '30vw'
-}
-
-var cardReviewStyle = {
-  display: 'block',
-  width: '90%',
-  minHeight: '45vw',
-}
+const useStyles = makeStyles({ 
+  boxFlex : {
+    marginTop: "2em",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+  }, 
+});
 
 const SearchPage = () => {
-  const [reviewState, setReviewState] = React.useState({loading: false, reviews: null});
+  const classes = useStyles();
 
+  const [appState, setAppState] = React.useState({reviews: null});
+  
+  // Get the reviews based on the input.
   const fetchReviews = (apiURL) => {
     fetch(apiURL, {mode:'cors'})
       .then((res) => res.json())
       .then((reviews) => {
-        setReviewState({ loading: false, reviews: reviews['response']['docs']});
+        setAppState({reviews: reviews['response']['docs']});
       });
   }
 
-  // TODO: update url with searched query and loading
   return (
-    <Box sx={{ mt: 2 }}>
-      <Grid container >
-        <Grid item xs={3}>
-          <Card style={cardSearchStyle} variant="outlined">
-            <h2>Advanced Review Search</h2>
-            <Stack spacing={2}>
-              <Checkbox/>
-              <SentimentSearch fetch={fetchReviews} />
-            </Stack>
-          </Card>
-        </Grid>
-
-        <Grid item xs={9}>
-          <Card style={cardReviewStyle} variant="outlined"> 
-            <Listing title="Reviews" list={reviewState.reviews} SearchElement={ReviewElement} />
-          </Card>
-        </Grid>
-      </Grid>
+    <Box className={classes.boxFlex}>
+      <SearchMenu fetchReviews={fetchReviews} />
+      <Listing title="Reviews" list={appState.reviews} SearchElement={ReviewElement} errorMessage="Sorry, no reviews to show."/>
     </Box>
-  );
-}
+  )}
 
   export default SearchPage;

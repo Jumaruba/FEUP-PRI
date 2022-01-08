@@ -11,7 +11,7 @@ src/pipeline/cleaning/__pycache__/**
 src/pipeline/combine/utils/__pycache__/**
 src/pipeline/combine/__pycache__/**
 src/pipeline/explore/utils/__pycache__/
-src/pipeline/clean/__pycache__/
+src/pipeline/clean/__pycache__/ 
 
 # DATA MS2
 src/data/processed/**
@@ -35,7 +35,8 @@ server/data/search/reviews.csv
 server/data/raw/*.json
 
 # Database
-*.db
+*.db 
+
 # DATA MS3
 src/queries/evaluation_results/**
 src/queries/statistics/**

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, CardContent, CardMedia, Typography, Box, Grid} from '@mui/material'; 
+import {CardMedia, Box, Grid} from '@mui/material'; 
 import {makeStyles} from '@mui/styles'; 
 
 const useStyles = makeStyles({

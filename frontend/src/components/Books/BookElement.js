@@ -10,7 +10,8 @@ const useStyles = makeStyles({
     },
     card : {
         display: "flex",
-        marginTop: "1em !important",
+        marginTop: "1em !important", 
+        width: "100%"
     }, 
     verticalFlex: {
         display: "flex", 

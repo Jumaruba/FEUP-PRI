@@ -21,9 +21,7 @@ const SentimentSearch = (props) => {
     }
 
     return (
-      <div className='sentiment-search'>
-          <TextField id="sentiment-search-field" label="Sentiment Search" variant="outlined" onChange={updateInput} />
-      </div>
+        <TextField id="sentiment-search-field" label="Sentiment Search" variant="outlined" onChange={updateInput} />
     );
 }
 

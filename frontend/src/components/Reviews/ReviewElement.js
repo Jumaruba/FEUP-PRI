@@ -1,7 +1,6 @@
 import React from 'react';
-import {Card, CardContent, CardMedia, Typography, Box, Divider} from '@mui/material'; 
+import {Card, CardContent, Typography, Box, Divider} from '@mui/material'; 
 import {makeStyles} from '@mui/styles'; 
-import { elementTypeAcceptingRef } from '@mui/utils';
 
 const useStyles = makeStyles({
     title: {
@@ -11,11 +10,11 @@ const useStyles = makeStyles({
     card : {
         display: "flex",
         marginTop: "1em !important",
+        marginInline: "2em",
     }, 
     verticalFlex: {
         display: "flex", 
         flexDirection: "column", 
-        width: "100%",
     },
     cardContent : {
         flex: "1 0 auto",
@@ -32,14 +31,14 @@ const useStyles = makeStyles({
       width: "100%",
     }
 }); 
-const ReviewElement = ({element}) => { 
+const ReviewElement = ({element}) => {  
+    const classes = useStyles();
     const properties = {
         "Date": element.date_added.replace("T", " ").replace("Z", " "),
         "Rating": element.rating, 
         "Authors": element.authors,
         "Genres": element.genres.replaceAll(";", "; "),
     }
-    const classes = useStyles();
     return (
         <Card className={classes.card} elevation={3}> 
             <Box className={classes.verticalFlex}> 
@@ -53,16 +52,13 @@ const ReviewElement = ({element}) => {
                             <span className={classes.propertyName}>{propertyName}: </span> 
                             <span>{properties[propertyName]}</span>
                         </Typography> 
-                    ))}
+                    ))} 
+
                     <Divider className={classes.divider}/> 
                     <Typography component="div" variant="span" key="review">
                       <span className={classes.propertyName} >Review:</span> 
                       <p>{element.review_text}</p>
                     </Typography> 
-
-
-
-
                 </CardContent> 
             </Box> 
         </Card> 
