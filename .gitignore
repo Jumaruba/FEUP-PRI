@@ -25,17 +25,10 @@ src/data/documents/**
 pri_venv/**
 src/queries/precision_recall.pdf
 src/queries/results.tex
-src/queries/*
-
-# New scrapping
-server/data/clean/books.csv
-server/data/clean/reviews.csv
-server/data/search/books.csv
-server/data/search/reviews.csv
-server/data/raw/*.json
 
 # Database
 *.db
+
 # DATA MS3
 src/queries/evaluation_results/**
 src/queries/statistics/**

@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import os
 
-PRECISION = 8
+PRECISION = 14
 metrics = {}
 metric = lambda f: metrics.setdefault(f.__name__, f) 
 
@@ -19,7 +19,7 @@ def recall(results, relevant, id_fieldname):
     return len([
         doc 
         for doc in results
-        if (doc[id_fieldname]) in relevant
+        if (int(doc[id_fieldname])) in relevant
     ]) / len(relevant) 
     
 # AVERAGE PRECISION ==========================
@@ -32,7 +32,7 @@ def ap(results, relevant, id_fieldname):
     precision_values = []
     counter = 0
     for i in range(1, len(results)+1):
-        if results[i-1][id_fieldname] in relevant:
+        if int(results[i-1][id_fieldname]) in relevant:
             counter += 1
             precision_values.append(counter/i)
 
@@ -42,7 +42,7 @@ def ap(results, relevant, id_fieldname):
 # P AT N ============================================ 
 @metric
 def p_at(results, relevant, id_fieldname):
-    return len([doc for doc in results[:PRECISION] if doc[id_fieldname] in relevant])/PRECISION
+    return len([doc for doc in results[:PRECISION] if int(doc[id_fieldname]) in relevant])/PRECISION
 
 def calculate_metric(key, results, relevant, id_fieldname):
     return metrics[key](results, relevant, id_fieldname)
@@ -55,7 +55,7 @@ evaluation_metrics = {
 }
 
 
-def generate_metrics_reviews(results, relevant, id_fieldname, path):
+def generate_metrics_books(results, relevant, id_fieldname, path):
     path = "evaluation_results/" + path
     if not os.path.exists(path):
         os.makedirs(path)
@@ -77,7 +77,7 @@ def generate_metrics_reviews(results, relevant, id_fieldname, path):
         len([
             doc 
             for doc in results[:idx]
-            if doc[id_fieldname] in relevant
+            if int(doc[id_fieldname]) in relevant
         ]) / idx 
         for idx, _ in enumerate(results, start=1)
     ] 
@@ -85,7 +85,7 @@ def generate_metrics_reviews(results, relevant, id_fieldname, path):
     recall_values = [
         len([
             doc for doc in results[:idx]
-            if doc[id_fieldname] in relevant
+            if int(doc[id_fieldname]) in relevant
         ]) / len(relevant)
         for idx, _ in enumerate(results, start=1)
     ]
@@ -106,12 +106,11 @@ def generate_metrics_reviews(results, relevant, id_fieldname, path):
 
     print("==== is in relevant ===")
     for doc in results:
-        print(doc[id_fieldname] in relevant) 
+        print(int(doc[id_fieldname]) in relevant) 
     print("==== titles ===")
     for doc in results:
         print(doc['review_id'])
 
     disp = PrecisionRecallDisplay([precision_recall_match.get(r) for r in recall_values], recall_values)
     disp.plot()
-    plt.savefig(path + 'precision_recall.jpg')
-
+    plt.savefig(path + 'precision_recall.pdf')
