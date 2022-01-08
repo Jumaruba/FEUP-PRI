@@ -10,7 +10,6 @@ const useStyles = makeStyles({
     card : {
         display: "flex",
         marginTop: "1em !important",
-        marginInline: "2em",
     }, 
     verticalFlex: {
         display: "flex", 
@@ -37,7 +36,7 @@ const ReviewElement = ({element}) => {
         "Date": element.date_added.replace("T", " ").replace("Z", " "),
         "Rating": element.rating, 
         "Authors": element.authors,
-        "Genres": element.genres.replaceAll(";", "; "),
+        "Genres": element.genres.replaceAll(";", "; "), 
     }
     return (
         <Card className={classes.card} elevation={3}> 

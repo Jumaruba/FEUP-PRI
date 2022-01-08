@@ -21,7 +21,7 @@ const Listing = ({SearchElement, searchResult, noResultMessage}) => {
       <Typography className={classes.emptyResult}>{noResultMessage}</Typography>
     ); 
     return (
-      searchResult.map((listElement) => <SearchElement element={listElement} key={listElement.title}/>
+      searchResult.map((listElement) => <SearchElement element={listElement} key={listElement.id}/>
     ));
 
 };

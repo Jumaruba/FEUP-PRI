@@ -1,35 +1,33 @@
 import React from 'react';
-import { Stack } from '@mui/material' 
-import PageSearch from '../components/Layout/PageSearch'; 
-import BookSearchMenu from '../components/Books/BookSearchMenu'; 
+import { Stack } from '@mui/material'
+import SearchLayout from '../components/Layout/SearchLayout';
 import BookElement from '../components/Books/BookElement';
 import ThematicSearch from '../api/ThematicSearch';
 import MenuLayout from '../components/Layout/MenuLayout';
 
-const BookSearch = () => { 
-  const [appState, setAppState] = React.useState({searchResult: null});   
+const BookSearch = () => {
+    const [appState, setAppState] = React.useState({ searchResult: null });
 
-  const fetchInput = (apiURL) => {
-      fetch(apiURL, {mode:'cors'})
-        .then((res) => res.json())
-        .then((resJson) => {
-          setAppState({searchResult: resJson['response']['docs']});
-        });
+    const fetchInput = (apiURL) => {
+        fetch(apiURL, { mode: 'cors' })
+            .then((res) => res.json())
+            .then((resJson) => {
+                setAppState({ searchResult: resJson['response']['docs'] });
+            });
     }
 
     return (
-        <PageSearch
-            SearchMenuElement={BookSearchMenu}
+        <SearchLayout
             SearchElement={BookElement}
             searchResult={appState.searchResult}
             noResultMessage="No books to show..."
-        > 
-            <MenuLayout title="Advanced Book Search"> 
+        >
+            <MenuLayout title="Advanced Book Search">
                 <Stack spacing={2}>
-                    <ThematicSearch fetch={fetchInput}/>
-                </Stack>  
+                    <ThematicSearch fetch={fetchInput} />
+                </Stack>
             </MenuLayout>
-        </PageSearch> 
+        </SearchLayout>
     );
 
 

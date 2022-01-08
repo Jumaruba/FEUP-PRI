@@ -11,7 +11,6 @@ const SentimentSearch = (props) => {
       for (let option in options)
           full_query += option + options[option] + '&';
       
-      console.log(full_query)
       return full_query + 'wt=json';
     }
 

@@ -18,13 +18,11 @@ const useStyles = makeStyles({
 
  
 
-const SearchPage = ({SearchElement, searchResult, noResultMessage, children}) => { 
+const SearchLayout= ({SearchElement, searchResult, noResultMessage, children}) => { 
   const classes = useStyles();  
   return (
       <Box className={classes.boxFlex}>
-        <MenuLayout> 
-          {children}
-        </MenuLayout>
+        {children}
         <Grid className={classes.grid}> 
           <Listing SearchElement={SearchElement} searchResult={searchResult} noResultMessage={noResultMessage}/> 
         </Grid>
@@ -32,4 +30,4 @@ const SearchPage = ({SearchElement, searchResult, noResultMessage, children}) =>
   );
 }
 
-export default SearchPage;
+export default SearchLayout;
