@@ -270,33 +270,28 @@ def query_series():
 
 def query_author():
     AUTHORS_FILEPATH = "../data/queries/authors/book_jumper/positive_relevant.txt" 
-    
-    # TODO - test with old and new schema
-    # Simple search
-    QUERY_AUTHORS_1 = """http://localhost:8983/solr/books/select?q=authors:"J K Rowling"
-                &q.op=AND&indent=true
-                &rows=14&wt=json"""
+    search = ["J. K. Rowling", "J K Rowling", "JK Rowling", "J Rowling", "Jo Rowling"]
 
-    # TODO - test with old and new schema
-    # Simple search
-    QUERY_AUTHORS_2 = """http://localhost:8983/solr/books/select?q=authors:"J Rowling"
-                    &q.op=AND&indent=true
-                    &rows=14&wt=json"""
-    
-    # Uses query slop
-    QUERY_AUTHORS_3 = """http://localhost:8983/solr/books/select?q=authors:"J Rowling"
-                &q.op=AND&indent=true&defType=edismax&indent=true&qs=3
-                &rows=14&wt=json"""
+    for expression in search:
+        print(f"[AUTHORS] {expression}")
+        
+        QUERY_AUTHORS_1 = f"""http://localhost:8983/solr/books/select?q=authors:"{expression}"
+                            &q.op=AND&indent=true
+                            &rows=14&wt=json"""
+        print("-> Classic (Acronym Dots removed)")
+        query_exe(QUERY_AUTHORS_1, AUTHORS_FILEPATH, "book_id", "authors_ms3/1_classic/")
 
-    # Identify reviews to J. K. Rowling reviews that refer the author (maybe grouped by book)
-    # TODO - change schema in order to deal with cases where J.K. Rowling appears and we want it to match
-    # with J Rowling or J K Rowling
-    QUERY_AUTHORS_4 = """"""
+        QUERY_AUTHORS_2 = f"""http://localhost:8983/solr/books/select?q=authors-space:"{expression}"
+                            &q.op=AND&indent=true&defType=edismax&qs=2
+                            &rows=14&wt=json"""
+        print("-> Acronym Dots replaced by space and query Slop")
+        query_exe(QUERY_AUTHORS_1, AUTHORS_FILEPATH, "book_id", "authors_ms3/2_space/")
 
-
-    # query slop e para autores
-    # http://localhost:8983/solr/#/books/query?q=authors:%22J%20Rowling%22&q.op=AND&defType=edismax&indent=true&rows=300&qs=2
-    pass
+        QUERY_AUTHORS_3 = f"""http://localhost:8983/solr/books/select?q=authors-ngram:"{expression}"
+                            &q.op=AND&indent=true
+                            &rows=14&wt=json"""
+        print("-> N-Gram")
+        query_exe(QUERY_AUTHORS_1, AUTHORS_FILEPATH, "book_id", "authors_ms3/3_ngram/")
     
 
 if __name__ == "__main__": 
@@ -307,4 +302,5 @@ if __name__ == "__main__":
     #query_world_war_nofilter()
     #query_science_nofilter()
     #query_negative_reviews_m3()
-    query_positive_reviews_m3()
+    #query_positive_reviews_m3()
+    query_authors_ms3()
