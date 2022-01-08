@@ -6,13 +6,11 @@ import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
  cardSearch: {
-    textAlign: 'center',
-    height: '600px',
-    width: '400px', 
-    marginInline: "2em",
+    textAlign: "center",
+    width: "80%",
   }, 
   cardTitle : {
-    padding: "2em",
+    padding: "1em",
   }, 
   
 }); 

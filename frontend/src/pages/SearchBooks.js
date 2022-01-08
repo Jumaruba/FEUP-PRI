@@ -8,8 +8,10 @@ import SearchMenu from '../components/Books/BookSearchMenu';
 const useStyles = makeStyles({ 
   boxFlex : {
     marginTop: "2em",
-    display: "flex"
-  }
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+  }, 
 });
 
 const SearchPage = () => {
@@ -27,7 +29,7 @@ const fetchBooks = (apiURL) => {
   // TODO: update url with searched query and loading
   return (
       <Box className={classes.boxFlex}>
-        <SearchMenu fetchBooks={fetchBooks}/>
+        <SearchMenu fetchBooks={fetchBooks} />
         <Grid item xs={9}>
           <Listing title="Books" list={appState.books} SearchElement={BookElement} />
         </Grid>
