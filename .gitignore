@@ -44,4 +44,4 @@ src/data/search/*.csv
 *.pyc 
 
 # FRONTEND 
-./src/components
+frontend/package-lock.json

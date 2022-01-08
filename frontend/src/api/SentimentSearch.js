@@ -1,27 +1,17 @@
 import React from 'react';
-import TextField from '@mui/material/TextField';
+import Search from './Search.js';
 
-const SentimentSearch = (props) => {
-    const BuildSentimentQuery = (search) => {
-      const options = {
-          "q=": "{!q.op=OR df=review_text}" + search,
-      }
-    
-      let full_query = 'http://localhost:9000/solr/reviews/select?';
-      for (let option in options)
-          full_query += option + options[option] + '&';
-      
-      return full_query + 'wt=json';
-    }
-
-    const updateInput = (json_response) => {
-      const apiURL = BuildSentimentQuery(json_response.target.value);
-      props.fetch(apiURL);
-    }
+const SentimentSearch = ({fetch}) => {
+    const BuildSentimentQuery = (userInput) => {
+      return `http://localhost:9000/solr/reviews/select?q=title:"${userInput}" rating:[0 TO 3]&q.op=AND&defType=edismax&indent=true&
+      bf=if(termfreq(review_text,amazing),div(termfreq(review_text,disappointed),termfreq(review_text,amazing)),termfreq(review_text,disappointed))^20 div(1,sum(rating,1))^5
+      &rows=16&wt=json`;
+    }  
 
     return (
-        <TextField id="sentiment-search-field" label="Sentiment Search" variant="outlined" onChange={updateInput} />
+      <Search buildQuery={BuildSentimentQuery} label="Bad Sentiment Search" fetch={fetch}/> 
     );
+
 }
 
 export default SentimentSearch;
