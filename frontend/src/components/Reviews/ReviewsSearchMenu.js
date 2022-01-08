@@ -6,7 +6,7 @@ import { makeStyles } from '@mui/styles';
 const useStyles = makeStyles({
  cardSearch: {
     textAlign: "center",
-    width: "80%",
+    width: "100%",
   }, 
   cardTitle : {
     padding: "1em",
@@ -14,7 +14,7 @@ const useStyles = makeStyles({
   
 }); 
 
-const ReviewSearchMenu = ({fetchReviews}) => {  
+const ReviewSearchMenu = ({fetchInput}) => {  
 
   const classes = useStyles();
     return (
@@ -22,7 +22,7 @@ const ReviewSearchMenu = ({fetchReviews}) => {
           <CardHeader className={classes.cardTitle} title="Advanced Review Search"/>
           <CardContent> 
             <Stack spacing={2}>
-            <SentimentSearch fetch={fetchReviews} />
+            <SentimentSearch fetch={fetchInput} />
             </Stack> 
           </CardContent>
         </Card>

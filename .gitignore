@@ -41,4 +41,7 @@ server/data/raw/*.json
 src/queries/evaluation_results/**
 src/queries/statistics/**
 src/data/search/*.csv
-*.pyc
+*.pyc 
+
+# FRONTEND 
+./src/components

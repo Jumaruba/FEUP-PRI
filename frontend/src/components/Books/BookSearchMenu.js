@@ -15,7 +15,7 @@ const useStyles = makeStyles({
   
 }); 
 
-const BookSearchMenu = ({fetchBooks}) => {  
+const BookSearchMenu = ({fetchInput}) => {  
 
   const classes = useStyles();
     return (
@@ -23,7 +23,7 @@ const BookSearchMenu = ({fetchBooks}) => {
           <CardHeader className={classes.cardTitle} title="Advanced Book Search"/>
           <CardContent> 
             <Stack spacing={2}>
-            <ThematicSearch fetch={fetchBooks} />
+            <ThematicSearch fetch={fetchInput} />
             </Stack> 
           </CardContent>
         </Card>
