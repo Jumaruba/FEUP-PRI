@@ -1,8 +1,8 @@
-import ast
-import json
+import csv
 import os
 import pandas as pd
-from queries.utils import * 
+from utils import * 
+
 
 def get_df(path_name):
     csv = open(get_combine_path(path_name), "r", encoding="utf-8", newline="\n")  
@@ -35,9 +35,6 @@ def get_authors_books(authors_books_df, book_id):
     author_ids = authors_books_df[authors_books_df['book_id'] == book_id]['author_id'].tolist()
     return  ";".join(list(map(get_author_name, author_ids)))
 
-def update_series_format(books_df):
-    books_df['series'] = books_df['series'].apply(lambda x: ";".join(list(map(str.strip, ast.literal_eval(x)))))
-    
 
 books_ids = books_df['book_id'].unique()
 for book_id in books_ids:
@@ -45,7 +42,6 @@ for book_id in books_ids:
     authors = get_authors_books(authors_books_df, book_id)
     output_df = output_df.append({'book_id': int(book_id), 'genres': genres, 'authors': authors}, ignore_index=True)
 
-update_series_format(books_df)
 books_df = books_df.merge(output_df, on ="book_id", how="left")
 books_df.to_csv(get_search_path("books"), index=False)
    

@@ -1,12 +1,10 @@
 import json
 import csv
 import os 
-from pandas.core.frame import DataFrame
 
 MAX_BOOKS = 11000
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 RAW_PATH = CURRENT_PATH + "/../../data/raw/books.json"
-RAW_SERIES_PATH = CURRENT_PATH + "/../../data/raw/series.json"
 CLEAN_PATH = CURRENT_PATH + "/../../data/clean/books.csv"
 
 
@@ -18,23 +16,18 @@ def get_authors(authors_arr):
 
     return authors_names
 
-def get_series():
-    series = {}
-    
-    with open(RAW_SERIES_PATH) as f:
-        for line in f:
-            json_line = json.loads(line)
-            series[json_line['series_id']] =  json_line['title']
-    
+def get_series(series_arr):
+    series = []
+    for series_obj in series_arr:
+        series.append(int(series_obj))
     return series
 
 def clean_books():
     books_raw = open(RAW_PATH ,"r")
-    series = get_series()
     books_clean = open(CLEAN_PATH ,"w", newline="\n", encoding="utf-8")
     writer = csv.writer(books_clean)
 
-    header = ["isbn", "series", "language_code", "is_ebook", "average_rating", "description", "format", "authors", 
+    header = ["isbn", "language_code", "is_ebook", "average_rating", "description", "format", "authors", 
     "publisher", "num_pages", "isbn13", "edition_information", "image_url", "book_id", "title", "date"]
     writer.writerow(header)
 
@@ -53,7 +46,8 @@ def clean_books():
         book.pop("work_id", None)
         book.pop("ratings_count", None)
         book.pop("similar_books", None)
-        book.pop("title_without_series", None) 
+        book.pop("title_without_series", None) # TODO - keep this; Must change header
+        book.pop("series", None)
         
         day = 0 if not bool(book["publication_day"]) else int(book["publication_day"])
         month = 0 if not bool(book["publication_month"]) else int(book["publication_month"])
@@ -64,14 +58,6 @@ def clean_books():
         book.pop("publication_year", None) 
         book['num_pages'] = int(book['num_pages'] if book['num_pages'] != '' else 0) 
 
-        if len(book['series']) == 0:
-            series_title = []
-        else:
-            series_titles = []
-            for series_id in book['series']:
-                series_titles.append(series.get(series_id))
-            book['series'] = series_titles
-        
         if book['description'] and book['book_id']: 
             book['authors'] = get_authors(book["authors"])
             book_values = list(book.values())

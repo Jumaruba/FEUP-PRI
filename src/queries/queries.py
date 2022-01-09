@@ -2,9 +2,7 @@ import requests
 from metrics_books import generate_metrics_books
 from metrics_reviews import generate_metrics_reviews
 
-
 def get_results(query): 
-    #print(query)
     results = requests.get(query).json()['response']['docs']
     if not results: 
         print("No results")
@@ -13,6 +11,8 @@ def get_results(query):
 
 def query_exe(query, file, id_fieldname, path) -> None:
     results = get_results(query) 
+    if results == None: 
+        return
     relevant = list(map(lambda el: int(el.strip().split(",")[0]), open(file).readlines()))  
     generate_metrics_books(results, relevant, id_fieldname, path)        
 
@@ -302,9 +302,9 @@ def query_author():
 if __name__ == "__main__": 
     #query_romantic_tragedy()
     #query_world_war()
-    #query_reviews()
+    #query_reviews_ms2()
     #query_science()
     #query_world_war_nofilter()
     #query_science_nofilter()
-    query_negative_reviews_m3()
-    #query_positive_reviews_m3()
+    #query_negative_reviews_m3()
+    query_positive_reviews_m3()
