@@ -40,7 +40,6 @@ const BookSearch = () => {
         </SearchLayout>
     );
 
-
 }
 
 export default BookSearch; 

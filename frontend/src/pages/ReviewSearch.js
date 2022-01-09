@@ -3,11 +3,11 @@ import SearchLayout from '../components/Layout/SearchLayout';
 import ReviewElement from '../components/searchElements/ReviewElement';
 import Menu from '../components/common/Menu';
 import { fetchInput } from '../api/Search';
-import { badSentimentQuery } from '../api/Queries';
+import { badSentimentQuery, goodSentimentQuery } from '../api/Queries';
 
 
 const ReviewSearch = () => {
-    const [appState, setAppState] = React.useState({ searchResult: null, searchOption: null, userInput: "" });
+    const [appState, setAppState] = React.useState({ searchResult: null, searchOption: "0", userInput: "" });
 
     const searchOptions = {
         0: {
@@ -16,7 +16,7 @@ const ReviewSearch = () => {
         },
         1: {
             text: "Good Review Search", 
-            searchAPI: "bla"
+            searchAPI: goodSentimentQuery
         }
     }
 

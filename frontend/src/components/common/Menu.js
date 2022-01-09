@@ -32,24 +32,30 @@ const Menu = ({ title, onSearchSubmit, setAppState, appState, searchOptions }) =
   const buildRadioButtons = () => {
     return (<FormControl component="fieldset" className={classes.radio}>
       <FormLabel component="legend">Search Options</FormLabel>
-      <RadioGroup row aria-label="search-options" name="row-radio-buttons-group"> 
-        {Object.keys(searchOptions).map(key => (
-          <FormControlLabel
-            value={key}
-            control={<Radio />}
-            label={searchOptions[key].text}
-            key={key}
-            onChange={(event)=> {
-              setAppState({
-                userInput: appState.searchOption,
-                searchOption: event.target.value,
-                searchResult: appState.searchResult,
-              })}}
-            />))}
+      <RadioGroup row aria-label="search-options" name="row-radio-buttons-group">
+        {Object.keys(searchOptions).map(key => buildRadioButton(key))}
       </RadioGroup>
     </FormControl>);
   }
 
+  /**
+   * Displays one single radion button.
+   * @param {String} key 
+   */
+  const buildRadioButton = (key) => {
+    return (
+      <FormControlLabel
+        value={key}
+        control={<Radio />}
+        label={searchOptions[key].text}
+        key={key}
+        onChange={(event) => setAppState({
+          ...appState,
+          searchOption: event.target.value,
+        })}
+      />
+    )
+  }
   /**
    * This function builds the search button and submit the search on click. 
    * @returns Structure with button object. 
@@ -76,12 +82,12 @@ const Menu = ({ title, onSearchSubmit, setAppState, appState, searchOptions }) =
       <TextField
         label="What are you searching for?"
         variant="outlined"
-        onChange={(event) => { 
-          setAppState({ 
+        onChange={(event) => {
+          setAppState({
+            ...appState,
             userInput: event.target.value,
-            searchOption: appState.searchOption,
-            searchResult: appState.searchResult
-         })}}
+          })
+        }}
       />
     );
   }
