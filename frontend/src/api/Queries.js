@@ -12,3 +12,7 @@ export const goodSentimentQuery = (userInput) => {
     bf=if(termfreq(review_text,disappointed),div(termfreq(review_text,amazing),termfreq(review_text,disappointed)),termfreq(review_text,amazing))^20 sum(rating,1)^5
     &rows=10&wt=json`
 }
+
+export const thematicSearch = (userInput) => {
+    return `${baseURL}/books/query?q=description:${userInput}&q.op=OR&defType=edismax&indent=true&qf=description%5E2&ps=4&rows=8`
+}

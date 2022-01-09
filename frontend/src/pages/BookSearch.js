@@ -3,29 +3,33 @@ import SearchLayout from '../components/Layout/SearchLayout';
 import Menu from '../components/common/Menu'; 
 import { fetchInput } from '../api/Search';
 import BookElement from '../components/searchElements/BookElement';
+import { thematicSearch } from '../api/Queries';
 
 const BookSearch = () => {
     const [appState, setAppState] = React.useState({ searchResult: null });
 
-
-    const searchOptions = {
-        1: {
-            text: "General Search", 
-            value: ""
-        }, 
-        2: {
-            text: "Named Entity Search",
-            value: ""
+    const searchOptions = [
+        {
+            text: "General Search",     // Radio name to display 
+            searchAPI: ""
         },
-        3: {
+        {
+            text: "Named Entity Search",
+            searchAPI: ""
+        },
+        {
             text: "Scientific book",
-            value: ""
+            searchAPI: ""
         }, 
-        4: {
+        {
             text: "Authors", 
-            value: ""
+            searchAPI: ""
+        }, 
+        {
+            text: "Thematic Search",
+            searchAPI: thematicSearch
         }
-    }
+    ]
 
     return (
         <SearchLayout

@@ -15,8 +15,6 @@ const useStyles = makeStyles({
   },
 }); 
 
- 
-
 const SearchLayout= ({SearchElement, searchResult, noResultMessage, children}) => { 
   const classes = useStyles();  
   return (

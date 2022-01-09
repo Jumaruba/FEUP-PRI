@@ -9,16 +9,16 @@ import { badSentimentQuery, goodSentimentQuery } from '../api/Queries';
 const ReviewSearch = () => {
     const [appState, setAppState] = React.useState({ searchResult: null, searchOption: "0", userInput: "" });
 
-    const searchOptions = {
-        0: {
+    const searchOptions = [
+        {
             text: "Bad Review Search", 
             searchAPI: badSentimentQuery
         },
-        1: {
+        {
             text: "Good Review Search", 
-            searchAPI: goodSentimentQuery
+            searchAPI: goodSentimentQuery 
         }
-    }
+    ];
 
     return (
         <SearchLayout

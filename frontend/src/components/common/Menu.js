@@ -33,7 +33,7 @@ const Menu = ({ title, onSearchSubmit, setAppState, appState, searchOptions }) =
     return (<FormControl component="fieldset" className={classes.radio}>
       <FormLabel component="legend">Search Options</FormLabel>
       <RadioGroup row aria-label="search-options" name="row-radio-buttons-group">
-        {Object.keys(searchOptions).map(key => buildRadioButton(key))}
+        {searchOptions.map((element, key) => buildRadioButton(element, key))}
       </RadioGroup>
     </FormControl>);
   }
@@ -42,12 +42,12 @@ const Menu = ({ title, onSearchSubmit, setAppState, appState, searchOptions }) =
    * Displays one single radion button.
    * @param {String} key 
    */
-  const buildRadioButton = (key) => {
+  const buildRadioButton = (element, key) => {
     return (
       <FormControlLabel
         value={key}
         control={<Radio />}
-        label={searchOptions[key].text}
+        label={element.text}
         key={key}
         onChange={(event) => setAppState({
           ...appState,
