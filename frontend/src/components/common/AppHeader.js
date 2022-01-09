@@ -1,6 +1,7 @@
 import React from 'react'; 
-import {Box, Toolbar, Typography, Button, IconButton, AppBar, MenuItem} from '@mui/material';
+import {Box, Toolbar, Typography, Button, IconButton, AppBar, MenuItem, Icon} from '@mui/material';
 import {Link} from 'react-router-dom'; 
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 const AppHeader = () => {
   return (
@@ -13,7 +14,7 @@ const AppHeader = () => {
             color="inherit"
             sx={{ mr: 2 }}
           >
-            <img src='/favicon.ico' alt="Your Book" />
+            <MenuBookIcon fontSize="large"/>
           </IconButton>
 
           <Typography 
