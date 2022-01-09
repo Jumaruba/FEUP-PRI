@@ -20,6 +20,10 @@ const BookSearch = () => {
         3: {
             text: "Scientific book",
             value: ""
+        }, 
+        4: {
+            text: "Authors", 
+            value: ""
         }
     }
 
