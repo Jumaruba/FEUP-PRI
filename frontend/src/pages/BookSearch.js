@@ -1,7 +1,7 @@
 import React from 'react';
 import { Stack } from '@mui/material'
 import SearchLayout from '../components/Layout/SearchLayout';
-import BookElement from '../components/Books/BookElement';
+import BookElement from '../components/searchElements/BookElement';
 import ThematicSearch from '../api/ThematicSearch';
 import MenuLayout from '../components/Layout/MenuLayout';
 

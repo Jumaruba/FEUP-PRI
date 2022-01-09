@@ -1,7 +1,7 @@
 import { makeStyles } from "@mui/material";
 import React from "react";
-import Header from "../AppHeader";
-import Footer from "../Footer"; 
+import Header from "../common/AppHeader";
+import Footer from "../common/Footer"; 
 import { Box } from "@mui/system"; 
 
 const PageLayout = ({children}) => {

@@ -13,13 +13,13 @@ const useStyles = makeStyles({
   
 }); 
 
-const MenuLayout = (props) => {  
+const MenuLayout = ({title, children}) => {  
   const classes = useStyles();
     return (
         <Card className={classes.cardSearch}>
-          <CardHeader className={classes.cardTitle} title={props.title}/>
+          <CardHeader className={classes.cardTitle} title={title}/>
           <CardContent> 
-            {props.children}
+            {children}
           </CardContent>
         </Card>
     )
