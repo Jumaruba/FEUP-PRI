@@ -45,7 +45,7 @@
                 "filters": [
                     {"class": "solr.ClassicFilterFactory"},
                     {"class": "solr.LowerCaseFilterFactory"},
-                    {"class": "solr.EdgeNGramFilterFactory", "minGramSize":4, "maxGramSize":10}
+                    {"class": "solr.EdgeNGramFilterFactory", "minGramSize":4, "maxGramSize":5}
                 ]
             },
             "queryAnalyzer": {
@@ -54,7 +54,29 @@
                 "filters":[
                     {"class": "solr.ClassicFilterFactory"},
                     {"class": "solr.LowerCaseFilterFactory"},
-                    {"class": "solr.EdgeNGramFilterFactory", "minGramSize":4, "maxGramSize":10}
+                    {"class": "solr.EdgeNGramFilterFactory", "minGramSize":4, "maxGramSize":5}
+                ]
+            }
+        },
+        {
+            "name": "authors-ngram2",
+            "class": "solr.TextField",
+            "indexAnalyzer" : {
+                "tokenizer": {
+                    "class":"solr.ClassicTokenizerFactory"},
+                "filters": [
+                    {"class": "solr.ClassicFilterFactory"},
+                    {"class": "solr.LowerCaseFilterFactory"},
+                    {"class": "solr.EdgeNGramFilterFactory", "minGramSize":6, "maxGramSize":10}
+                ]
+            },
+            "queryAnalyzer": {
+                "tokenizer": {
+                    "class":"solr.ClassicTokenizerFactory"},
+                "filters":[
+                    {"class": "solr.ClassicFilterFactory"},
+                    {"class": "solr.LowerCaseFilterFactory"},
+                    {"class": "solr.EdgeNGramFilterFactory", "minGramSize":6, "maxGramSize":10}
                 ]
             }
         },
@@ -251,6 +273,11 @@
             "indexed": true
         },
         {
+            "name": "authors-ngram2",
+            "type": "authors-ngram2",
+            "indexed": true
+        },
+        {
             "name": "authors-space",
             "type": "authors-space",
             "indexed": true
@@ -291,6 +318,10 @@
         {
             "source":"authors",
             "dest":"authors-ngram"
+        },
+        {
+            "source":"authors",
+            "dest":"authors-ngram2"
         },
         {
             "source":"authors",

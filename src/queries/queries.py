@@ -268,30 +268,57 @@ def query_series():
     # if(exists($qq1),recip(ms(NOW,date),3.16e-11,1,1),0)
     # qq1=query($qq2)&qq2=title:/.*[0-9]+.*/
 
-def query_author():
-    AUTHORS_FILEPATH = "../data/queries/authors/book_jumper/positive_relevant.txt" 
+
+def query_authors_ms3():
+    """
+    Searches for J.K. Rowling books from 2017 until now
+    SYSTEM 0 <=> The one used in the last milestone. Any of this queries retrieves Nothing in that system because splitting by puctuation
+        and spaces is not enough to deal with acronyms
+    SYSTEM 1 <=> QUERY_AUTHORS_1: Uses the ClassicTokenizerFactory(split by space and puctuation) 
+        and ClassicFilterFactory(removes the dot from acronyms) e.g. J.K. => JK
+    SYSTEM 2 <=> QUERY_AUTHORS_2: Uses the SimplePatternTokenizerFactory(split by dot, space and semicolon) 
+        and query slop in order to match when the expression is J Rowling e.g. J.K. => J K
+    SYSTEM 3 <=> QUERY_AUTHORS_3: Like system 1 but also uses EdgeNGramFilterFactory [3-4]
+    SYSTEM 4 <=> QUERY_AUTHORS_3: Like system 3 but uses a copy field with EdgeNGramFilterFactory [5-10] and boosts it to get higher matches first
+    """
+    AUTHORS_FILEPATH = "../data/queries/authors/relevant.txt" 
     search = ["J. K. Rowling", "J K Rowling", "JK Rowling", "J Rowling", "Jo Rowling"]
 
-    for expression in search:
-        print(f"[AUTHORS] {expression}")
+    for i,expression in enumerate(search):
+        print(f"\n[AUTHORS WITHOUT NGRAM] {expression}")
         
-        QUERY_AUTHORS_1 = f"""http://localhost:8983/solr/books/select?q=authors:"{expression}" 
-                            date:[2017 TO *]&q.op=AND&indent=true
-                            &rows=14&wt=json"""
-        print("-> Classic (Acronym Dots removed)")
-        query_exe(QUERY_AUTHORS_1, AUTHORS_FILEPATH, "book_id", "authors_ms3/1_classic/")
+        QUERY_AUTHORS_1 = f"""http://localhost:8983/solr/books/select?q=authors:"{expression}"&fq=date:[2017-01-01T00:00:00Z TO *]
+            &q.op=OR&indent=true&wt=json"""    
+        print("\n-> Classic (Acronym Dots removed)")
+        query_exe(QUERY_AUTHORS_1, AUTHORS_FILEPATH, "book_id", f"authors_ms3/expression{i}/1_classic/")
 
-        QUERY_AUTHORS_2 = f"""http://localhost:8983/solr/books/select?q=authors-space:"{expression}" 
-                            date:[2017 TO *]&q.op=AND&indent=true&defType=edismax&qs=2
-                            &rows=14&wt=json"""
-        print("-> Acronym Dots replaced by space and query Slop")
-        query_exe(QUERY_AUTHORS_1, AUTHORS_FILEPATH, "book_id", "authors_ms3/2_space/")
+        QUERY_AUTHORS_2 = f"""http://localhost:8983/solr/books/select?q=authors-space:"{expression}"&fq=date:[2017-01-01T00:00:00Z TO *]
+            &q.op=OR&indent=true&defType=edismax&qs=2&wt=json"""
+        print("\n-> Acronym Dots replaced by space and query Slop")
+        query_exe(QUERY_AUTHORS_2, AUTHORS_FILEPATH, "book_id", f"authors_ms3/expression{i}/2_space/")
 
-        QUERY_AUTHORS_3 = f"""http://localhost:8983/solr/books/select?q=authors-ngram:"{expression}" 
-                            date:[2017 TO *]&q.op=AND&indent=true
-                            &rows=14&wt=json"""
-        print("-> N-Gram")
-        query_exe(QUERY_AUTHORS_1, AUTHORS_FILEPATH, "book_id", "authors_ms3/3_ngram/")
+        QUERY_AUTHORS_3 = f"""http://localhost:8983/solr/books/select?q=authors-space:"{expression}" authors:"{expression}"&fq=date:[2017-01-01T00:00:00Z TO *]
+            &q.op=OR&indent=true&defType=edismax&qs=2&wt=json"""
+        print("\n-> OR between previous ones")
+        query_exe(QUERY_AUTHORS_3, AUTHORS_FILEPATH, "book_id", f"authors_ms3/expression{i}/3_classic_and_space/")
+
+        # Tryin to get results for the only case that fails, "Jo Rowling", by using N-Grams
+        print(f"\n=======================\n[AUTHORS WITH NGRAM] {expression}")
+
+        QUERY_AUTHORS_4 = f"""http://localhost:8983/solr/books/select?q=authors-ngram:"{expression}" authors:"{expression}"&fq=date:[2017-01-01T00:00:00Z TO *]
+            &q.op=OR&indent=true&wt=json"""
+        print("\n-> N-Gram [4-5]")
+        query_exe(QUERY_AUTHORS_4, AUTHORS_FILEPATH, "book_id", f"authors_ms3/expression{i}/4_ngram_4_5/")
+
+        QUERY_AUTHORS_5 = f"""http://localhost:8983/solr/books/select?q=authors-ngram:"{expression}" authors:"{expression}"&fq=date:[2017-01-01T00:00:00Z TO *]
+            &q.op=OR&indent=true&wt=json&defType=edismax&bq=authors-ngram2:"{expression}"^3"""
+        print("\n-> N-Gram [4-5] boost N-Gram [6-10]")
+        query_exe(QUERY_AUTHORS_5, AUTHORS_FILEPATH, "book_id", f"authors_ms3/expression{i}/5_ngram_4_5_boost_6_10/")
+
+        QUERY_AUTHORS_6 = f"""http://localhost:8983/solr/books/select?q=authors-ngram2:"{expression}" authors:"{expression}"&fq=date:[2017-01-01T00:00:00Z TO *]
+            &q.op=OR&indent=true&wt=json"""
+        print("\n-> N-Gram [6-10]")
+        query_exe(QUERY_AUTHORS_6, AUTHORS_FILEPATH, "book_id", f"authors_ms3/expression{i}/6_ngram_6_10/")
     
 
 if __name__ == "__main__": 

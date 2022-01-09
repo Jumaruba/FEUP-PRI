@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import os
 
-PRECISION = 14
+PRECISION = 5
 metrics = {}
 metric = lambda f: metrics.setdefault(f.__name__, f) 
 
@@ -109,8 +109,8 @@ def generate_metrics_books(results, relevant, id_fieldname, path):
         print(int(doc[id_fieldname]) in relevant) 
     print("==== titles ===")
     for doc in results:
-        print(doc['review_id'])
+        print("Authors: ",doc['authors'])
 
     disp = PrecisionRecallDisplay([precision_recall_match.get(r) for r in recall_values], recall_values)
     disp.plot()
-    plt.savefig(path + 'precision_recall.pdf')
+    plt.savefig(path + 'precision_recall.jpg')
