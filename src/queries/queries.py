@@ -275,20 +275,20 @@ def query_author():
     for expression in search:
         print(f"[AUTHORS] {expression}")
         
-        QUERY_AUTHORS_1 = f"""http://localhost:8983/solr/books/select?q=authors:"{expression}"
-                            &q.op=AND&indent=true
+        QUERY_AUTHORS_1 = f"""http://localhost:8983/solr/books/select?q=authors:"{expression}" 
+                            date:[2017 TO *]&q.op=AND&indent=true
                             &rows=14&wt=json"""
         print("-> Classic (Acronym Dots removed)")
         query_exe(QUERY_AUTHORS_1, AUTHORS_FILEPATH, "book_id", "authors_ms3/1_classic/")
 
-        QUERY_AUTHORS_2 = f"""http://localhost:8983/solr/books/select?q=authors-space:"{expression}"
-                            &q.op=AND&indent=true&defType=edismax&qs=2
+        QUERY_AUTHORS_2 = f"""http://localhost:8983/solr/books/select?q=authors-space:"{expression}" 
+                            date:[2017 TO *]&q.op=AND&indent=true&defType=edismax&qs=2
                             &rows=14&wt=json"""
         print("-> Acronym Dots replaced by space and query Slop")
         query_exe(QUERY_AUTHORS_1, AUTHORS_FILEPATH, "book_id", "authors_ms3/2_space/")
 
-        QUERY_AUTHORS_3 = f"""http://localhost:8983/solr/books/select?q=authors-ngram:"{expression}"
-                            &q.op=AND&indent=true
+        QUERY_AUTHORS_3 = f"""http://localhost:8983/solr/books/select?q=authors-ngram:"{expression}" 
+                            date:[2017 TO *]&q.op=AND&indent=true
                             &rows=14&wt=json"""
         print("-> N-Gram")
         query_exe(QUERY_AUTHORS_1, AUTHORS_FILEPATH, "book_id", "authors_ms3/3_ngram/")
