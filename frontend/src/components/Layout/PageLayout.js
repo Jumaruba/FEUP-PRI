@@ -1,4 +1,3 @@
-import { makeStyles } from "@mui/material";
 import React from "react";
 import Header from "../common/AppHeader";
 import Footer from "../common/Footer"; 

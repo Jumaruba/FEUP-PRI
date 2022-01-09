@@ -1,4 +1,4 @@
-
+const nlp = require('compromise');
 const baseURL = "http://localhost:9000/solr";
 
 export const badSentimentQuery = (userInput) => {
@@ -13,6 +13,15 @@ export const goodSentimentQuery = (userInput) => {
     &rows=10&wt=json`
 }
 
-export const thematicSearch = (userInput) => {
+export const thematicSearch = (userInput) => {  
     return `${baseURL}/books/query?q=description:${userInput}&q.op=OR&defType=edismax&indent=true&qf=description%5E2&ps=4&rows=8`
 }
+
+export const namedEntitySearch = (userInput) => {
+    return `${baseURL}/books/select?defType=edismax&q="${userInput}"~5^10&qf=description^1&rows=10`
+}
+
+export const scientificBooksSearch = (userInput) => {
+    return `${baseURL}/books/select?q.op=AND&defType=edismax&q=science -genres:fiction -genres:\"historical-fiction\"&bq=genres:\"non-fiction\"^4&qf=description title`
+}
+
