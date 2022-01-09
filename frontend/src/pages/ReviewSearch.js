@@ -1,33 +1,40 @@
 import React from 'react';
-import { Stack } from '@mui/material' 
-import SearchLayout from '../components/Layout/SearchLayout'; 
+import SearchLayout from '../components/Layout/SearchLayout';
 import ReviewElement from '../components/searchElements/ReviewElement';
-import SentimentSearch from '../api/SentimentSearch';
-import MenuLayout from '../components/Layout/MenuLayout';
+import Menu from '../components/common/Menu';
+import { fetchInput } from '../api/Search';
+import { badSentimentQuery } from '../api/Queries';
 
-const ReviewSearch = () => { 
-  const [appState, setAppState] = React.useState({searchResult: null});   
 
-  const fetchInput = (apiURL) => {
-      fetch(apiURL, {mode:'cors'})
-        .then((res) => res.json())
-        .then((resJson) => {
-          setAppState({searchResult: resJson['response']['docs']});
-        });
+const ReviewSearch = () => {
+    const [appState, setAppState] = React.useState({ searchResult: null, searchOption: null, userInput: "" });
+
+    const searchOptions = {
+        0: {
+            text: "Bad Review Search", 
+            searchAPI: badSentimentQuery
+        },
+        1: {
+            text: "Good Review Search", 
+            searchAPI: "bla"
+        }
     }
-    
+
     return (
         <SearchLayout
             SearchElement={ReviewElement}
             searchResult={appState.searchResult}
             noResultMessage="No reviews to show..."
-        > 
-            <MenuLayout title="Advanced Review Search"> 
-                <Stack spacing={2}>
-                    <SentimentSearch fetch={fetchInput} />
-                </Stack>  
-            </MenuLayout>
-        </SearchLayout> 
+        >
+            <Menu
+                title="Advanced Review Search"
+                onSearchSubmit={fetchInput}
+                setAppState={setAppState} 
+                appState={appState}
+                searchOptions={searchOptions}
+            >
+            </Menu>
+        </SearchLayout>
     );
 
 

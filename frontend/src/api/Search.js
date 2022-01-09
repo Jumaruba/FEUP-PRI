@@ -1,15 +1,15 @@
-import React from 'react';
-import TextField from '@mui/material/TextField';
 
-const Search = ({buildQuery, label, fetch}) => {
-    const updateInput = (userInput) => {
-      const apiURL = buildQuery(userInput.target.value);
-      fetch(apiURL);
-    }
 
-    return (
-        <TextField label={label} variant="outlined" onChange={updateInput} />
-    );
+export const fetchInput = (appState, setAppState, searchOptions) => {
+    const apiURL = searchOptions[appState.searchOption].searchAPI(appState.userInput)
+    fetch(apiURL, { mode: 'cors' })
+        .then((res) => res.json())
+        .then((resJson) => {
+            setAppState({
+                userInput: appState.userInput,
+                searchOption: appState.searchOption,
+                searchResult: resJson['response']['docs']
+            });
+        });
 }
 
-export default Search;
