@@ -20,16 +20,112 @@
             "name": "comma-separated-list",
             "class": "solr.TextField",
             "indexAnalyzer" : {
+                "tokenizer": 
+                    {"class":"solr.ClassicTokenizerFactory"},
+                "filters": [
+                    {"class":"solr.ClassicFilterFactory"},
+                    {"class": "solr.LowerCaseFilterFactory"}
+                ]
+            },
+            "queryAnalyzer": {
+                "tokenizer": 
+                    {"class":"solr.ClassicTokenizerFactory"},
+                "filters":[
+                    {"class":"solr.ClassicFilterFactory"},
+                    {"class": "solr.LowerCaseFilterFactory"}
+                ]
+            }
+        }, 
+        {
+            "name": "authors-ngram",
+            "class": "solr.TextField",
+            "indexAnalyzer" : {
+                "tokenizer": {
+                    "class":"solr.ClassicTokenizerFactory"},
+                "filters": [
+                    {"class": "solr.ClassicFilterFactory"},
+                    {"class": "solr.LowerCaseFilterFactory"},
+                    {"class": "solr.EdgeNGramFilterFactory", "minGramSize":4, "maxGramSize":5}
+                ]
+            },
+            "queryAnalyzer": {
+                "tokenizer": {
+                    "class":"solr.ClassicTokenizerFactory"},
+                "filters":[
+                    {"class": "solr.ClassicFilterFactory"},
+                    {"class": "solr.LowerCaseFilterFactory"},
+                    {"class": "solr.EdgeNGramFilterFactory", "minGramSize":4, "maxGramSize":5}
+                ]
+            }
+        },
+        {
+            "name": "authors-ngram2",
+            "class": "solr.TextField",
+            "indexAnalyzer" : {
+                "tokenizer": {
+                    "class":"solr.ClassicTokenizerFactory"},
+                "filters": [
+                    {"class": "solr.ClassicFilterFactory"},
+                    {"class": "solr.LowerCaseFilterFactory"},
+                    {"class": "solr.EdgeNGramFilterFactory", "minGramSize":6, "maxGramSize":10}
+                ]
+            },
+            "queryAnalyzer": {
+                "tokenizer": {
+                    "class":"solr.ClassicTokenizerFactory"},
+                "filters":[
+                    {"class": "solr.ClassicFilterFactory"},
+                    {"class": "solr.LowerCaseFilterFactory"},
+                    {"class": "solr.EdgeNGramFilterFactory", "minGramSize":6, "maxGramSize":10}
+                ]
+            }
+        },
+        {
+            "name": "authors",
+            "class": "solr.TextField",
+            "indexAnalyzer" : {
+                "tokenizer": {
+                    "class":"solr.ClassicTokenizerFactory"},
+                "filters": [
+                    {"class": "solr.ClassicFilterFactory"},
+                    {"class": "solr.LowerCaseFilterFactory"}
+                ]
+            },
+            "queryAnalyzer": {
+                "tokenizer": {
+                    "class":"solr.ClassicTokenizerFactory"},
+                "filters":[
+                    {"class": "solr.ClassicFilterFactory"},
+                    {"class": "solr.LowerCaseFilterFactory"}
+                ]
+            }
+        },
+        {
+            "name": "authors-space",
+            "class": "solr.TextField",
+            "indexAnalyzer" : {
                 "tokenizer": {
                     "class":"solr.SimplePatternTokenizerFactory", 
                     "pattern": "[^. ;]+" 
                 },
                 "filters": [
                     {"class":"solr.PatternReplaceFilterFactory", 
-                    "pattern":"([^a-zA-Z0-9-'])", "replacement":""}
+                    "pattern":"([^a-zA-Z0-9-'])", "replacement":""},
+                    {"class": "solr.LowerCaseFilterFactory"}
+                ]
+            },
+            "queryAnalyzer": {
+                "tokenizer": {
+                    "class":"solr.SimplePatternTokenizerFactory", 
+                    "pattern": "[^. ;]+" 
+                },
+                "filters":[
+                    {"class":"solr.PatternReplaceFilterFactory", 
+                        "pattern":"([^a-zA-Z0-9-'])", "replacement":""},
+                    {"class": "solr.LowerCaseFilterFactory"}
                 ]
             }
-        }, 
+        },
         {
             "name": "description",
             "class": "solr.TextField",
@@ -96,7 +192,7 @@
                     {"class": "solr.LowerCaseFilterFactory"},
                     {"class": "solr.PorterStemFilterFactory"},
                     {"class": "solr.EnglishPossessiveFilterFactory"},
-                    {"class": "solr.EnglishMinimalStemFilterFactory"},
+                    {"class": "solr.EnglishMinimalStemFilterFactory"}
                 ]
             }, 
             "queryAnalyzer": {
@@ -168,7 +264,22 @@
         }, 
         {
             "name": "authors",
-            "type": "comma-separated-list",
+            "type": "authors",
+            "indexed": true
+        },
+        {
+            "name": "authors-ngram",
+            "type": "authors-ngram",
+            "indexed": true
+        },
+        {
+            "name": "authors-ngram2",
+            "type": "authors-ngram2",
+            "indexed": true
+        },
+        {
+            "name": "authors-space",
+            "type": "authors-space",
             "indexed": true
         },
         {
@@ -200,6 +311,21 @@
             "name": "date_added",
             "type": "date",
             "indexed": true
+        }
+    ],
+
+    "add-copy-field": [
+        {
+            "source":"authors",
+            "dest":"authors-ngram"
+        },
+        {
+            "source":"authors",
+            "dest":"authors-ngram2"
+        },
+        {
+            "source":"authors",
+            "dest":"authors-space"
         }
     ]
 }

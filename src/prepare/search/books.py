@@ -43,5 +43,5 @@ for book_id in books_ids:
     output_df = output_df.append({'book_id': int(book_id), 'genres': genres, 'authors': authors}, ignore_index=True)
 
 books_df = books_df.merge(output_df, on ="book_id", how="left")
-books_df.to_csv(get_search_path("books"), index=False)
+books_df.to_csv(get_search_path("books_ms2"), index=False)
    
