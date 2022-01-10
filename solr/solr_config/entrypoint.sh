@@ -72,7 +72,7 @@ then
     # Simple schema
     # curl -X POST -H 'Content-type:application/json' --data-binary @/solr_config/schema_simple.json http://localhost:8983/solr/reviews/schema 
     
-     # MS2 adpated schema
+    # MS2 adpated schema
     # curl -X POST -H 'Content-type:application/json' --data-binary @/solr_config/schema_ms2.json http://localhost:8983/solr/reviews/schema 
 
     # Populate collections

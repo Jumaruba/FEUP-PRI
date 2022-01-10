@@ -158,18 +158,16 @@
           "name": "title",
           "class": "solr.TextField",
           "indexAnalyzer": {
-                "tokenizer": {
-                    "class":"solr.StandardTokenizerFactory"
-                },
+                "tokenizer": {"class":"solr.ClassicTokenizerFactory" },
                 "filters":[  
+                    {"class":"solr.ClassicFilterFactory"},
                     {"class": "solr.LowerCaseFilterFactory"}
                 ]
           }, 
           "queryAnalyzer": {
-                "tokenizer": {
-                    "class":"solr.StandardTokenizerFactory"
-                },
+                "tokenizer": {"class":"solr.ClassicTokenizerFactory" },
                 "filters":[  
+                    {"class":"solr.ClassicFilterFactory"},
                     {"class": "solr.LowerCaseFilterFactory"}
                 ]
           }

@@ -259,14 +259,45 @@ def query_positive_reviews_m3():
 
 #TODO
 def query_series():
-    pass
-    # http://localhost:8983/solr/#/books/query?q=series:%22Harry%20Potter%22%20title:%22Harry%20Potter%22&q.op=OR&indent=true&sort=exists(series)%20desc,%20date%20desc
+
+    QUERY_SERIES_1 = """http://localhost:8983/solr/#/books/query?q=series:"Harry Potter" title:"Harry Potter"
+                        &q.op=OR&indent=true&sort=exists(series) desc, date desc"""
 
     # q => series:"Harry Potter" title:"Harry Potter" title:/.*[0-9].*/
     # sort => exists(series) desc, date desc
 
     # if(exists($qq1),recip(ms(NOW,date),3.16e-11,1,1),0)
     # qq1=query($qq2)&qq2=title:/.*[0-9]+.*/
+
+    # Note - only searching by series does not retrieve all relevant books. Only searching by title does no either
+    # TODO: search for Star Wars books, boosting the real collection
+
+    # DONE: query to search for a specific volume of a series
+    # TODO: write this as queries
+    """
+    1.1)
+    title:"Harry Potter 1"
+
+    1.2)
+    title:"Harry Potter 2"
+
+
+    2.1)
+    fq=title:"Harry Potter 1" OR (title:"Harry Potter" AND (title:set OR title:collection))
+    title:"Harry Potter 1"
+
+    2.2)
+    fq=title:"Harry Potter 7" OR (title:"Harry Potter" AND (title:set OR title:collection))
+    bq=title:"Harry Potter 7"
+
+
+    3.2)
+    title:"Harry Potter 7" OR (title:"Harry Potter" AND (title:"complete collection"~6 OR title:/1-([7-9]|[1-9]\d\d*)/))
+    bq=title:"Harry Potter 7"
+
+    NOTE: title:/1-([7-9]|[1-9]\d\d*)/
+    primeiro digito dentro do parenteses é o numero do livro que se procurou
+    """
 
 
 def query_authors_ms3():
@@ -325,9 +356,11 @@ if __name__ == "__main__":
     #query_romantic_tragedy()
     #query_world_war()
     #query_reviews_ms2()
-    query_science()
+    #query_science()
     #query_world_war_nofilter()
     #query_science_nofilter()
+
     #query_negative_reviews_m3()
     #query_positive_reviews_m3()
     #query_authors_ms3()
+    query_series()

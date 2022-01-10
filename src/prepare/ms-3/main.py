@@ -32,7 +32,7 @@ def dump_csv(cursor):
         writer.writerows(rows)
 
 if __name__ == '__main__':
-    connection = sqlite3.connect(f'../data/books.db')
+    connection = sqlite3.connect(f'../../data/books.db')
     cursor = connection.cursor()
     
     AuthorsClean(connection, cursor).clean(AUTHORS_PATH)
