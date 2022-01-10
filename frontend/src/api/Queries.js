@@ -13,11 +13,39 @@ export const goodSentimentQuery = (userInput) => {
     &rows=10&wt=json`
 }
 
-export const thematicSearch = (userInput) => {  
+export const thematicSearch = (userInput) => {
+    const filterUserInput = (input) => {
+        let doc = nlp(input).tag(); 
+        doc.nouns().toSingular();
+        doc.verbs().toInfinitive(); 
+        let filteredInput = joinResult(doc.nouns().data(), ""); 
+        filteredInput = joinResult(doc.verbs().data(), filteredInput);
+        filteredInput = joinResult(doc.adjectives().data(), filteredInput); 
+        return filteredInput
+    }
+    userInput = filterUserInput(userInput);
+    // TODO: delete console
+    console.log(`Thematic Search: ${userInput}`);
     return `${baseURL}/books/query?q=description:${userInput}&q.op=OR&defType=edismax&indent=true&qf=description%5E2&ps=4&rows=8`
 }
 
+/**
+ * Extracts the named entity from the text and gives a boost to this named entity.  
+ * Case the program doesn't identify a named entity, the full user input is used to perform the query.
+ * @param {String} userInput The input given by the user. 
+ * @returns 
+ */
 export const namedEntitySearch = (userInput) => {
+    const filterUserInput = (input) => {
+        let doc = nlp(input).tag(); 
+        let namedEntities = doc.topics().data();
+        if (namedEntities.length === 0) return input; 
+        let filteredInput = joinResult(namedEntities, "");
+        return filteredInput
+    }
+    userInput = filterUserInput(userInput);
+    // TODO: delete console
+    console.log(`Named entity: ${userInput}`);
     return `${baseURL}/books/select?defType=edismax&q="${userInput}"~5^10&qf=description^1&rows=10`
 }
 
@@ -25,3 +53,13 @@ export const scientificBooksSearch = (userInput) => {
     return `${baseURL}/books/select?q.op=AND&defType=edismax&q=science -genres:fiction -genres:\"historical-fiction\"&bq=genres:\"non-fiction\"^4&qf=description title`
 }
 
+/**
+ * Get's the elements from the nlp.data() and append the text of each instance in a string. 
+ * @param {Array} result The nlp.data() array of dictionaries. 
+ * @param {String} str The string to have the texts appended to. 
+ * @returns {String}
+ */
+ const joinResult = (data, currStr) => {
+    if (data.length === 0) return currStr;
+    return data.reduce((acc, currResult) => {return acc + " " + currResult.text}, currStr);
+  }
