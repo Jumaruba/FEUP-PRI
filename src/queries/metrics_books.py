@@ -109,8 +109,11 @@ def generate_metrics_books(results, relevant, id_fieldname, path):
         print(int(doc[id_fieldname]) in relevant) 
     print("==== titles ===")
     for doc in results:
-        print("Authors: ",doc['authors'])
+        print(doc['title'])
 
-    disp = PrecisionRecallDisplay([precision_recall_match.get(r) for r in recall_values], recall_values)
-    disp.plot()
+    f, ax = plt.subplots(1)
+    ax.set_ylim([0, 1.1])
+    precision_values = [precision_recall_match.get(r) for r in recall_values]
+    disp = PrecisionRecallDisplay(precision_values, recall_values)
+    disp.plot(ax)
     plt.savefig(path + 'precision_recall.jpg')

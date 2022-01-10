@@ -48,7 +48,7 @@ def query_romantic_tragedy():
 
 def query_world_war():
     """
-    Query taht searches about the world wars.
+    Query that searches about the world wars.
     - In the first query we are forcing that the words "world" and "war" appear in the phrase but not necessarily in sequence. Of course, a priority is given if they 
     are togheter. 
     - In the second query we're forcing an exact match in world war phrase. 
@@ -65,7 +65,7 @@ def query_world_war():
 
 def query_world_war_nofilter():
     """
-    Query taht searches about the world wars.
+    Query that searches about the world wars.
     - In the first query we are forcing that the words "world" and "war" appear in the phrase but not necessarily in sequence. Of course, a priority is given if they 
     are togheter. 
     - In the second query we're forcing an exact match in world war phrase. 
@@ -81,18 +81,18 @@ def query_world_war_nofilter():
     query_exe(QUERY_BOOKS_6, BOOKS_QRELS_FILEPATH_3, "book_id", "world_war_nofilter/boost/")
 
 def query_reviews_ms2():
-    REVIEWS_BAD_FILEPATH = "../data/queries/reviews/book_jumper/bad.txt" 
-    REVIEWS_GOOD_FILEPATH = "../data/queries/reviews/book_jumper/good.txt" 
-    """
-    bad_search_review = "hated this books"
-    # Bad.
-    QUERY_REVIEWS_1 = "http://localhost:8983/solr/reviews_subset/select?q={!q.op=OR df=review_text}hated this books&rows=10&wt=json"
-    # With rating and sorted by ascending. 
-    QUERY_REVIEWS_2 = "http://localhost:8983/solr/reviews_subset/select?q={!q.op=OR df=review_text}hated this books AND rating:[0 TO 3.5]&sort=field(rating, min) asc&rows=20&wt=json"
+    REVIEWS_BAD_FILEPATH = "../data/queries/reviews/bad.txt" 
+    REVIEWS_GOOD_FILEPATH = "../data/queries/reviews/good.txt" 
+    
+    # bad_search_review = "hated this books"
+    # # Bad.
+    # QUERY_REVIEWS_1 = "http://localhost:8983/solr/reviews_subset/select?q={!q.op=OR df=review_text}hated this books&rows=10&wt=json"
+    # # With rating and sorted by ascending. 
+    # QUERY_REVIEWS_2 = "http://localhost:8983/solr/reviews_subset/select?q={!q.op=OR df=review_text}hated this books AND rating:[0 TO 3.5]&sort=field(rating, min) asc&rows=20&wt=json"
 
-    query_exe(QUERY_REVIEWS_1, REVIEWS_BAD_FILEPATH, "review_id", "pos_neg_reviews/synonyms/bad/")
-    query_exe(QUERY_REVIEWS_2, REVIEWS_BAD_FILEPATH, "review_id", "pos_neg_reviews/rating/bad/") 
-    """    
+    # query_exe(QUERY_REVIEWS_1, REVIEWS_BAD_FILEPATH, "review_id", "pos_neg_reviews/synonyms/bad/")
+    # query_exe(QUERY_REVIEWS_2, REVIEWS_BAD_FILEPATH, "review_id", "pos_neg_reviews/rating/bad/") 
+       
     
     good_search_review = "in love with this book"
     # Good without boost.
@@ -325,9 +325,9 @@ if __name__ == "__main__":
     #query_romantic_tragedy()
     #query_world_war()
     #query_reviews_ms2()
-    #query_science()
+    query_science()
     #query_world_war_nofilter()
     #query_science_nofilter()
     #query_negative_reviews_m3()
     #query_positive_reviews_m3()
-    query_authors_ms3()
+    #query_authors_ms3()
