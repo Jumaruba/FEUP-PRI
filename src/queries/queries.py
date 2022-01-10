@@ -40,7 +40,7 @@ def query_romantic_tragedy():
     # Without boost
     QUERY_BOOKS_1 = "http://localhost:8983/solr/books_subset_1/select?q=description:romantic%26tragedy&rows=8&wt=json"
     # With boost
-    QUERY_BOOKS_2 = "http://localhost:8983/solr/books_subset_1/query?q=description:%20romantic%20tragedy&q.op=OR&defType=edismax&indent=true&qf=description%5E2&ps=4&rows=8"
+    QUERY_BOOKS_2 = "http://localhost:8983/solr/books_subset_1/select?q=description:%20romantic%20tragedy&q.op=OR&defType=edismax&indent=true&qf=description%5E2&ps=4&rows=8"
 
     query_exe(QUERY_BOOKS_1, BOOKS_QRELS_FILEPATH_1, "book_id","romantic_tragedy/no_boost/") 
     query_exe(QUERY_BOOKS_2, BOOKS_QRELS_FILEPATH_1, "book_id","romantic_tragedy/boost/")   
@@ -56,7 +56,7 @@ def query_world_war():
     BOOKS_QRELS_FILEPATH_2 = "../data/queries/world_war/related.txt"
 
     # Without boost.
-    QUERY_BOOKS_3 = "http://localhost:8983/solr/books_subset_2/query?q=description:\"world war\"&rows=10"
+    QUERY_BOOKS_3 = "http://localhost:8983/solr/books_subset_2/select?q=description:\"world war\"&rows=10"
     # With boost. 
     QUERY_BOOKS_4 = "http://localhost:8983/solr/books_subset_2/select?defType=edismax&q=+world +war&qf=description^1&rows=10&ps=2"
 
@@ -259,45 +259,40 @@ def query_positive_reviews_m3():
 
 #TODO
 def query_series():
+    SERIES_FILEPATH = "../data/queries/series/harry_potter_7_relevant.txt" 
 
-    QUERY_SERIES_1 = """http://localhost:8983/solr/#/books/query?q=series:"Harry Potter" title:"Harry Potter"
-                        &q.op=OR&indent=true&sort=exists(series) desc, date desc"""
+    # Search for a specific volume of a series
+    # TODO: maybe add series field
 
+    QUERY_SERIES_1 = "http://localhost:8983/solr/books/select?q=title:\"Harry Potter 7\"&wt=json"
+
+    QUERY_SERIES_2 = """http://localhost:8983/solr/books/select?q=*:*&fq=title:"Harry Potter 7" 
+    OR (title:"Harry Potter" AND (title:set OR title:collection))&
+    bq=title:"Harry Potter 7"&defType=edismax&wt=json"""
+    
+    """
+    NOTE: title:/1-([7-9]|[1-9]\d\d*)/
+    primeiro digito dentro do parenteses é o numero do livro que se procurou
+    """
+    QUERY_SERIES_3 = """http://localhost:8983/solr/books/select?q=*:*&fq=title:"Harry Potter 7" 
+    OR (title:"Harry Potter" AND (title:"complete collection"~6 OR title:/1-([7-9]|[1-9]\d\d*)/))&
+    bq=title:"Harry Potter 7"&defType=edismax&wt=json"""
+   
+    print("\n[Harry Potter 7] Simple Title Query")
+    query_exe(QUERY_SERIES_1, SERIES_FILEPATH, "book_id", f"series_ms3/1_simple/")
+    print("\n[Harry Potter 7] Simple Title Query")
+    query_exe(QUERY_SERIES_2, SERIES_FILEPATH, "book_id", f"series_ms3/2_sets/")
+    print("\n[Harry Potter 7] Simple Title Query")
+    query_exe(QUERY_SERIES_3, SERIES_FILEPATH, "book_id", f"series_ms3/3_regex/")
+
+    # dump ideas
     # q => series:"Harry Potter" title:"Harry Potter" title:/.*[0-9].*/
     # sort => exists(series) desc, date desc
-
     # if(exists($qq1),recip(ms(NOW,date),3.16e-11,1,1),0)
     # qq1=query($qq2)&qq2=title:/.*[0-9]+.*/
 
     # Note - only searching by series does not retrieve all relevant books. Only searching by title does no either
     # TODO: search for Star Wars books, boosting the real collection
-
-    # DONE: query to search for a specific volume of a series
-    # TODO: write this as queries
-    """
-    1.1)
-    title:"Harry Potter 1"
-
-    1.2)
-    title:"Harry Potter 2"
-
-
-    2.1)
-    fq=title:"Harry Potter 1" OR (title:"Harry Potter" AND (title:set OR title:collection))
-    title:"Harry Potter 1"
-
-    2.2)
-    fq=title:"Harry Potter 7" OR (title:"Harry Potter" AND (title:set OR title:collection))
-    bq=title:"Harry Potter 7"
-
-
-    3.2)
-    title:"Harry Potter 7" OR (title:"Harry Potter" AND (title:"complete collection"~6 OR title:/1-([7-9]|[1-9]\d\d*)/))
-    bq=title:"Harry Potter 7"
-
-    NOTE: title:/1-([7-9]|[1-9]\d\d*)/
-    primeiro digito dentro do parenteses é o numero do livro que se procurou
-    """
 
 
 def query_authors_ms3():
