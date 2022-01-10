@@ -48,7 +48,7 @@ def query_romantic_tragedy():
 
 def query_world_war():
     """
-    Query taht searches about the world wars.
+    Query that searches about the world wars.
     - In the first query we are forcing that the words "world" and "war" appear in the phrase but not necessarily in sequence. Of course, a priority is given if they 
     are togheter. 
     - In the second query we're forcing an exact match in world war phrase. 
@@ -65,7 +65,7 @@ def query_world_war():
 
 def query_world_war_nofilter():
     """
-    Query taht searches about the world wars.
+    Query that searches about the world wars.
     - In the first query we are forcing that the words "world" and "war" appear in the phrase but not necessarily in sequence. Of course, a priority is given if they 
     are togheter. 
     - In the second query we're forcing an exact match in world war phrase. 
@@ -81,18 +81,18 @@ def query_world_war_nofilter():
     query_exe(QUERY_BOOKS_6, BOOKS_QRELS_FILEPATH_3, "book_id", "world_war_nofilter/boost/")
 
 def query_reviews_ms2():
-    REVIEWS_BAD_FILEPATH = "../data/queries/reviews/book_jumper/bad.txt" 
-    REVIEWS_GOOD_FILEPATH = "../data/queries/reviews/book_jumper/good.txt" 
-    """
-    bad_search_review = "hated this books"
-    # Bad.
-    QUERY_REVIEWS_1 = "http://localhost:8983/solr/reviews_subset/select?q={!q.op=OR df=review_text}hated this books&rows=10&wt=json"
-    # With rating and sorted by ascending. 
-    QUERY_REVIEWS_2 = "http://localhost:8983/solr/reviews_subset/select?q={!q.op=OR df=review_text}hated this books AND rating:[0 TO 3.5]&sort=field(rating, min) asc&rows=20&wt=json"
+    REVIEWS_BAD_FILEPATH = "../data/queries/reviews/bad.txt" 
+    REVIEWS_GOOD_FILEPATH = "../data/queries/reviews/good.txt" 
+    
+    # bad_search_review = "hated this books"
+    # # Bad.
+    # QUERY_REVIEWS_1 = "http://localhost:8983/solr/reviews_subset/select?q={!q.op=OR df=review_text}hated this books&rows=10&wt=json"
+    # # With rating and sorted by ascending. 
+    # QUERY_REVIEWS_2 = "http://localhost:8983/solr/reviews_subset/select?q={!q.op=OR df=review_text}hated this books AND rating:[0 TO 3.5]&sort=field(rating, min) asc&rows=20&wt=json"
 
-    query_exe(QUERY_REVIEWS_1, REVIEWS_BAD_FILEPATH, "review_id", "pos_neg_reviews/synonyms/bad/")
-    query_exe(QUERY_REVIEWS_2, REVIEWS_BAD_FILEPATH, "review_id", "pos_neg_reviews/rating/bad/") 
-    """    
+    # query_exe(QUERY_REVIEWS_1, REVIEWS_BAD_FILEPATH, "review_id", "pos_neg_reviews/synonyms/bad/")
+    # query_exe(QUERY_REVIEWS_2, REVIEWS_BAD_FILEPATH, "review_id", "pos_neg_reviews/rating/bad/") 
+       
     
     good_search_review = "in love with this book"
     # Good without boost.
@@ -268,43 +268,66 @@ def query_series():
     # if(exists($qq1),recip(ms(NOW,date),3.16e-11,1,1),0)
     # qq1=query($qq2)&qq2=title:/.*[0-9]+.*/
 
-def query_author():
-    AUTHORS_FILEPATH = "../data/queries/authors/book_jumper/positive_relevant.txt" 
-    
-    # TODO - test with old and new schema
-    # Simple search
-    QUERY_AUTHORS_1 = """http://localhost:8983/solr/books/select?q=authors:"J K Rowling"
-                &q.op=AND&indent=true
-                &rows=14&wt=json"""
 
-    # TODO - test with old and new schema
-    # Simple search
-    QUERY_AUTHORS_2 = """http://localhost:8983/solr/books/select?q=authors:"J Rowling"
-                    &q.op=AND&indent=true
-                    &rows=14&wt=json"""
-    
-    # Uses query slop
-    QUERY_AUTHORS_3 = """http://localhost:8983/solr/books/select?q=authors:"J Rowling"
-                &q.op=AND&indent=true&defType=edismax&indent=true&qs=3
-                &rows=14&wt=json"""
+def query_authors_ms3():
+    """
+    Searches for J.K. Rowling books from 2017 until now
+    SYSTEM 0 <=> The one used in the last milestone. Any of this queries retrieves Nothing in that system because splitting by puctuation
+        and spaces is not enough to deal with acronyms
+    SYSTEM 1 <=> QUERY_AUTHORS_1: Uses the ClassicTokenizerFactory(split by space and puctuation) 
+        and ClassicFilterFactory(removes the dot from acronyms) e.g. J.K. => JK
+    SYSTEM 2 <=> QUERY_AUTHORS_2: Uses the SimplePatternTokenizerFactory(split by dot, space and semicolon) 
+        and query slop in order to match when the expression is J Rowling e.g. J.K. => J K
+    SYSTEM 3 <=> QUERY_AUTHORS_3: Like system 1 but also uses EdgeNGramFilterFactory [3-4]
+    SYSTEM 4 <=> QUERY_AUTHORS_3: Like system 3 but uses a copy field with EdgeNGramFilterFactory [5-10] and boosts it to get higher matches first
+    """
+    AUTHORS_FILEPATH = "../data/queries/authors/relevant.txt" 
+    search = ["J. K. Rowling", "J K Rowling", "JK Rowling", "J Rowling", "Jo Rowling"]
 
-    # Identify reviews to J. K. Rowling reviews that refer the author (maybe grouped by book)
-    # TODO - change schema in order to deal with cases where J.K. Rowling appears and we want it to match
-    # with J Rowling or J K Rowling
-    QUERY_AUTHORS_4 = """"""
+    for i,expression in enumerate(search):
+        print(f"\n[AUTHORS WITHOUT NGRAM] {expression}")
+        
+        QUERY_AUTHORS_1 = f"""http://localhost:8983/solr/books/select?q=authors:"{expression}"&fq=date:[2017-01-01T00:00:00Z TO *]
+            &q.op=OR&indent=true&wt=json"""    
+        print("\n-> Classic (Acronym Dots removed)")
+        query_exe(QUERY_AUTHORS_1, AUTHORS_FILEPATH, "book_id", f"authors_ms3/expression{i}/1_classic/")
 
+        QUERY_AUTHORS_2 = f"""http://localhost:8983/solr/books/select?q=authors-space:"{expression}"&fq=date:[2017-01-01T00:00:00Z TO *]
+            &q.op=OR&indent=true&defType=edismax&qs=2&wt=json"""
+        print("\n-> Acronym Dots replaced by space and query Slop")
+        query_exe(QUERY_AUTHORS_2, AUTHORS_FILEPATH, "book_id", f"authors_ms3/expression{i}/2_space/")
 
-    # query slop e para autores
-    # http://localhost:8983/solr/#/books/query?q=authors:%22J%20Rowling%22&q.op=AND&defType=edismax&indent=true&rows=300&qs=2
-    pass
+        QUERY_AUTHORS_3 = f"""http://localhost:8983/solr/books/select?q=authors-space:"{expression}" authors:"{expression}"&fq=date:[2017-01-01T00:00:00Z TO *]
+            &q.op=OR&indent=true&defType=edismax&qs=2&wt=json"""
+        print("\n-> OR between previous ones")
+        query_exe(QUERY_AUTHORS_3, AUTHORS_FILEPATH, "book_id", f"authors_ms3/expression{i}/3_classic_and_space/")
+
+        # Tryin to get results for the only case that fails, "Jo Rowling", by using N-Grams
+        print(f"\n=======================\n[AUTHORS WITH NGRAM] {expression}")
+
+        QUERY_AUTHORS_4 = f"""http://localhost:8983/solr/books/select?q=authors-ngram:"{expression}" authors:"{expression}"&fq=date:[2017-01-01T00:00:00Z TO *]
+            &q.op=OR&indent=true&wt=json"""
+        print("\n-> N-Gram [4-5]")
+        query_exe(QUERY_AUTHORS_4, AUTHORS_FILEPATH, "book_id", f"authors_ms3/expression{i}/4_ngram_4_5/")
+
+        QUERY_AUTHORS_5 = f"""http://localhost:8983/solr/books/select?q=authors-ngram:"{expression}" authors:"{expression}"&fq=date:[2017-01-01T00:00:00Z TO *]
+            &q.op=OR&indent=true&wt=json&defType=edismax&bq=authors-ngram2:"{expression}"^3"""
+        print("\n-> N-Gram [4-5] boost N-Gram [6-10]")
+        query_exe(QUERY_AUTHORS_5, AUTHORS_FILEPATH, "book_id", f"authors_ms3/expression{i}/5_ngram_4_5_boost_6_10/")
+
+        QUERY_AUTHORS_6 = f"""http://localhost:8983/solr/books/select?q=authors-ngram2:"{expression}" authors:"{expression}"&fq=date:[2017-01-01T00:00:00Z TO *]
+            &q.op=OR&indent=true&wt=json"""
+        print("\n-> N-Gram [6-10]")
+        query_exe(QUERY_AUTHORS_6, AUTHORS_FILEPATH, "book_id", f"authors_ms3/expression{i}/6_ngram_6_10/")
     
 
 if __name__ == "__main__": 
     #query_romantic_tragedy()
     #query_world_war()
     #query_reviews_ms2()
-    #query_science()
+    query_science()
     #query_world_war_nofilter()
     #query_science_nofilter()
     #query_negative_reviews_m3()
-    query_positive_reviews_m3()
+    #query_positive_reviews_m3()
+    #query_authors_ms3()

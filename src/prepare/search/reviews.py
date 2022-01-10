@@ -13,7 +13,7 @@ def reviews_doc():
 
     reviews_doc_df.index.names = ['review_id']
     
-    reviews_doc_df.to_csv(get_search_path("reviews"))
+    reviews_doc_df.to_csv(get_search_path("reviews_ms2"))
 
 if __name__ == '__main__':
     reviews_doc()
