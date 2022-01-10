@@ -5,10 +5,10 @@ import {
     Route
 } from "react-router-dom"; 
 
-import PageLayout from './components/Layout/PageLayout'; 
-import BookPage from './pages/BookPage'; 
-import SearchBooks from './pages/SearchBooks'; 
-import SearchReviews from './pages/SearchReviews';
+import PageLayout from './components/Layout/PageLayout.js'; 
+import BookPage from './pages/BookPage';  
+import BookSearch from './pages/BookSearch'; 
+import ReviewSearch from "./pages/ReviewSearch";
 
 const AppRouter = () => (
     <BrowserRouter>
@@ -19,7 +19,7 @@ const AppRouter = () => (
                 key="/"
                 element={
                     <PageLayout key="/">
-                        <SearchBooks/>
+                        <BookSearch/>
                     </PageLayout>
                 }
             /> 
@@ -28,8 +28,8 @@ const AppRouter = () => (
                 path="/reviews"
                 key="/reviews"
                 element={
-                    <PageLayout key="/reviews">
-                        <SearchReviews/>
+                    <PageLayout key="/reviews"> 
+                        <ReviewSearch/> 
                     </PageLayout>
                 }/>
             <Route 

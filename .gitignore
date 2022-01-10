@@ -11,7 +11,7 @@ src/pipeline/cleaning/__pycache__/**
 src/pipeline/combine/utils/__pycache__/**
 src/pipeline/combine/__pycache__/**
 src/pipeline/explore/utils/__pycache__/
-src/pipeline/clean/__pycache__/
+src/pipeline/clean/__pycache__/ 
 
 # DATA MS2
 src/data/processed/**
@@ -27,10 +27,14 @@ src/queries/precision_recall.pdf
 src/queries/results.tex
 
 # Database
-*.db
+*.db 
+
 
 # DATA MS3
 src/queries/evaluation_results/**
 src/queries/statistics/**
 src/data/search/*.csv
-*.pyc
+*.pyc 
+
+# FRONTEND 
+frontend/package-lock.json
