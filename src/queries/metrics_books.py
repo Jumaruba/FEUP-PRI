@@ -39,7 +39,7 @@ def ap(results, relevant, id_fieldname):
     return sum(precision_values)/len(precision_values) 
 
 
-# P AT N ============================================ 
+# P AT N ========================clea==================== 
 @metric
 def p_at(results, relevant, id_fieldname):
     return len([doc for doc in results[:PRECISION] if int(doc[id_fieldname]) in relevant])/PRECISION

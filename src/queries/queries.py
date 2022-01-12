@@ -56,9 +56,9 @@ def query_world_war():
     BOOKS_QRELS_FILEPATH_2 = "../data/queries/world_war/related.txt"
 
     # Without boost.
-    QUERY_BOOKS_3 = "http://localhost:8983/solr/books_subset_2/select?q=description:\"world war\"&rows=10"
+    QUERY_BOOKS_3 = "http://localhost:8983/solr/books_subset_2/select?q=description:\"world war\"&rows=12&wt=json"
     # With boost. 
-    QUERY_BOOKS_4 = "http://localhost:8983/solr/books_subset_2/select?defType=edismax&q=+world +war&qf=description^1&rows=10&ps=2"
+    QUERY_BOOKS_4 = "http://localhost:8983/solr/books_subset_2/select?defType=edismax&q=+world +war&qf=description^1&rows=12&ps=2&wt=json"
 
     query_exe(QUERY_BOOKS_3, BOOKS_QRELS_FILEPATH_2, "book_id", "world_war/no_boost/") 
     query_exe(QUERY_BOOKS_4, BOOKS_QRELS_FILEPATH_2, "book_id", "world_war/boost/")
@@ -257,7 +257,6 @@ def query_positive_reviews_m3():
     query_reviews(QUERY_REVIEWS_M3_10, REVIEWS_POSITIVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/"+FOLDER+"/5_boost3/")  
 
 
-#TODO
 def query_series():
     SERIES_FILEPATH = "../data/queries/series/harry_potter_7_relevant.txt" 
 
@@ -285,14 +284,6 @@ def query_series():
     print("\n[Harry Potter 7] Simple Title Query")
     query_exe(QUERY_SERIES_3, SERIES_FILEPATH, "book_id", f"series_ms3/3_regex/")
 
-    # dump ideas
-    # q => series:"Harry Potter" title:"Harry Potter" title:/.*[0-9].*/
-    # sort => exists(series) desc, date desc
-    # if(exists($qq1),recip(ms(NOW,date),3.16e-11,1,1),0)
-    # qq1=query($qq2)&qq2=title:/.*[0-9]+.*/
-
-    # Note - only searching by series does not retrieve all relevant books. Only searching by title does no either
-    # TODO: search for Star Wars books, boosting the real collection
 
 
 def query_authors_ms3():
@@ -349,7 +340,7 @@ def query_authors_ms3():
 
 if __name__ == "__main__": 
     #query_romantic_tragedy()
-    #query_world_war()
+    query_world_war()
     #query_reviews_ms2()
     #query_science()
     #query_world_war_nofilter()
@@ -358,4 +349,4 @@ if __name__ == "__main__":
     #query_negative_reviews_m3()
     #query_positive_reviews_m3()
     #query_authors_ms3()
-    query_series()
+    #query_series()
