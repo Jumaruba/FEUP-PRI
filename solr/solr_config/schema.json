@@ -110,7 +110,7 @@
                 },
                 "filters": [
                     {"class":"solr.PatternReplaceFilterFactory", 
-                    "pattern":"([^a-zA-Z0-9-'])", "replacement":""},
+                    "pattern":"[^a-zA-Z0-9-']", "replacement":""},
                     {"class": "solr.LowerCaseFilterFactory"}
                 ]
             },
@@ -121,7 +121,7 @@
                 },
                 "filters":[
                     {"class":"solr.PatternReplaceFilterFactory", 
-                        "pattern":"([^a-zA-Z0-9-'])", "replacement":""},
+                        "pattern":"[^a-zA-Z0-9-']", "replacement":""},
                     {"class": "solr.LowerCaseFilterFactory"}
                 ]
             }

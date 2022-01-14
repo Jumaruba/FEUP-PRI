@@ -185,10 +185,10 @@ def query_negative_reviews_m3():
                         bf=div(if(termfreq(review_text,amazing),div(termfreq(review_text,disappointed),termfreq(review_text,amazing)),termfreq(review_text,disappointed)),sum(rating,1))^20
                         &rows=16&wt=json"""
 
-    # Rating limit, same boost function but WITHOUT searching for negative words
+    # Rating limit and boost reviews that have negative words but don't have positive words and boost lower ratings
     QUERY_REVIEWS_M3_4 = """http://localhost:8983/solr/reviews/select?q=title:"The Book Jumper" rating:[0 TO 3]&q.op=AND&defType=edismax&indent=true&
-                        bf=div(if(termfreq(review_text,amazing),div(termfreq(review_text,disappointed),termfreq(review_text,amazing)),termfreq(review_text,disappointed)),sum(rating,1))^20
-                        &rows=16&wt=json"""
+                    bq=(review_text:disappointed -amazing)^8&bf=div(1,sum(rating,1))^5  
+                    &rows=16&wt=json"""
 
     # Rating limit and 2 boost functions, one for the frequency of positive and negative words, and another for the rating 
     QUERY_REVIEWS_M3_5 = """http://localhost:8983/solr/reviews/select?q=title:"The Book Jumper" rating:[0 TO 3]&q.op=AND&defType=edismax&indent=true&
@@ -199,15 +199,15 @@ def query_negative_reviews_m3():
     FOLDER = 'index_synonyms'
     # FOLDER = 'query_synonyms'
 
-    print("[NEGATIVE REVIEWS] rating limit")
+    print("1 - rating limit")
     query_reviews(QUERY_REVIEWS_M3_1, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/"+FOLDER+"/1_limit/")
-    print("[NEGATIVE REVIEWS] search negative word, rating limit and sort")
+    print("2 - search negative word, rating limit and sort")
     query_reviews(QUERY_REVIEWS_M3_2, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/"+FOLDER+"/2_sort/")  
-    print("[NEGATIVE REVIEWS] search negative word, rating limit and boost function")
+    print("3 - search negative word, rating limit and boost function")
     query_reviews(QUERY_REVIEWS_M3_3, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/"+FOLDER+"/3_boost/")  
-    print("[NEGATIVE REVIEWS] rating limit and boost function")
+    print("4 - boost reviews that have negative words and don't have positive words")
     query_reviews(QUERY_REVIEWS_M3_4, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/"+FOLDER+"/4_boost2/")  
-    print("[NEGATIVE REVIEWS] rating limit and 2 boost functions")
+    print("5 - 2 boost functions")
     query_reviews(QUERY_REVIEWS_M3_5, REVIEWS_NEGATIVE_FEEDBACK_FILEPATH, "review_id", "reviews_negative_m3/"+FOLDER+"/5_boost3/")  
 
 
@@ -230,20 +230,20 @@ def query_positive_reviews_m3():
                         review_text:amazing rating:[4 TO 5]&q.op=AND&defType=edismax&indent=true&
                         bf=mul(if(termfreq(review_text,disappointed),div(termfreq(review_text,amazing),termfreq(review_text,disappointed)),termfreq(review_text,amazing)),sum(rating,1))^20
                         &rows=10&wt=json"""
-
-    # Rating limit, same boost function but WITHOUT searching for positve words
+    
+    # Rating limit and boost reviews that have positive words but don't have negative words and boost lower ratings
     QUERY_REVIEWS_M3_9 = """http://localhost:8983/solr/reviews/select?q=title:"The Book Jumper" 
-                    rating:[4 TO 5]&q.op=AND&defType=edismax&indent=true&
-                    bf=mul(if(termfreq(review_text,disappointed),div(termfreq(review_text,amazing),termfreq(review_text,disappointed)),termfreq(review_text,amazing)),sum(rating,1))^20
-                    &rows=10&wt=json"""
+                        review_text:amazing rating:[4 TO 5]&q.op=AND&defType=edismax&indent=true&
+                        bf=mul(if(termfreq(review_text,disappointed),div(termfreq(review_text,amazing),termfreq(review_text,disappointed)),termfreq(review_text,amazing)),sum(rating,1))^20
+                        &rows=10&wt=json"""
 
     # Rating limit and 2 boost functions, one for the frequency of positive and negative words, and another for the rating
     QUERY_REVIEWS_M3_10 = """http://localhost:8983/solr/reviews/select?q=title:"The Book Jumper" rating:[4 TO 5]&q.op=AND&defType=edismax&indent=true&
-                    bf=if(termfreq(review_text,disappointed),div(termfreq(review_text,amazing),termfreq(review_text,disappointed)),termfreq(review_text,amazing))^20 sum(rating,1)^5
+                    bq=(review_text:amazing -disappointed)^8&bf=rating^5
                     &rows=10&wt=json"""
 
-    FOLDER = 'index_synonyms'
-    # FOLDER = 'query_synonyms'
+    # FOLDER = 'index_synonyms'
+    FOLDER = 'query_synonyms'
 
     print("[POSITIVE REVIEWS] rating limit")
     query_reviews(QUERY_REVIEWS_M3_6, REVIEWS_POSITIVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/"+FOLDER+"/1_limit/")
@@ -285,7 +285,6 @@ def query_series():
     query_exe(QUERY_SERIES_3, SERIES_FILEPATH, "book_id", f"series_ms3/3_regex/")
 
 
-
 def query_authors_ms3():
     """
     Searches for J.K. Rowling books from 2017 until now
@@ -306,47 +305,42 @@ def query_authors_ms3():
         
         QUERY_AUTHORS_1 = f"""http://localhost:8983/solr/books/select?q=authors:"{expression}"&fq=date:[2017-01-01T00:00:00Z TO *]
             &q.op=OR&indent=true&wt=json"""    
-        print("\n-> Classic (Acronym Dots removed)")
+        print("\n-> 1 -Classic (Acronym Dots removed)")
         query_exe(QUERY_AUTHORS_1, AUTHORS_FILEPATH, "book_id", f"authors_ms3/expression{i}/1_classic/")
 
         QUERY_AUTHORS_2 = f"""http://localhost:8983/solr/books/select?q=authors-space:"{expression}"&fq=date:[2017-01-01T00:00:00Z TO *]
             &q.op=OR&indent=true&defType=edismax&qs=2&wt=json"""
-        print("\n-> Acronym Dots replaced by space and query Slop")
+        print("\n-> 2 - Acronym Dots replaced by space and query Slop")
         query_exe(QUERY_AUTHORS_2, AUTHORS_FILEPATH, "book_id", f"authors_ms3/expression{i}/2_space/")
 
         QUERY_AUTHORS_3 = f"""http://localhost:8983/solr/books/select?q=authors-space:"{expression}" authors:"{expression}"&fq=date:[2017-01-01T00:00:00Z TO *]
             &q.op=OR&indent=true&defType=edismax&qs=2&wt=json"""
-        print("\n-> OR between previous ones")
+        print("\n-> 3 - OR between previous ones")
         query_exe(QUERY_AUTHORS_3, AUTHORS_FILEPATH, "book_id", f"authors_ms3/expression{i}/3_classic_and_space/")
 
         # Tryin to get results for the only case that fails, "Jo Rowling", by using N-Grams
         print(f"\n=======================\n[AUTHORS WITH NGRAM] {expression}")
 
         QUERY_AUTHORS_4 = f"""http://localhost:8983/solr/books/select?q=authors-ngram:"{expression}" authors:"{expression}"&fq=date:[2017-01-01T00:00:00Z TO *]
-            &q.op=OR&indent=true&wt=json"""
-        print("\n-> N-Gram [4-5]")
-        query_exe(QUERY_AUTHORS_4, AUTHORS_FILEPATH, "book_id", f"authors_ms3/expression{i}/4_ngram_4_5/")
-
-        QUERY_AUTHORS_5 = f"""http://localhost:8983/solr/books/select?q=authors-ngram:"{expression}" authors:"{expression}"&fq=date:[2017-01-01T00:00:00Z TO *]
             &q.op=OR&indent=true&wt=json&defType=edismax&bq=authors-ngram2:"{expression}"^3"""
-        print("\n-> N-Gram [4-5] boost N-Gram [6-10]")
-        query_exe(QUERY_AUTHORS_5, AUTHORS_FILEPATH, "book_id", f"authors_ms3/expression{i}/5_ngram_4_5_boost_6_10/")
+        print("\n-> 4 - N-Gram [4-5] boost N-Gram [6-10]")
+        query_exe(QUERY_AUTHORS_4, AUTHORS_FILEPATH, "book_id", f"authors_ms3/expression{i}/4_ngram_4_5_boost_6_10/")
 
-        QUERY_AUTHORS_6 = f"""http://localhost:8983/solr/books/select?q=authors-ngram2:"{expression}" authors:"{expression}"&fq=date:[2017-01-01T00:00:00Z TO *]
+        QUERY_AUTHORS_5 = f"""http://localhost:8983/solr/books/select?q=authors-ngram2:"{expression}" authors:"{expression}"&fq=date:[2017-01-01T00:00:00Z TO *]
             &q.op=OR&indent=true&wt=json"""
-        print("\n-> N-Gram [6-10]")
-        query_exe(QUERY_AUTHORS_6, AUTHORS_FILEPATH, "book_id", f"authors_ms3/expression{i}/6_ngram_6_10/")
+        print("\n-> 5 - N-Gram [6-10]")
+        query_exe(QUERY_AUTHORS_5, AUTHORS_FILEPATH, "book_id", f"authors_ms3/expression{i}/5_ngram_6_10/")
     
 
 if __name__ == "__main__": 
     #query_romantic_tragedy()
-    query_world_war()
+    #query_world_war()
     #query_reviews_ms2()
     #query_science()
     #query_world_war_nofilter()
     #query_science_nofilter()
 
     #query_negative_reviews_m3()
-    #query_positive_reviews_m3()
+    query_positive_reviews_m3()
     #query_authors_ms3()
     #query_series()
