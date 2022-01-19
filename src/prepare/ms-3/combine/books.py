@@ -22,6 +22,7 @@ class BooksCombine:
                               isbn INTEGER,
                               genres VARCHAR(255),
                               authors VARCHAR(255),
+                              rating REAL DEFAULT 0,
                               series VARCHAR(255) DEFAULT '');''')
 
       """
