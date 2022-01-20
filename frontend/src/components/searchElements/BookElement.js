@@ -31,7 +31,7 @@ const BookElement = ({element}) => {
     const navigate = useNavigate();
 
     const properties = {
-        "Rating": element.average_rating,
+        "Rating": element.rating,
         "Publisher": element.publisher, 
         "Pages": element.num_pages,
         "Authors": element.authors,

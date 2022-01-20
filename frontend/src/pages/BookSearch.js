@@ -3,7 +3,7 @@ import SearchLayout from '../components/Layout/SearchLayout';
 import Menu from '../components/common/Menu'; 
 import { fetchInput } from '../api/Search';
 import BookElement from '../components/searchElements/BookElement';
-import { namedEntitySearch, scientificBooksSearch, thematicSearch } from '../api/Queries';
+import { namedEntitySearch, scientificBooksSearch, thematicSearch, authorSearch } from '../api/Queries';
 
 const BookSearch = () => {
     const [appState, setAppState] = React.useState({ searchResult: null });
@@ -23,7 +23,7 @@ const BookSearch = () => {
         }, 
         {
             text: "Authors", 
-            searchAPI: ""
+            searchAPI: authorSearch
         }, 
         {
             text: "Thematic Search",

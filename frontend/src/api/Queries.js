@@ -26,7 +26,7 @@ export const thematicSearch = (userInput) => {
     userInput = filterUserInput(userInput);
     // TODO: delete console
     console.log(`Thematic Search: ${userInput}`);
-    return `${baseURL}/books/query?q=description:${userInput}&q.op=OR&defType=edismax&indent=true&qf=description%5E2&ps=4&rows=8`
+    return `${baseURL}/books/query?q=description:${userInput}&q.op=OR&defType=edismax&indent=true&qf=description%5E2&ps=4&rows=40`
 }
 
 /**
@@ -51,6 +51,10 @@ export const namedEntitySearch = (userInput) => {
 
 export const scientificBooksSearch = (userInput) => {
     return `${baseURL}/books/select?q.op=AND&defType=edismax&q=science -genres:fiction -genres:\"historical-fiction\"&bq=genres:\"non-fiction\"^4&qf=description title`
+}
+
+export const authorSearch = (userInput) => {
+    return `${baseURL}/books/select?q=authors-space:"${userInput}" authors:"${userInput}"&q.op=OR&indent=true&defType=edismax&qs=2&wt=json`
 }
 
 /**

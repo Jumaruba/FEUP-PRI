@@ -257,7 +257,6 @@ def query_positive_reviews_m3():
     query_reviews(QUERY_REVIEWS_M3_10, REVIEWS_POSITIVE_FEEDBACK_FILEPATH, "review_id", "reviews_positive_m3/"+FOLDER+"/5_boost3/")  
 
 
-#TODO
 def query_series():
     pass
     # http://localhost:8983/solr/#/books/query?q=series:%22Harry%20Potter%22%20title:%22Harry%20Potter%22&q.op=OR&indent=true&sort=exists(series)%20desc,%20date%20desc

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button} from '@mui/material';
+import {Button, Box} from '@mui/material';
 import {makeStyles} from '@mui/styles';
 import {useNavigate, useSearchParams} from "react-router-dom";
 
@@ -32,10 +32,11 @@ const BookPage = () => {
   return (
     <>
         <BookInfo info={bookInfo}></BookInfo>
-
-        <Button title="Go Back" onClick={() => navigate(-1)}>
-            Go back
-        </Button>
+        <Box textAlign='center'>
+          <Button style={{minWidth: '300px'}} variant="outlined" title="Go Back" onClick={() => navigate(-1)}>
+              Go back
+          </Button>
+        </Box>
     </>
   );
 }
